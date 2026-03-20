@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Juntos de Nuevo — Plan de Reconciliación 30 Días</title>
+<meta name="description" content="¿Tu relación se apagó en silencio? El Plan Juntos de Nuevo te guía día a día durante 30 días para volver a encontrarse."/>
+<meta property="og:title" content="Juntos de Nuevo — Plan de Reconciliación 30 Días"/>
+<meta property="og:description" content="30 días para volver a encontrarse. App + PDF + Recursos."/>
+<meta property="og:type" content="website"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --coral:#E8567A;--coral-d:#C73D61;--coral-l:#FFF0F3;
+    --golden:#F5A623;--golden-l:#FFFAEE;
+    --sage:#5BAD8F;--sage-l:#F0FAF5;
+    --violet:#9B72CF;--violet-l:#F5F0FF;
+    --cream:#FFF6EE;--cream2:#FFF0E4;
+    --white:#FFFFFF;
+    --ink:#2D1B1B;--ink2:#5C3D3D;--ink3:#8B6060;
+    --soft:#F2E4E4;--soft2:#FBF5F0;
+  }
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--cream);min-height:100vh;color:var(--ink)}
+  .fr{font-family:'Fraunces',Georgia,serif}
+  .jk{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+  .btn{cursor:pointer;transition:all .18s;border:none;background:none;text-align:left}
+  .btn:active{transform:scale(.97)}
+  .card{transition:transform .2s,box-shadow .2s}
+  .card:hover{transform:translateY(-2px)}
+  .fade{animation:fu .35s ease}
+  @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  a:hover .arrow{transform:translateX(3px)}
+  .arrow{display:inline-block;transition:transform .15s}
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-thumb{background:#F5C6D2;border-radius:4px}
+  #app{max-width:660px;margin:0 auto;padding:0 14px 64px}
+</style>
+</head>
+<body>
+
+<div id="hero"></div>
+<div id="app"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const C={coral:"#E8567A",golden:"#F5A623",sage:"#5BAD8F",violet:"#9B72CF",cream:"#FFF6EE",cream2:"#FFF0E4",white:"#FFFFFF",ink:"#2D1B1B",ink2:"#5C3D3D",ink3:"#8B6060",soft:"#F2E4E4",soft2:"#FBF5F0"};
+
+const weekMeta={
+  1:{label:"Reconocimiento",color:C.coral,light:"#FFF0F3",emoji:"👁️",tagline:"Ver con honestidad para poder avanzar"},
+  2:{label:"Reconexión",color:C.golden,light:"#FFFAEE",emoji:"🤝",tagline:"Conocerse otra vez, más profundo que antes"},
+  3:{label:"Intimidad",color:C.violet,light:"#F5F0FF",emoji:"🌸",tagline:"El perdón real y el contacto que sana"},
+  4:{label:"Compromiso",color:C.sage,light:"#F0FAF5",emoji:"🌿",tagline:"Construir la versión del amor que eligieron"},
+};
+
+const days=[
+  {day:1,week:1,title:"El Primer Gesto",icon:"👁️",task:"Esta noche, sin teléfono, siéntense frente a frente 5 minutos. Ninguno habla. Solo mírense a los ojos. Al terminar, cada uno dice una sola palabra de lo que sintió.",reflection:"El amor no se fue. Se cubrió de costumbre. Hoy empiezas a descubrirlo.",tip:"Apaga notificaciones desde las 9 PM. Coloca el teléfono en otra habitación."},
+  {day:2,week:1,title:"La Pregunta Real",icon:"💬",task:"Pregunta genuinamente: '¿Cómo estás tú... de verdad?' Escucha sin responder, sin aconsejar. Solo recibe lo que tu pareja comparte.",reflection:"Escuchar es el primer acto de amor que olvidamos y el primero que debemos recuperar.",tip:"No interrumpas. No defiendas. Solo escucha con los ojos, el cuerpo y el corazón."},
+  {day:3,week:1,title:"La Carta Silenciosa",icon:"✍️",task:"Escribe una carta (a mano si es posible) donde reconoces 3 momentos en los que sí elegiste la distancia. No acuses. Solo confiesa lo tuyo.",reflection:"La reconciliación empieza cuando alguien tiene el valor de decir: yo también me alejé.",tip:"No es para culparte. Es para nombrarlo. Lo que se nombra puede ser cambiado."},
+  {day:4,week:1,title:"El Archivo del Amor",icon:"📸",task:"Busquen juntos 3 fotos de cuando eran felices. Cuenten la historia detrás de cada una. Recuerden quiénes eran en ese momento.",reflection:"Esa versión de ustedes no murió. Solo está esperando ser convocada de nuevo.",tip:"No compares ese entonces con el hoy con amargura. Úsalo como brújula, no como herida."},
+  {day:5,week:1,title:"El Pacto del Umbral",icon:"🚪",task:"Establezcan UN ritual de llegada al hogar: un abrazo de al menos 6 segundos cada vez que uno llega. Sin excepción. Practíquenlo hoy.",reflection:"Los rituales pequeños construyen la arquitectura del amor cotidiano.",tip:"6 segundos es el tiempo mínimo para que el cuerpo libere oxitocina, la hormona del vínculo."},
+  {day:6,week:1,title:"Nombrar lo que Duele",icon:"💧",task:"Cada uno completa esta frase en voz alta: 'Me duele que... pero entiendo que...' Hablen de UN solo tema hoy. Sin desvíos.",reflection:"Decir lo que duele con amor no es atacar. Es construir el puente que faltaba.",tip:"Usa siempre el 'yo siento' antes que el 'tú hiciste'. Esto no es técnica, es respeto."},
+  {day:7,week:1,title:"Noche sin Pantallas",icon:"🌙",task:"Una noche completa sin televisión, teléfono ni tablet después de las 8 PM. Cocinen juntos, jueguen algo, platiquen. Redescubran cómo se pasa el tiempo cuando se tienen el uno al otro.",reflection:"La pantalla no los separó. Pero llenarla de ustedes los volverá a unir.",tip:"Si el silencio se siente incómodo, es buena señal: hay algo importante esperando ser dicho."},
+  {day:8,week:2,title:"El Mapa de tu Pareja",icon:"🗺️",task:"Cada uno responde por escrito: ¿Cuál es el mayor sueño actual de tu pareja? ¿Su mayor miedo? ¿Lo que más le pesa hoy? Compárenlo. ¿Sabían estas respuestas?",reflection:"La intimidad no es física. Es saber qué le quita el sueño a la persona que duerme a tu lado.",tip:"Concepto de John Gottman: 'Mapa del amor'. Las parejas que se conocen profundamente resisten las crisis."},
+  {day:9,week:2,title:"La Deuda de Gratitud",icon:"🙏",task:"Cada uno menciona 5 cosas específicas por las que está agradecido del otro. No 'eres bueno', sino 'el martes que llegaste cansado y aún así me abrazaste'.",reflection:"La gratitud específica es reconocimiento. Y el reconocimiento es oxígeno para el amor.",tip:"La gratitud diaria es el predictor más fuerte de satisfacción matrimonial según la investigación."},
+  {day:10,week:2,title:"Sanar una Herida Vieja",icon:"🩹",task:"Elijan UNA herida del pasado que nunca cerró bien. El que la causó dice: 'Me arrepiento de...' y escucha al otro describir cómo lo vivió. Sin defenderse. Solo recibir.",reflection:"Las heridas no procesadas no desaparecen. Se convierten en la distancia que no saben explicar.",tip:"Si es una herida muy profunda, consideren apoyo profesional. No todo puede resolverse solos."},
+  {day:11,week:2,title:"La Cita Inesperada",icon:"🌹",task:"Uno de los dos organiza una sorpresa pequeña: puede ser una cena en el piso de la sala, un paseo nocturno, una nota escondida. Lo que importa es la intención.",reflection:"La iniciativa amorosa dice: 'Pensé en ti cuando no tenías por qué estar en mi mente.'",tip:"El romanticismo no muere. Solo deja de ser prioridad. Hoy vuelve a serlo."},
+  {day:12,week:2,title:"El Lenguaje del Amor",icon:"🔑",task:"Cada uno responde: ¿Cómo sabes que eres amado/a? ¿Palabras, tiempo, actos de servicio, regalos o contacto físico? Compartan sus respuestas. ¿Han estado amando al otro en el lenguaje equivocado?",reflection:"Muchas parejas se aman profundamente y se sienten solas porque hablan idiomas diferentes del amor.",tip:"Basado en los 5 Lenguajes del Amor de Gary Chapman. Test gratuito en 5lovelanguages.com."},
+  {day:13,week:2,title:"Orar o Comprometerse",icon:"✨",task:"Si tienen fe, oren juntos esta noche en voz alta frente al otro, compartan lo que agradecen y lo que necesitan sanar. Si no tienen fe, escriban juntos una intención o propósito compartido.",reflection:"La vulnerabilidad compartida en oración o propósito crea intimidad que pocas conversaciones logran.",tip:"Programa recomendado: Retrouvaille — para matrimonios en crisis. retrouvaille.org"},
+  {day:14,week:2,title:"Revisión de Mitad",icon:"📊",task:"Dos semanas. Cada uno responde honestamente: ¿Qué ha cambiado en mí? ¿Qué he notado en mi pareja? ¿Qué me ha costado más trabajo? Compartan sus respuestas sin juzgar.",reflection:"El progreso no siempre se siente. A veces solo se ve cuando te detienes a mirarlo.",tip:"No se comparen con otras parejas. Su proceso es único."},
+  {day:15,week:3,title:"El Sueño Compartido",icon:"🌅",task:"Siéntense y construyan juntos una visión a 5 años: ¿Dónde quieren estar? ¿Qué tipo de pareja quieren ser? Escríbanlo como si ya fuera realidad: 'En 2030 nosotros...'",reflection:"Las parejas que tienen una narrativa compartida del futuro tienen un ancla para los momentos de tormenta.",tip:"Equipos de Nuestra Señora (ENS) — movimiento de espiritualidad conyugal con retiros y encuentros."},
+  {day:16,week:3,title:"Conversaciones Profundas",icon:"🌊",task:"Usen estas preguntas (una cada 15 minutos): 1) ¿Cuál fue el momento más feliz de tu vida? 2) ¿Qué parte de ti sientes que yo todavía no conozco? 3) ¿De qué tienes miedo que nunca me hayas dicho?",reflection:"La profundidad no llega por accidente. Se convoca con las preguntas correctas.",tip:"Apaguen todo. Sin prisas."},
+  {day:17,week:3,title:"Acuerdos Nuevos",icon:"📋",task:"Escriban juntos 5 acuerdos de convivencia que quieren adoptar. No reglas rígidas: compromisos vivos. Ejemplo: 'Nos decimos buenas noches aunque estemos enojados'. Fírmenlo.",reflection:"Los matrimonios sanos tienen rituales y acuerdos que protegen el amor en los días difíciles.",tip:"Guárdenlo y léanlo en voz alta cada primer domingo del mes."},
+  {day:18,week:3,title:"Tocar y Ser Tocado",icon:"🤲",task:"Sin pretensión romántica: denle al otro un masaje de espalda de 10 minutos en silencio. El que recibe solo cierra los ojos y acepta. Luego cambien.",reflection:"El contacto físico sin agenda sexual es uno de los vínculos más sanadores y más olvidados del matrimonio.",tip:"El tacto activa el sistema nervioso parasimpático (calma y conexión). Es necesidad biológica."},
+  {day:19,week:3,title:"Perdón Profundo",icon:"🕊️",task:"Cada uno escribe en un papel algo que nunca pidió perdón y algo que nunca logró perdonar del todo. Léanselo en voz alta. Luego quemen o rompan el papel juntos.",reflection:"Perdonar no es olvidar. Es elegir que esa herida ya no dicte tu presente.",tip:"El ritual de destruir el papel es simbólico pero poderoso. El cuerpo necesita gestos, no solo palabras."},
+  {day:20,week:3,title:"El Día de Servicio",icon:"🎁",task:"Cada uno elige UNA cosa que el otro odia hacer en casa y lo hace por él/ella hoy, sin mencionarlo, sin esperar reconocimiento. Solo como acto de amor puro.",reflection:"Servir al otro sin llevar la cuenta es el amor maduro que los recién casados no conocen pero los veteranos atesoran.",tip:"Movimiento Familiar Cristiano (MFC) — grupos de crecimiento matrimonial en parroquias locales."},
+  {day:21,week:3,title:"La Noche Especial",icon:"💍",task:"Recreen algo de su noche de bodas o de algún momento muy especial. Una canción, un platillo, un lugar. No la perfección: la intención.",reflection:"No se trata de volver al pasado. Se trata de recordarle al presente que ese amor aún existe.",tip:"Fin de la tercera semana. El trabajo más difícil ya está hecho. Están en la recta final."},
+  {day:22,week:4,title:"Conocerse de Nuevo",icon:"🔄",task:"Háganse preguntas como si se acabaran de conocer: ¿Cuál es tu película favorita ahora? ¿Qué música escuchas? ¿Cuál es tu mayor proyecto personal hoy? La persona que aman ha cambiado. Descúbranla.",reflection:"Muchas parejas están enamoradas de quien fue su pareja, no de quien es hoy. Enamórense de la versión actual.",tip:"Las personas cambian profundamente cada 5-7 años. El amor que no se actualiza envejece mal."},
+  {day:23,week:4,title:"Carta al Futuro",icon:"📬",task:"Cada uno escribe una carta a la versión de su matrimonio dentro de 10 años. Descríbanlo como quieren que sea. Guárdenla juntos para abrirla en esa fecha.",reflection:"La intención sostenida en el tiempo se convierte en destino. Lo que escribes hoy, lo estás eligiendo.",tip:"Pueden guardarla en un sobre sellado con la fecha. Conviértanla en un ritual anual."},
+  {day:24,week:4,title:"Hablar del Dinero",icon:"💰",task:"Aborden el tema que más evitan: las finanzas. Sin reproches, con curiosidad: ¿Qué relación tiene cada uno con el dinero? ¿Qué miedos financieros tienen? ¿Cuál es su meta económica común?",reflection:"El dinero es el segundo tema que más destruye matrimonios, y el primero que menos se habla con amor.",tip:"No resuelvan todo hoy. Solo abran el tema con honestidad. Eso ya es enorme."},
+  {day:25,week:4,title:"Solo Ustedes Dos",icon:"👫",task:"Planeen algo solo para ustedes que no involucre hijos, trabajo ni familia: una actividad nueva que ninguno haya hecho antes. No tiene que ser cara. Solo diferente y juntos.",reflection:"La novedad compartida reactiva el sistema de recompensa del cerebro. Literalmente, se vuelven a enamorar.",tip:"Investigación de Aron et al.: parejas que hacen actividades nuevas juntas reportan mayor satisfacción."},
+  {day:26,week:4,title:"Un Retiro de Pareja",icon:"⛪",task:"Investiguen y regístrense en un retiro matrimonial. Opciones: Retrouvaille (para crisis), Encuentro Matrimonial Mundial (EMM), o Equipos de Nuestra Señora. Agenden la fecha hoy.",reflection:"El amor no se mantiene solo. Necesita comunidad, formación y espacios para renovarse.",tip:"Retrouvaille: retrouvaille.org | Encuentro Matrimonial: wwme.org"},
+  {day:27,week:4,title:"El Inventario del Amor",icon:"📝",task:"Cada uno hace una lista: 10 cosas que amo de ti HOY (no antes, hoy). No las compartan de inmediato. Escríbanlas. Luego léanselas lentamente, mirándose.",reflection:"El amor que no se dice en voz alta se convierte en amor que el otro no puede sentir.",tip:"Guarden estas listas. Léanlas en los días difíciles que inevitablemente vendrán."},
+  {day:28,week:4,title:"Pedir Ayuda",icon:"🆘",task:"Evalúen honestamente: ¿Necesitan apoyo profesional? Si la respuesta es sí, investiguen juntos un terapeuta de pareja y agenden UNA sesión. Hacerlo es fortaleza, no fracaso.",reflection:"Las parejas que buscan ayuda profesional a tiempo tienen 70% más probabilidades de superar su crisis.",tip:"En México: busca psicólogos con certificación en Terapia Focalizada en Emociones (EFT) para parejas."},
+  {day:29,week:4,title:"Renovación de Votos",icon:"💒",task:"Esta noche, en privado, cada uno dice en voz alta por qué elige seguir. No frases genéricas: razones reales, concretas, de hoy. 'Te elijo porque...'",reflection:"El matrimonio no es un contrato que se firmó una vez. Es una elección que se renueva cada día.",tip:"Si desean hacerlo con dimensión sacramental, pueden contactar a su parroquia para una renovación formal."},
+  {day:30,week:4,title:"El Primer Día del Resto",icon:"🌄",task:"Revisen juntos el plan que completaron. ¿Qué rituales quieren conservar? ¿Cuáles fueron los momentos más importantes? Elijan 3 prácticas permanentes y escríbanlas como su 'Código de Pareja'.",reflection:"30 días no arreglan un matrimonio. Pero sí pueden ser el punto en que decidieron que valía la pena arreglarlo. Ese punto lo es todo.",tip:"Celebren hoy. No porque terminaron: sino porque empezaron. Eso es lo más difícil."},
+];
+
+const programs=[
+  {name:"Retrouvaille",sub:"Para matrimonios en crisis",desc:"Programa de fin de semana diseñado específicamente para parejas con dificultades serias. Fundado en 1977, ha ayudado a más de un millón de parejas en el mundo.",url:"retrouvaille.org",emoji:"🕊️"},
+  {name:"Encuentro Matrimonial Mundial",sub:"Para renovar el amor conyugal",desc:"Retiro de fin de semana para parejas casadas que desean profundizar su relación y renovar su compromiso. Presente en más de 80 países.",url:"wwme.org",emoji:"🌍"},
+  {name:"Equipos de Nuestra Señora",sub:"Crecimiento continuo en pareja",desc:"Movimiento de espiritualidad conyugal donde pequeños grupos de matrimonios se reúnen mensualmente para crecer. Ideal para el largo plazo.",url:"equipes-nd.org",emoji:"✨"},
+  {name:"Movimiento Familiar Cristiano",sub:"Red parroquial de familias",desc:"Grupos pequeños en parroquias locales que ofrecen encuentros, dinámicas y acompañamiento para matrimonios en todas las etapas.",url:"mfcmex.org",emoji:"🏡"},
+];
+
+const weekMedia={
+  1:{items:[
+    {icon:"▶️",label:"TED · Brené Brown",title:"El poder de la vulnerabilidad",desc:"La conferencia más vista sobre conexión humana. Subtítulos en español.",url:"https://www.youtube.com/watch?v=iCvmsMzlF7o",tag:"YouTube · 20 min"},
+    {icon:"▶️",label:"The Gottman Institute",title:"Canal oficial — Recursos para parejas",desc:"Videos cortos basados en décadas de investigación. Busca: 'Four Horsemen' y 'Love Maps'.",url:"https://www.youtube.com/@GottmanInstitute",tag:"YouTube · Canal"},
+    {icon:"📰",label:"Gottman · Blog",title:"Los Cuatro Jinetes del matrimonio",desc:"Los 4 patrones de comunicación que predicen la ruptura: crítica, desprecio, actitud defensiva y evasión.",url:"https://www.gottman.com/blog/the-four-horsemen-recognizing-criticism-contempt-defensiveness-and-stonewalling/",tag:"Artículo"},
+    {icon:"🔧",label:"Herramienta online",title:"Relationship Checkup — Gottman",desc:"Evaluación online para identificar fortalezas y áreas de crecimiento en tu relación.",url:"https://www.gottman.com/couples/",tag:"Test gratuito"},
+  ]},
+  2:{items:[
+    {icon:"▶️",label:"Gary Chapman · YouTube",title:"Los 5 Lenguajes del Amor — En español",desc:"La conferencia más vista de Gary Chapman con millones de vistas.",url:"https://www.youtube.com/results?search_query=gary+chapman+5+lenguajes+del+amor+en+español",tag:"YouTube"},
+    {icon:"🔧",label:"5lovelanguages.com",title:"Test oficial: ¿Cuál es tu lenguaje del amor?",desc:"El test original de Gary Chapman. Gratuito. Cada cónyuge lo hace por separado y comparan resultados.",url:"https://5lovelanguages.com/quizzes/love-language",tag:"Test · 10 min"},
+    {icon:"▶️",label:"Gottman · YouTube",title:"Cómo reconstruir la confianza en pareja",desc:"Videos del Instituto Gottman sobre el proceso de reparación después de la distancia emocional.",url:"https://www.youtube.com/results?search_query=gottman+trust+rebuild+relationship",tag:"YouTube"},
+    {icon:"📖",label:"Libro · EFT",title:"Abrázame Fuerte — Sue Johnson",desc:"El libro de referencia de la Terapia Focalizada en Emociones para parejas. holdmetight.net",url:"https://www.holdmetight.net/",tag:"Libro"},
+  ]},
+  3:{items:[
+    {icon:"▶️",label:"Sue Johnson · YouTube",title:"El amor como vínculo de apego — EFT",desc:"La creadora de la EFT explica cómo sanar los vínculos de pareja.",url:"https://www.youtube.com/results?search_query=sue+johnson+emotionally+focused+therapy",tag:"YouTube"},
+    {icon:"▶️",label:"YouTube · Testimonios",title:"Retrouvaille — Historias de superación",desc:"Parejas reales que superaron crisis matrimoniales severas. Para inspiración y esperanza.",url:"https://www.youtube.com/results?search_query=retrouvaille+testimonio+matrimonio",tag:"YouTube"},
+    {icon:"📰",label:"UC Berkeley · Greater Good",title:"El perdón: Ciencia y práctica",desc:"Recursos basados en evidencia sobre el proceso psicológico del perdón en parejas.",url:"https://greatergood.berkeley.edu/topic/forgiveness/definition",tag:"Artículo"},
+    {icon:"🌐",label:"Retrouvaille Oficial",title:"Para matrimonios en crisis",desc:"Sitio oficial del programa de fin de semana más exitoso del mundo para parejas en dificultades.",url:"https://retrouvaille.org",tag:"Sitio oficial"},
+  ]},
+  4:{items:[
+    {icon:"🌐",label:"Encuentro Matrimonial Mundial",title:"wwme.org — Retiros para parejas",desc:"Busca retiros en México y Latinoamérica. Ideal para renovar el compromiso.",url:"https://wwme.org",tag:"Sitio oficial"},
+    {icon:"🌐",label:"Equipos de Nuestra Señora",title:"Espiritualidad conyugal continua",desc:"Movimiento internacional con grupos en toda México para crecimiento sostenido.",url:"https://www.equipes-nd.org/es/",tag:"Sitio oficial"},
+    {icon:"▶️",label:"Robert Waldinger · TED",title:"La ciencia del amor duradero",desc:"El estudio más largo de la historia (Harvard, 80 años) revela qué mantiene el amor vivo.",url:"https://www.youtube.com/watch?v=8KkKuTCFvzI",tag:"TED · 13 min"},
+    {icon:"📖",label:"Libro · Referencia",title:"Los 7 Principios del Matrimonio — Gottman",desc:"La guía práctica más respaldada por investigación para un matrimonio estable y feliz.",url:"https://www.gottman.com/product/the-seven-principles-for-making-marriage-work/",tag:"Libro"},
+  ]},
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let state={activeWeek:1,activeDay:null,done:new Set(),tab:"days"};
+
+function setState(patch){Object.assign(state,patch);render();}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function heartSVG(size=28,color="#E8567A"){
+  return `<svg viewBox="0 0 28 26" fill="none" style="width:${size}px;height:${size*26/28}px;display:inline-block">
+    <path d="M14 23S2 15 2 8a6 6 0 0 1 12-1.2A6 6 0 0 1 26 8c0 7-12 15-12 15z" fill="${color}" opacity=".9"/>
+  </svg>`;
+}
+
+function coupleSVG(){
+  return `<svg viewBox="0 0 160 100" fill="none" style="width:100%;max-width:200px;display:block;margin:0 auto">
+    <ellipse cx="52" cy="86" rx="28" ry="9" fill="#F5A623" opacity=".18"/>
+    <ellipse cx="108" cy="86" rx="28" ry="9" fill="#E8567A" opacity=".18"/>
+    <circle cx="47" cy="26" r="15" fill="#FDDDD7"/>
+    <rect x="34" y="40" width="26" height="36" rx="13" fill="#E8567A"/>
+    <circle cx="113" cy="26" r="15" fill="#FAE0B8"/>
+    <rect x="100" y="40" width="26" height="36" rx="13" fill="#F5A623"/>
+    <path d="M80 55 C74 44 61 47 61 59 C61 68 80 80 80 80 C80 80 99 68 99 59 C99 47 86 44 80 55Z" fill="#E8567A" opacity=".82"/>
+    <circle cx="80" cy="55" r="3" fill="#fff" opacity=".5"/>
+  </svg>`;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function renderHero(){
+  document.getElementById('hero').innerHTML=`
+  <div style="background:linear-gradient(140deg,#FFF0F3 0%,#FFFAEE 55%,#F0FAF5 100%);border-bottom:2px solid #FAD8E0;padding:32px 18px 26px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#F9A8D4,transparent 70%);opacity:.3;pointer-events:none"></div>
+    <div style="position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#FDE68A,transparent 70%);opacity:.35;pointer-events:none"></div>
+    <div style="position:absolute;top:20px;left:10%;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#A7F3D0,transparent 70%);opacity:.25;pointer-events:none"></div>
+    <div style="max-width:660px;margin:0 auto;text-align:center;position:relative">
+      ${coupleSVG()}
+      <h1 class="fr" style="font-size:clamp(28px,6vw,44px);font-weight:700;color:${C.coral};line-height:1.12;margin-bottom:8px;margin-top:10px">Plan de Reconciliación</h1>
+      <p class="fr" style="font-size:clamp(15px,3vw,20px);font-style:italic;color:${C.ink2};margin-bottom:14px">30 días para volver a encontrarse</p>
+      <p class="jk" style="font-size:13px;color:${C.ink3};line-height:1.7;max-width:440px;margin:0 auto 18px">
+        Un programa basado en investigación científica y sabiduría espiritual para parejas que quieren recuperar lo que construyeron.
+      </p>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:18px">
+        ${[1,2,3,4].map(w=>`
+          <div style="display:flex;align-items:center;gap:5px">
+            <div style="width:10px;height:10px;border-radius:50%;background:${weekMeta[w].color};box-shadow:0 0 6px ${weekMeta[w].color}60"></div>
+            <span class="jk" style="font-size:11px;color:${C.ink2};font-weight:500">S${w}: ${weekMeta[w].label}</span>
+          </div>`).join('')}
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:10px;background:${C.white};border-radius:50px;padding:9px 22px;border:1.5px solid ${C.coral}25;box-shadow:0 3px 14px ${C.coral}15">
+        ${heartSVG(16)}
+        <span class="fr" style="font-size:13px;color:${C.coral};font-style:italic">Lic. Agustín Flores C.</span>
+        <span class="jk" style="font-size:11px;color:${C.ink3}">Marzo 2026 · Derechos Reservados</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderPoetic(){
+  return `
+  <div class="fade card" style="margin:22px 0;border-radius:20px;background:${C.white};box-shadow:0 6px 32px ${C.coral}12;overflow:hidden;border:1px solid ${C.coral}18">
+    <div style="height:5px;background:linear-gradient(90deg,${C.coral},${C.golden},${C.sage},${C.violet})"></div>
+    <div style="padding:26px 20px 22px;max-width:530px;margin:0 auto">
+      <p class="fr" style="font-size:clamp(20px,4vw,26px);font-weight:700;color:${C.coral};line-height:1.3;margin-bottom:4px">¿Cómo llegan dos personas que se <em>AMAN</em>...</p>
+      <p class="fr" style="font-size:clamp(14px,3vw,18px);font-style:italic;color:${C.ink2};margin-bottom:20px">a dormirse de espaldas todas las noches?</p>
+      <div style="border-left:3px solid ${C.coral}50;padding-left:16px;margin-bottom:18px">
+        <p class="jk" style="font-size:15px;color:${C.ink2};line-height:1.85">No pasó de golpe.<br>No hubo traición. No hubo pelea.<br><strong style="color:${C.coral}">Pasó en silencio.</strong></p>
+      </div>
+      <div style="display:grid;gap:8px;margin-bottom:18px">
+        ${[
+          {icon:"💬",text:"Un día dejaron de preguntarse «¿cómo estuvo tu día?» de verdad."},
+          {icon:"📱",text:"Después vino el teléfono. El silencio. Y apagar la luz."},
+          {icon:"🌙",text:"La cama que antes era su lugar... se convirtió en donde más solos se sienten."},
+        ].map(x=>`
+          <div style="display:flex;gap:10px;align-items:flex-start;background:${C.soft2};border-radius:12px;padding:10px 13px">
+            <span style="font-size:17px;flex-shrink:0">${x.icon}</span>
+            <p class="jk" style="font-size:14px;color:${C.ink2};line-height:1.65">${x.text}</p>
+          </div>`).join('')}
+      </div>
+      <div style="background:linear-gradient(135deg,${C.coral}10,${C.golden}08);border-radius:14px;padding:15px 17px;margin-bottom:16px;border:1px solid ${C.coral}20">
+        <p class="fr" style="font-size:16px;color:${C.ink};line-height:1.8;font-style:italic">"Eso es lo que nadie te cuenta del matrimonio.<br>No lo destruye el odio.<br><strong style="color:${C.coral};font-style:normal">Lo destruye la costumbre.</strong>"</p>
+      </div>
+      <p class="jk" style="font-size:14px;color:${C.ink2};line-height:1.8;margin-bottom:16px">Cuando dos personas dejan de buscarse, no se vuelven enemigos.<br>Se vuelven <strong style="color:${C.ink}">invisibles el uno para el otro.</strong></p>
+      <div style="background:${C.violet}10;border-radius:14px;padding:14px 16px;margin-bottom:16px;border:1px solid ${C.violet}28">
+        <p class="jk" style="font-size:14px;color:${C.ink};line-height:1.85">Pero hay algo que duele más: saber que <strong>tú también dejaste de ver.</strong><br>Que también elegiste el teléfono. Que también callaste.<br><em style="color:${C.ink2}">Los dos lo hicieron. Y los dos extrañan a la persona con quien empezaron.</em></p>
+      </div>
+      <div style="background:${C.sage}12;border-radius:14px;padding:14px 16px;margin-bottom:20px;border:1px solid ${C.sage}35">
+        <p class="fr" style="font-size:15px;color:${C.ink};line-height:1.9;font-style:italic">"Esa persona sigue ahí.<br>Esperando algo que dejaste de dar.<br>Un gesto. Una mirada. Una conversación real."</p>
+      </div>
+      <div style="text-align:center">
+        <p class="fr" style="font-size:17px;color:${C.ink};line-height:1.7;margin-bottom:14px">Cada noche de espaldas es una noche que la distancia gana.<br><strong style="color:${C.coral}">Todavía están a tiempo.</strong></p>
+        <div style="display:inline-block;background:linear-gradient(135deg,${C.coral},#F07090);border-radius:50px;padding:12px 28px;box-shadow:0 5px 20px ${C.coral}45">
+          <span class="jk" style="font-size:14px;font-weight:700;color:#fff;letter-spacing:.3px">¿Quién va a moverse primero? — Los dos. Hoy.</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderProgress(){
+  const pct=Math.round((state.done.size/30)*100);
+  return `
+  <div style="background:${C.white};border-radius:16px;padding:15px 17px;margin-bottom:18px;box-shadow:0 2px 14px rgba(0,0,0,.06);border:1px solid ${C.soft}">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span class="jk" style="font-size:13px;font-weight:600;color:${C.ink2}">Tu progreso <span style="color:${C.ink3};font-weight:400">(${state.done.size}/30 días)</span></span>
+      <span class="jk" style="font-size:22px;font-weight:700;color:${C.coral}">${pct}%</span>
+    </div>
+    <div style="height:12px;background:${C.soft};border-radius:8px;overflow:hidden;position:relative">
+      <div style="height:100%;border-radius:8px;background:linear-gradient(90deg,${C.coral},${C.golden},${C.sage});width:${pct}%;transition:width .6s ease;position:relative">
+        ${pct>5?`<div style="position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:8px;color:#fff;font-weight:700;font-family:sans-serif">${pct}%</div>`:''}
+      </div>
+    </div>
+    ${state.done.size===30?`<p class="fr" style="text-align:center;margin-top:12px;color:${C.sage};font-size:16px;font-style:italic">🌿 Lo lograron. Ahora, a vivir lo que construyeron.</p>`:''}
+  </div>`;
+}
+
+function renderWeekSelector(){
+  return `
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+    ${[1,2,3,4].map(w=>{
+      const wDone=days.filter(d=>d.week===w&&state.done.has(d.day)).length;
+      const a=state.activeWeek===w;
+      return `<button class="btn jk" onclick="selectWeek(${w})" style="padding:10px 5px;border-radius:14px;background:${a?weekMeta[w].color:C.white};color:${a?'#fff':C.ink2};font-weight:${a?700:500};font-size:11px;box-shadow:${a?`0 5px 18px ${weekMeta[w].color}55`:'0 1px 8px rgba(0,0,0,.07)'};border:${a?'none':`1.5px solid ${C.soft}`};cursor:pointer;width:100%">
+        <div style="font-size:18px;margin-bottom:2px">${weekMeta[w].emoji}</div>
+        <div style="font-weight:700">S${w}</div>
+        <div style="font-size:10px;opacity:.85;margin-top:1px">${weekMeta[w].label}</div>
+        <div style="font-size:10px;margin-top:3px;opacity:${wDone===7?1:.55}">${wDone}/7 ✓</div>
+      </button>`;
+    }).join('')}
+  </div>`;
+}
+
+function renderWeekBanner(){
+  const wm=weekMeta[state.activeWeek];
+  return `
+  <div class="fade" style="border-radius:16px;background:linear-gradient(135deg,${wm.light},${C.white});padding:16px 18px;margin-bottom:16px;border:1.5px solid ${wm.color}28;box-shadow:0 3px 16px ${wm.color}18">
+    <div class="jk" style="font-size:10px;font-weight:700;letter-spacing:2px;color:${wm.color};text-transform:uppercase;margin-bottom:4px">Semana ${state.activeWeek} de 4</div>
+    <h2 class="fr" style="font-size:22px;color:${C.ink};margin-bottom:5px">${wm.emoji} ${wm.label}</h2>
+    <p class="jk" style="font-size:14px;color:${C.ink2};line-height:1.6">${wm.tagline}</p>
+  </div>`;
+}
+
+function renderTabs(){
+  const tabs=[["days","📅 Días"],["media","🎬 Multimedia"],["programs","🤝 Programas"]];
+  return `
+  <div style="display:flex;gap:6px;margin-bottom:14px">
+    ${tabs.map(([k,lb])=>`
+      <button class="btn jk" onclick="setTab('${k}')" style="flex:1;padding:9px 4px;border-radius:10px;font-size:11px;font-weight:600;background:${state.tab===k?C.coral:C.white};color:${state.tab===k?'#fff':C.ink2};box-shadow:${state.tab===k?`0 4px 14px ${C.coral}40`:'0 1px 7px rgba(0,0,0,.07)'};border:${state.tab===k?'none':`1.5px solid ${C.soft}`};cursor:pointer">${lb}</button>`).join('')}
+  </div>`;
+}
+
+function renderDays(){
+  const wm=weekMeta[state.activeWeek];
+  const weekDays=days.filter(d=>d.week===state.activeWeek);
+  return `
+  <div class="fade" style="display:grid;gap:9px">
+    ${weekDays.map(d=>{
+      const isDone=state.done.has(d.day),isOpen=state.activeDay===d.day;
+      return `
+      <div class="card" style="border-radius:14px;background:${C.white};border:1.5px solid ${isOpen?wm.color:isDone?C.sage+'60':C.soft};box-shadow:0 2px 14px ${isOpen?wm.color+'22':'rgba(0,0,0,.05)'};overflow:hidden">
+        <div class="btn" onclick="toggleDay(${d.day})" style="display:flex;align-items:center;padding:13px 14px;gap:12px;background:${isDone?`${C.sage}0C`:'transparent'};width:100%">
+          <div style="width:40px;height:40px;border-radius:50%;background:${isDone?`${C.sage}20`:`${wm.color}14`};display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;border:2px solid ${isDone?C.sage:wm.color}35">${isDone?'✅':d.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div class="jk" style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wm.color};text-transform:uppercase;margin-bottom:2px">Día ${d.day}</div>
+            <div class="fr" style="font-size:15px;color:${isDone?C.sage:C.ink};font-weight:600">${d.title}</div>
+          </div>
+          <div style="font-size:20px;color:${C.ink3};transform:${isOpen?'rotate(180deg)':'none'};transition:transform .2s">⌄</div>
+        </div>
+        ${isOpen?`
+        <div class="fade" style="padding:2px 14px 15px;border-top:1px solid ${C.soft}">
+          <div style="background:${wm.color}0D;border-radius:12px;padding:13px 14px;margin:11px 0 10px">
+            <div class="jk" style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wm.color};text-transform:uppercase;margin-bottom:7px">🎯 Acción del día</div>
+            <p class="jk" style="font-size:14px;color:${C.ink};line-height:1.75">${d.task}</p>
+          </div>
+          <div style="border-left:3px solid ${wm.color};padding-left:14px;margin-bottom:10px">
+            <p class="fr" style="font-size:14px;font-style:italic;color:${C.ink2};line-height:1.75">"${d.reflection}"</p>
+          </div>
+          <div style="background:${C.soft2};border-radius:12px;padding:11px 14px;margin-bottom:12px">
+            <div class="jk" style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${C.golden};text-transform:uppercase;margin-bottom:5px">💡 Nota del terapeuta</div>
+            <p class="jk" style="font-size:13px;color:${C.ink2};line-height:1.65">${d.tip}</p>
+          </div>
+          <button onclick="toggleDone(${d.day})" class="btn jk" style="width:100%;padding:12px;border-radius:12px;font-size:13px;font-weight:700;background:${isDone?`${C.sage}18`:wm.color};color:${isDone?C.sage:'#fff'};box-shadow:${isDone?'none':`0 4px 16px ${wm.color}50`};border:${isDone?`1.5px solid ${C.sage}50`:'none'};cursor:pointer">
+            ${isDone?'✓ Completado — toca para desmarcar':'Marcar como completado ✓'}
+          </button>
+        </div>`:''}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function renderMedia(){
+  const wm=weekMeta[state.activeWeek];
+  const items=weekMedia[state.activeWeek].items;
+  return `
+  <div class="fade" style="display:grid;gap:10px">
+    <p class="jk" style="font-size:12px;color:${C.ink3};margin-bottom:4px">Recursos para la <strong>Semana ${state.activeWeek}: ${wm.label}</strong></p>
+    ${items.map(m=>`
+      <a href="${m.url}" target="_blank" rel="noopener noreferrer" style="display:block;background:${C.white};border-radius:14px;padding:14px 15px;border:1.5px solid ${wm.color}20;text-decoration:none;box-shadow:0 2px 12px ${wm.color}10;transition:box-shadow .2s"
+        onmouseover="this.style.boxShadow='0 6px 24px ${wm.color}30'" onmouseout="this.style.boxShadow='0 2px 12px ${wm.color}10'">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:42px;height:42px;border-radius:12px;background:${wm.color}14;border:1.5px solid ${wm.color}30;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0">${m.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:3px">
+              <div>
+                <div class="jk" style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:${wm.color};text-transform:uppercase">${m.label}</div>
+                <div class="fr" style="font-size:14px;color:${C.ink};font-weight:600;margin-top:2px">${m.title}</div>
+              </div>
+              <span class="jk" style="font-size:10px;color:${C.ink3};background:${C.soft2};border-radius:6px;padding:3px 8px;flex-shrink:0;white-space:nowrap">${m.tag}</span>
+            </div>
+            <p class="jk" style="font-size:13px;color:${C.ink2};line-height:1.6;margin-bottom:5px">${m.desc}</p>
+            <span class="jk" style="font-size:11px;color:${wm.color};font-weight:600">${m.url.replace('https://','').replace('http://','').split('/')[0]} <span class="arrow">→</span></span>
+          </div>
+        </div>
+      </a>`).join('')}
+  </div>`;
+}
+
+function renderPrograms(){
+  return `
+  <div class="fade" style="display:grid;gap:10px">
+    <p class="jk" style="font-size:12px;color:${C.ink3};margin-bottom:4px">Programas de acompañamiento recomendados</p>
+    ${programs.map(p=>`
+      <div class="card" style="background:${C.white};border-radius:14px;padding:15px 16px;border:1.5px solid ${C.soft};box-shadow:0 2px 12px rgba(0,0,0,.05)">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <span style="font-size:26px;flex-shrink:0">${p.emoji}</span>
+          <div>
+            <div class="fr" style="font-size:15px;color:${C.ink};font-weight:600">${p.name}</div>
+            <div class="jk" style="font-size:11px;color:${C.coral};font-weight:600;margin-bottom:6px">${p.sub}</div>
+            <p class="jk" style="font-size:13px;color:${C.ink2};line-height:1.65;margin-bottom:6px">${p.desc}</p>
+            <div class="jk" style="font-size:11px;color:${C.sage};font-weight:600">🔗 ${p.url}</div>
+          </div>
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderFooter(){
+  return `
+  <div style="margin-top:32px;border-radius:20px;background:linear-gradient(135deg,#FFF0F3,#FFFAEE,#F0FAF5);padding:26px 20px;border:1.5px solid ${C.coral}22;text-align:center;box-shadow:0 5px 28px ${C.coral}10">
+    <div style="display:flex;justify-content:center;gap:4px;margin-bottom:12px">
+      ${["❤️","🧡","💛","💚","💜"].map(h=>`<span style="font-size:18px">${h}</span>`).join('')}
+    </div>
+    <p class="fr" style="font-size:17px;font-style:italic;color:${C.ink};line-height:1.85;max-width:460px;margin:0 auto 14px">
+      "No pasó de golpe. No sanará de golpe.<br>
+      Pero cada noche que eligen buscarse,<br>
+      la distancia pierde terreno.<br>
+      <strong style="color:${C.coral}">¿Quién va a moverse primero?</strong><br>
+      Hoy, los dos."
+    </p>
+    <div style="width:60px;height:3px;background:linear-gradient(90deg,${C.coral},${C.golden});border-radius:2px;margin:0 auto 14px"></div>
+    <p class="fr" style="font-size:13px;color:${C.coral};font-style:italic;margin-bottom:4px">Lic. Agustín Flores C. · Marzo 2026 · Derechos Reservados</p>
+    <p class="jk" style="font-size:11px;color:${C.ink3}">Gottman Institute · Los 5 Lenguajes del Amor · EFT (Sue Johnson) · Espiritualidad conyugal</p>
+  </div>`;
+}
+
+function render(){
+  renderHero();
+  let content=renderPoetic()+renderProgress()+renderWeekSelector()+renderWeekBanner()+renderTabs();
+  if(state.tab==="days") content+=renderDays();
+  else if(state.tab==="media") content+=renderMedia();
+  else if(state.tab==="programs") content+=renderPrograms();
+  content+=renderFooter();
+  document.getElementById('app').innerHTML=content;
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────
+function selectWeek(w){setState({activeWeek:w,activeDay:null,tab:"days"});}
+function setTab(t){setState({tab:t});}
+function toggleDay(d){setState({activeDay:state.activeDay===d?null:d});}
+function toggleDone(d){
+  const n=new Set(state.done);
+  n.has(d)?n.delete(d):n.add(d);
+  setState({done:n});
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
