@@ -2,24 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
   <meta name="theme-color" content="#E8567A"/>
   <meta name="description" content="Juntos de Nuevo — Plan de reconciliación 30 días. App personalizada con mensajes diarios."/>
   <title>Juntos de Nuevo 💑 — Plan 30 Días</title>
-
-  <!-- PWA manifest inline -->
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="apple-touch-icon" href="icon-192.png"/>
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-
-  <!-- React 18 + Babel (CDN, no build step) -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
   <style>
     
   *{box-sizing:border-box;margin:0;padding:0}
@@ -37,13 +28,12 @@
   ::-webkit-scrollbar{width:4px}
   ::-webkit-scrollbar-thumb{background:#F5C6D2;border-radius:4px}
 
-    html,body{height:100%;background:#FFF6EE}
+    html,body{height:100%;background:#FFF6EE;margin:0;padding:0}
     #root{min-height:100vh}
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
@@ -267,7 +257,6 @@ const weekMedia={
 // ═══════════════════════════════════════════════════════════════════════
 // UTILIDADES
 // ═══════════════════════════════════════════════════════════════════════
-const genCode=()=>Math.random().toString(36).substring(2,8).toUpperCase();
 
 const getDayNum=(fechaInicio)=>{
   if(!fechaInicio) return 1;
@@ -292,8 +281,6 @@ const formatFecha=(iso)=>{
 // STORAGE HELPERS
 // ═══════════════════════════════════════════════════════════════════════
 const SK_ME="jdn_me_v2";
-const SK_COUPLE=(code)=>`jdn_couple_${code}`;
-const SK_DONE=(code)=>`jdn_done_${code}`;
 
 function saveMe(profile){
   try{ localStorage.setItem(SK_ME,JSON.stringify(profile)); }catch(e){}
@@ -301,17 +288,11 @@ function saveMe(profile){
 function loadMe(){
   try{ const r=localStorage.getItem(SK_ME); return r?JSON.parse(r):null; }catch(e){return null;}
 }
-function saveCoupleData(code,data){
-  try{ localStorage.setItem(SK_COUPLE(code),JSON.stringify(data)); }catch(e){}
+function saveDone(done){
+  try{ localStorage.setItem('jdn_done',JSON.stringify([...done])); }catch(e){}
 }
-function loadCoupleData(code){
-  try{ const r=localStorage.getItem(SK_COUPLE(code)); return r?JSON.parse(r):null; }catch(e){return null;}
-}
-function saveDone(code,done){
-  try{ localStorage.setItem(SK_DONE(code),JSON.stringify([...done])); }catch(e){}
-}
-function loadDone(code){
-  try{ const r=localStorage.getItem(SK_DONE(code)); return r?new Set(JSON.parse(r)):new Set(); }catch(e){return new Set();}
+function loadDone(){
+  try{ const r=localStorage.getItem('jdn_done'); return r?new Set(JSON.parse(r)):new Set(); }catch(e){return new Set();}
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -372,7 +353,6 @@ const CoupleSVG=({c1=C.coral,c2=C.gold})=>(
   </svg>
 );
 
-
 // ═══════════════════════════════════════════════════════════════════════
 // INPUT COMPONENT
 // ═══════════════════════════════════════════════════════════════════════
@@ -406,11 +386,6 @@ const Btn=({children,variant="primary",color=C.coral,onClick,style:st={},...prop
     </button>
   );
 };
-
-// ═══════════════════════════════════════════════════════════════════════
-// SCREEN: WELCOME
-// ═══════════════════════════════════════════════════════════════════════
-// WelcomeScreen eliminado — flujo directo a registro
 
 // ═══════════════════════════════════════════════════════════════════════
 // SCREEN: REGISTER
@@ -480,11 +455,6 @@ function RegisterScreen({onSave}){
     </div>
   );
 }
-
-// ═══════════════════════════════════════════════════════════════════════
-// SCREEN: SHARE OR ENTER CODE
-// ═══════════════════════════════════════════════════════════════════════
-
 
 // ═══════════════════════════════════════════════════════════════════════
 // SCREEN: START DATE
@@ -697,67 +667,53 @@ function NotifScreen({profile,diaActual,onDone}){
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// COMPONENT: NOTAS EDITABLES POR DÍA
+// COMPONENT: NOTAS EDITABLES POR DÍA (máx 200 palabras)
 // ═══════════════════════════════════════════════════════════════════════
-const MAX_WORDS = 200;
-
-function countWords(text){
-  return text.trim()==='' ? 0 : text.trim().split(/\s+/).length;
-}
+const MAX_WORDS=200;
+function countWords(t){ return t.trim()===''?0:t.trim().split(/\s+/).length; }
 
 function DayNotes({dayNum}){
-  const key = `jdn_note_dia_${dayNum}`;
+  const key=`jdn_note_dia_${dayNum}`;
   const [text,setText]=useState(()=>{ try{ return localStorage.getItem(key)||""; }catch(e){ return ""; } });
   const [saved,setSaved]=useState(false);
-  const words = countWords(text);
-  const over = words > MAX_WORDS;
+  const words=countWords(text);
+  const over=words>MAX_WORDS;
 
-  const handleChange=(e)=>{
-    setText(e.target.value);
-    setSaved(false);
-  };
-
+  const handleChange=(e)=>{ setText(e.target.value); setSaved(false); };
   const handleSave=()=>{
+    if(over) return;
     try{ localStorage.setItem(key,text); setSaved(true); setTimeout(()=>setSaved(false),2000); }catch(e){}
   };
 
   return(
     <div style={{background:"#FFFDF5",borderRadius:12,padding:"13px 14px",marginBottom:12,
-      border:`1.5px solid ${over?"#E8567A":"#F5E6A0"}`}}>
+      border:`1.5px solid ${over?"#E8567A":"#F0DCA0"}`}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-        <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
-          color:"#9A7800",textTransform:"uppercase"}}>
+        <span className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,color:"#9A7800",textTransform:"uppercase"}}>
           ✏️ Mis notas del día
-        </div>
+        </span>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <span className="jk" style={{fontSize:11,color:over?"#E8567A":"#9A7800",fontWeight:over?700:400}}>
-            {words}/{MAX_WORDS} palabras
+          <span className="jk" style={{fontSize:11,color:over?"#E8567A":"#B09020",fontWeight:over?700:400}}>
+            {words}/{MAX_WORDS}
           </span>
           <button onClick={handleSave} className="btn jk"
             style={{fontSize:11,fontWeight:700,padding:"4px 12px",borderRadius:50,
-              background:saved?"#5BAD8F":"#F5A623",color:"#fff",
-              boxShadow:saved?"0 2px 8px #5BAD8F40":"0 2px 8px #F5A62340"}}>
+              background:saved?"#5BAD8F":over?"#ccc":"#F5A623",
+              color:"#fff",cursor:over?"not-allowed":"pointer"}}>
             {saved?"✓ Guardado":"Guardar"}
           </button>
         </div>
       </div>
-      <textarea
-        value={text}
-        onChange={handleChange}
-        placeholder="Escribe aquí tus reflexiones, lo que sentiste, lo que observaste en ti o en tu pareja hoy..."
-        className="jk"
+      <textarea value={text} onChange={handleChange}
+        placeholder="Escribe tus reflexiones, lo que sentiste o lo que observaste hoy..."
         rows={4}
-        style={{width:"100%",resize:"vertical",border:`1px solid ${over?"#E8567A40":"#F5E6A0"}`,
+        style={{width:"100%",resize:"vertical",border:`1px solid ${over?"#E8567A50":"#F0DCA0"}`,
           borderRadius:10,padding:"10px 12px",fontSize:13,color:"#2D1B1B",
-          background:over?"#FFF5F7":"#FFFEF5",lineHeight:1.65,
-          fontFamily:"'Plus Jakarta Sans',system-ui,sans-serif",
-          outline:"none",minHeight:80,maxHeight:300}}
-      />
-      {over&&(
-        <p className="jk" style={{fontSize:11,color:"#E8567A",marginTop:5,fontWeight:600}}>
-          ⚠️ Has superado el límite de {MAX_WORDS} palabras. Por favor reduce tu texto.
-        </p>
-      )}
+          background:over?"#FFF5F7":"#FFFEF5",lineHeight:1.65,outline:"none",
+          fontFamily:"'Plus Jakarta Sans',system-ui,sans-serif",minHeight:80,maxHeight:280}}/>
+      {over&&<p className="jk" style={{fontSize:11,color:"#E8567A",marginTop:5,fontWeight:600}}>
+        ⚠️ Límite de {MAX_WORDS} palabras superado.
+      </p>}
     </div>
   );
 }
@@ -778,11 +734,10 @@ function MainApp({me,onReset}){
   const fechaInicio=me.fechaInicio||new Date().toISOString().split("T")[0];
   const diaActual=getDayNum(fechaInicio);
   const msg=mensajes[Math.min(diaActual,30)-1];
-  const doneCode="local";
 
   // Load done days
   useEffect(()=>{
-    try{setDone(loadDone(doneCode));}catch(e){}
+    try{setDone(loadDone());}catch(e){}
   },[doneCode]);
 
   // Auto-select current week
@@ -815,7 +770,7 @@ function MainApp({me,onReset}){
     const n=new Set(done);
     n.has(d)?n.delete(d):n.add(d);
     setDone(n);
-    saveDone(doneCode,n);
+    saveDone(n);
   };
 
   const wm=weekMeta[activeWeek];
@@ -1154,6 +1109,7 @@ function MainApp({me,onReset}){
 // PROFILE SCREEN
 // ═══════════════════════════════════════════════════════════════════════
 function ProfileScreen({me,diaActual,fechaInicio,onBack,onReset}){
+  const pareja="tu pareja";
   const msg=mensajes[Math.min(diaActual,30)-1];
   return(
     <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"20px 16px"}}>
@@ -1230,71 +1186,56 @@ function ProfileScreen({me,diaActual,fechaInicio,onBack,onReset}){
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// ROOT — ORQUESTADOR DE PANTALLAS
+// ROOT
 // ═══════════════════════════════════════════════════════════════════════
 function App(){
   const [screen,setScreen]=useState("loading");
   const [me,setMe]=useState(null);
   const [tempProfile,setTempProfile]=useState(null);
 
-  // ── Boot ──────────────────────────────────────────────────────────
   useEffect(()=>{
     const saved=loadMe();
     if(saved){ setMe(saved); setScreen("app"); }
     else { setScreen("register"); }
   },[]);
 
-  // ── REGISTER → Fecha inicio ───────────────────────────────────────
   const handleRegister=(profile)=>{
     setTempProfile({...profile,fechaInicio:null});
     setScreen("start-date");
   };
-
-  // ── START DATE → Notificaciones ───────────────────────────────────
   const handleStartDate=(fecha)=>{
     setTempProfile(p=>({...p,fechaInicio:fecha}));
     setScreen("notif-setup");
   };
-
-  // ── NOTIF SETUP → App ─────────────────────────────────────────────
   const handleNotifDone=()=>{
     saveMe(tempProfile);
     setMe(tempProfile);
     setScreen("app");
   };
-
-  // ── RESET ─────────────────────────────────────────────────────────
   const handleReset=()=>{
     try{ localStorage.removeItem(SK_ME); }catch(e){}
+    try{ localStorage.removeItem('jdn_done'); }catch(e){}
     setMe(null); setTempProfile(null);
     setScreen("register");
   };
 
-  // ── RENDER ────────────────────────────────────────────────────────
   if(screen==="loading") return(
-    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",
-      background:C.cream}}>
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#FFF6EE"}}>
       <div style={{textAlign:"center"}}>
         <div className="pulse" style={{fontSize:48,marginBottom:12}}>💑</div>
-        <p className="fr" style={{fontSize:18,color:C.coral,fontStyle:"italic"}}>Cargando tu plan...</p>
+        <p className="fr" style={{fontSize:18,color:"#E8567A",fontStyle:"italic"}}>Cargando tu plan...</p>
       </div>
     </div>
   );
-
-  if(screen==="register")   return <RegisterScreen onSave={handleRegister}/>;
-  if(screen==="start-date") return <StartDateScreen onSave={handleStartDate}
-    existingDate={tempProfile?.fechaInicio}/>;
-  if(screen==="notif-setup") return <NotifScreen profile={tempProfile}
-    diaActual={getDayNum(tempProfile?.fechaInicio)} onDone={handleNotifDone}/>;
-  if(screen==="app") return <MainApp me={me} onReset={handleReset}/>;
-
+  if(screen==="register")    return <RegisterScreen onSave={handleRegister}/>;
+  if(screen==="start-date")  return <StartDateScreen onSave={handleStartDate} existingDate={tempProfile?.fechaInicio}/>;
+  if(screen==="notif-setup") return <NotifScreen profile={tempProfile} diaActual={getDayNum(tempProfile?.fechaInicio)} onDone={handleNotifDone}/>;
+  if(screen==="app")         return <MainApp me={me} onReset={handleReset}/>;
   return null;
 }
 
 
-    // Mount
-    const rootEl = document.getElementById('root');
-    ReactDOM.createRoot(rootEl).render(<App/>);
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
   </script>
 </body>
 </html>
