@@ -410,47 +410,12 @@ const Btn=({children,variant="primary",color=C.coral,onClick,style:st={},...prop
 // ═══════════════════════════════════════════════════════════════════════
 // SCREEN: WELCOME
 // ═══════════════════════════════════════════════════════════════════════
-function WelcomeScreen({onFirst,onHaveCode}){
-  return(
-    <div className="fade" style={{minHeight:"100vh",background:`linear-gradient(140deg,${C.coralL},${C.goldL},${C.sageL})`,
-      display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"32px 20px"}}>
-      <div style={{maxWidth:400,width:"100%",textAlign:"center"}}>
-        <div style={{marginBottom:20}}><CoupleSVG/></div>
-        <h1 className="fr" style={{fontSize:"clamp(28px,7vw,42px)",fontWeight:700,color:C.coral,lineHeight:1.15,marginBottom:8}}>
-          Juntos de Nuevo
-        </h1>
-        <p className="fr" style={{fontSize:18,fontStyle:"italic",color:C.ink2,marginBottom:6}}>
-          30 días para volver a encontrarse
-        </p>
-        <p className="jk" style={{fontSize:13,color:C.ink3,marginBottom:32,lineHeight:1.7}}>
-          Plan de reconciliación · Mensajes diarios · App personalizada
-        </p>
-
-        <div style={{display:"grid",gap:12}}>
-          <Btn onClick={onFirst} style={{width:"100%"}}>
-            💑 Empezar — soy el primero en registrarme
-          </Btn>
-          <Btn variant="secondary" onClick={onHaveCode} style={{width:"100%"}}>
-            🔑 Mi pareja ya se registró — tengo un código
-          </Btn>
-        </div>
-
-        <p className="jk" style={{fontSize:11,color:C.ink3,marginTop:20,lineHeight:1.7}}>
-          Cada persona se registra por separado con su propio perfil.<br/>
-          La app funciona de forma individual o vinculada en pareja.
-        </p>
-        <p className="fr" style={{fontSize:12,color:C.coral,fontStyle:"italic",marginTop:12}}>
-          Lic. Agustín Flores C. · 2026
-        </p>
-      </div>
-    </div>
-  );
-}
+// WelcomeScreen eliminado — flujo directo a registro
 
 // ═══════════════════════════════════════════════════════════════════════
 // SCREEN: REGISTER
 // ═══════════════════════════════════════════════════════════════════════
-function RegisterScreen({onSave,coupleCodeToLink}){
+function RegisterScreen({onSave}){
   const [nombre,setNombre]=useState("");
   const [email,setEmail]=useState("");
   const [telefono,setTelefono]=useState("");
@@ -472,9 +437,7 @@ function RegisterScreen({onSave,coupleCodeToLink}){
           <h2 className="fr" style={{fontSize:26,color:C.coral,marginBottom:6}}>Tu perfil personal</h2>
           <p className="jk" style={{fontSize:14,color:C.ink2,lineHeight:1.65}}>
             Solo necesitamos tu nombre (o apodo) y correo.<br/>
-            {coupleCodeToLink
-              ? <span style={{color:C.sage,fontWeight:600}}>Te vincularás con el código de tu pareja al terminar.</span>
-              : "Después compartirás tu código con tu pareja."}
+            Tu plan personal de 30 días comienza aquí.
           </p>
         </div>
 
@@ -521,103 +484,7 @@ function RegisterScreen({onSave,coupleCodeToLink}){
 // ═══════════════════════════════════════════════════════════════════════
 // SCREEN: SHARE OR ENTER CODE
 // ═══════════════════════════════════════════════════════════════════════
-function CodeScreen({mode,code,onEnterCode,onSkip,onContinue}){
-  const [inputCode,setInputCode]=useState("");
-  const [copied,setCopied]=useState(false);
-  const [err,setErr]=useState("");
 
-  const copyCode=()=>{
-    navigator.clipboard.writeText(code||"").then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});
-  };
-
-  const submitCode=()=>{
-    const c=inputCode.trim().toUpperCase();
-    if(c.length!==6){setErr("El código tiene 6 caracteres.");return;}
-    const data=loadCoupleData(c);
-    if(!data){setErr("Código no encontrado. Verifica con tu pareja.");return;}
-    onEnterCode(c,data);
-  };
-
-  if(mode==="share") return(
-    <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"28px 20px"}}>
-      <div style={{maxWidth:420,margin:"0 auto",textAlign:"center"}}>
-        <div style={{fontSize:40,marginBottom:12}}>🔗</div>
-        <h2 className="fr" style={{fontSize:26,color:C.coral,marginBottom:8}}>Tu código de pareja</h2>
-        <p className="jk" style={{fontSize:14,color:C.ink2,lineHeight:1.7,marginBottom:24}}>
-          Comparte este código con tu pareja para que se vinculen en el plan y compartan su progreso.
-        </p>
-
-        <div style={{background:C.white,borderRadius:20,padding:"28px 20px",
-          boxShadow:`0 4px 24px ${C.coral}12`,border:`2px solid ${C.coral}25`,marginBottom:20}}>
-          <p className="jk" style={{fontSize:12,color:C.ink3,marginBottom:10,fontWeight:600,textTransform:"uppercase",letterSpacing:1}}>
-            Tu código personal
-          </p>
-          <div style={{background:`linear-gradient(135deg,${C.coralL},${C.goldL})`,borderRadius:14,
-            padding:"18px 24px",marginBottom:14,border:`2px dashed ${C.coral}40`}}>
-            <span className="fr" style={{fontSize:38,fontWeight:700,color:C.coral,letterSpacing:8}}>
-              {code}
-            </span>
-          </div>
-          <button className="btn jk" onClick={copyCode}
-            style={{background:copied?C.sage:C.coral,color:"#fff",padding:"10px 24px",
-              borderRadius:50,fontWeight:700,fontSize:14,width:"100%",
-              boxShadow:`0 4px 14px ${copied?C.sage:C.coral}40`}}>
-            {copied?"✓ ¡Copiado!":"📋 Copiar código"}
-          </button>
-        </div>
-
-        <div style={{background:C.white,borderRadius:14,padding:"16px",marginBottom:20,
-          border:`1px solid ${C.soft}`,textAlign:"left"}}>
-          <p className="jk" style={{fontSize:13,color:C.ink2,lineHeight:1.7}}>
-            <strong>¿Cómo funciona?</strong><br/>
-            1. Copia el código y envíaselo a tu pareja por WhatsApp.<br/>
-            2. Tu pareja descarga la app y elige "Tengo un código".<br/>
-            3. Quedan vinculados y comparten el progreso del plan.
-          </p>
-        </div>
-
-        <div style={{display:"grid",gap:10}}>
-          <Btn onClick={onContinue} style={{width:"100%"}}>
-            ✓ Continuar al siguiente paso
-          </Btn>
-          <Btn variant="ghost" onClick={onSkip} style={{width:"100%",fontSize:13}}>
-            Continuar sin vincular (usar solo)
-          </Btn>
-        </div>
-      </div>
-    </div>
-  );
-
-  return(
-    <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"28px 20px"}}>
-      <div style={{maxWidth:420,margin:"0 auto",textAlign:"center"}}>
-        <div style={{fontSize:40,marginBottom:12}}>🔑</div>
-        <h2 className="fr" style={{fontSize:26,color:C.coral,marginBottom:8}}>Ingresar código</h2>
-        <p className="jk" style={{fontSize:14,color:C.ink2,lineHeight:1.7,marginBottom:24}}>
-          Ingresa el código de 6 letras que te compartió tu pareja para vincularse.
-        </p>
-
-        <div style={{background:C.white,borderRadius:20,padding:"24px 20px",
-          boxShadow:`0 4px 24px ${C.coral}10`,marginBottom:16}}>
-          <input className="jk" value={inputCode}
-            onChange={e=>setInputCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,6))}
-            placeholder="XXXXXX"
-            style={{width:"100%",padding:"16px",borderRadius:12,border:`2px solid ${C.coral}40`,
-              fontSize:28,fontWeight:700,textAlign:"center",letterSpacing:8,color:C.coral,
-              background:C.coralL,fontFamily:"'Fraunces',serif"}}
-          />
-          {err&&<p className="jk" style={{fontSize:13,color:C.coral,marginTop:10,fontWeight:600}}>⚠️ {err}</p>}
-          <Btn onClick={submitCode} style={{width:"100%",marginTop:16}}>
-            Vincularme con mi pareja →
-          </Btn>
-        </div>
-        <Btn variant="ghost" onClick={onSkip} style={{width:"100%",fontSize:13}}>
-          Continuar sin código (usar solo)
-        </Btn>
-      </div>
-    </div>
-  );
-}
 
 // ═══════════════════════════════════════════════════════════════════════
 // SCREEN: START DATE
@@ -830,9 +697,75 @@ function NotifScreen({profile,diaActual,onDone}){
 }
 
 // ═══════════════════════════════════════════════════════════════════════
+// COMPONENT: NOTAS EDITABLES POR DÍA
+// ═══════════════════════════════════════════════════════════════════════
+const MAX_WORDS = 200;
+
+function countWords(text){
+  return text.trim()==='' ? 0 : text.trim().split(/\s+/).length;
+}
+
+function DayNotes({dayNum}){
+  const key = `jdn_note_dia_${dayNum}`;
+  const [text,setText]=useState(()=>{ try{ return localStorage.getItem(key)||""; }catch(e){ return ""; } });
+  const [saved,setSaved]=useState(false);
+  const words = countWords(text);
+  const over = words > MAX_WORDS;
+
+  const handleChange=(e)=>{
+    setText(e.target.value);
+    setSaved(false);
+  };
+
+  const handleSave=()=>{
+    try{ localStorage.setItem(key,text); setSaved(true); setTimeout(()=>setSaved(false),2000); }catch(e){}
+  };
+
+  return(
+    <div style={{background:"#FFFDF5",borderRadius:12,padding:"13px 14px",marginBottom:12,
+      border:`1.5px solid ${over?"#E8567A":"#F5E6A0"}`}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+        <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
+          color:"#9A7800",textTransform:"uppercase"}}>
+          ✏️ Mis notas del día
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <span className="jk" style={{fontSize:11,color:over?"#E8567A":"#9A7800",fontWeight:over?700:400}}>
+            {words}/{MAX_WORDS} palabras
+          </span>
+          <button onClick={handleSave} className="btn jk"
+            style={{fontSize:11,fontWeight:700,padding:"4px 12px",borderRadius:50,
+              background:saved?"#5BAD8F":"#F5A623",color:"#fff",
+              boxShadow:saved?"0 2px 8px #5BAD8F40":"0 2px 8px #F5A62340"}}>
+            {saved?"✓ Guardado":"Guardar"}
+          </button>
+        </div>
+      </div>
+      <textarea
+        value={text}
+        onChange={handleChange}
+        placeholder="Escribe aquí tus reflexiones, lo que sentiste, lo que observaste en ti o en tu pareja hoy..."
+        className="jk"
+        rows={4}
+        style={{width:"100%",resize:"vertical",border:`1px solid ${over?"#E8567A40":"#F5E6A0"}`,
+          borderRadius:10,padding:"10px 12px",fontSize:13,color:"#2D1B1B",
+          background:over?"#FFF5F7":"#FFFEF5",lineHeight:1.65,
+          fontFamily:"'Plus Jakarta Sans',system-ui,sans-serif",
+          outline:"none",minHeight:80,maxHeight:300}}
+      />
+      {over&&(
+        <p className="jk" style={{fontSize:11,color:"#E8567A",marginTop:5,fontWeight:600}}>
+          ⚠️ Has superado el límite de {MAX_WORDS} palabras. Por favor reduce tu texto.
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════════════
-function MainApp({me,coupleData,onReset}){
+function MainApp({me,onReset}){
   const [activeWeek,setActiveWeek]=useState(1);
   const [activeDay,setActiveDay]=useState(null);
   const [done,setDone]=useState(new Set());
@@ -841,11 +774,11 @@ function MainApp({me,coupleData,onReset}){
   const [screen,setScreen]=useState("home"); // home | profile
   const notifRef=useRef(null);
 
-  const pareja=coupleData?.partnerNombre||"tu pareja";
-  const fechaInicio=coupleData?.fechaInicio||me.fechaInicio||new Date().toISOString().split("T")[0];
+  const pareja="tu pareja";
+  const fechaInicio=me.fechaInicio||new Date().toISOString().split("T")[0];
   const diaActual=getDayNum(fechaInicio);
   const msg=mensajes[Math.min(diaActual,30)-1];
-  const doneCode=me.coupleCode||me.localCode||"local";
+  const doneCode="local";
 
   // Load done days
   useEffect(()=>{
@@ -890,8 +823,8 @@ function MainApp({me,coupleData,onReset}){
   const pct=Math.round((done.size/30)*100);
   const todayDayData=days.find(d=>d.day===diaActual);
 
-  if(screen==="profile") return <ProfileScreen me={me} coupleData={coupleData} diaActual={diaActual}
-    fechaInicio={fechaInicio} pareja={pareja} onBack={()=>setScreen("home")} onReset={onReset}/>;
+  if(screen==="profile") return <ProfileScreen me={me} diaActual={diaActual}
+    fechaInicio={fechaInicio} onBack={()=>setScreen("home")} onReset={onReset}/>;
 
   return(
     <div style={{fontFamily:"sans-serif",background:C.cream,minHeight:"100vh",color:C.ink}}>
@@ -909,11 +842,7 @@ function MainApp({me,coupleData,onReset}){
               <h1 className="fr" style={{fontSize:"clamp(20px,5vw,28px)",fontWeight:700,color:C.ink,lineHeight:1.15}}>
                 Hola, <span style={{color:C.coral}}>{me.nombre}</span> 👋
               </h1>
-              {coupleData?.partnerNombre&&(
-                <p className="jk" style={{fontSize:13,color:C.ink2,marginTop:3}}>
-                  <HeartSVG size={13}/> {coupleData.partnerNombre} también está en el plan
-                </p>
-              )}
+
             </div>
             <button className="btn" onClick={()=>setScreen("profile")}
               style={{width:42,height:42,borderRadius:"50%",background:C.white,
@@ -1008,7 +937,7 @@ function MainApp({me,coupleData,onReset}){
                   boxShadow:a?`0 5px 18px ${weekMeta[w].color}55`:"0 1px 8px rgba(0,0,0,.07)",
                   border:a?"none":`1.5px solid ${C.soft}`}}>
                 <div style={{fontSize:17,marginBottom:2}}>{weekMeta[w].emoji}</div>
-                <div style={{fontWeight:700}}>S{w}</div>
+                <div style={{fontWeight:700,fontSize:10}}>Semana {w}</div>
                 <div style={{fontSize:10,opacity:.85,marginTop:1}}>{weekMeta[w].label}</div>
                 <div style={{fontSize:10,marginTop:3,opacity:wDone===7?1:.5}}>{wDone}/7 ✓</div>
               </button>
@@ -1096,6 +1025,7 @@ function MainApp({me,coupleData,onReset}){
                           "{d.reflection}"
                         </p>
                       </div>
+                      <DayNotes dayNum={d.day}/>
                       <div style={{background:C.soft2,borderRadius:12,padding:"11px 14px",marginBottom:12}}>
                         <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
                           color:C.gold,textTransform:"uppercase",marginBottom:5}}>💡 Nota del terapeuta</div>
@@ -1205,7 +1135,7 @@ function MainApp({me,coupleData,onReset}){
             <h2 className="fr" style={{fontSize:28,color:C.sage,marginBottom:8}}>¡Lo lograron!</h2>
             <p className="jk" style={{fontSize:15,color:C.ink2,lineHeight:1.75,marginBottom:16}}>
               30 días de elecciones valientes, {me.nombre}.<br/>
-              {coupleData?.partnerNombre&&<span>Tú y <strong>{coupleData.partnerNombre}</strong> lo hicieron juntos.</span>}
+
             </p>
             <p className="fr" style={{fontSize:13,fontStyle:"italic",color:C.ink3,marginBottom:20}}>
               "Este es solo el primer día del resto."
@@ -1223,7 +1153,7 @@ function MainApp({me,coupleData,onReset}){
 // ═══════════════════════════════════════════════════════════════════════
 // PROFILE SCREEN
 // ═══════════════════════════════════════════════════════════════════════
-function ProfileScreen({me,coupleData,diaActual,fechaInicio,pareja,onBack,onReset}){
+function ProfileScreen({me,diaActual,fechaInicio,onBack,onReset}){
   const msg=mensajes[Math.min(diaActual,30)-1];
   return(
     <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"20px 16px"}}>
@@ -1266,22 +1196,7 @@ function ProfileScreen({me,coupleData,diaActual,fechaInicio,pareja,onBack,onRese
         </div>
 
         {/* Pareja */}
-        {coupleData&&(
-          <div style={{background:C.white,borderRadius:20,padding:"18px",
-            boxShadow:`0 2px 14px ${C.coral}08`,marginBottom:14,border:`1px solid ${C.soft}`}}>
-            <p className="jk" style={{fontSize:11,fontWeight:700,color:C.ink2,letterSpacing:1.5,
-              textTransform:"uppercase",marginBottom:10}}>💑 Tu pareja en el plan</p>
-            <div style={{display:"flex",alignItems:"center",gap:12}}>
-              <div style={{width:42,height:42,borderRadius:"50%",
-                background:`linear-gradient(135deg,${C.gold},${C.sage})`,
-                display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>💛</div>
-              <div>
-                <p className="fr" style={{fontSize:17,color:C.ink,fontWeight:600}}>{coupleData.partnerNombre}</p>
-                <p className="jk" style={{fontSize:12,color:C.ink3}}>Código de pareja: <strong style={{color:C.coral}}>{me.coupleCode}</strong></p>
-              </div>
-            </div>
-          </div>
-        )}
+
 
         {/* Mensaje de hoy preview */}
         <div style={{background:C.goldL,borderRadius:20,padding:"18px",
@@ -1320,79 +1235,28 @@ function ProfileScreen({me,coupleData,diaActual,fechaInicio,pareja,onBack,onRese
 function App(){
   const [screen,setScreen]=useState("loading");
   const [me,setMe]=useState(null);
-  const [coupleData,setCoupleData]=useState(null);
   const [tempProfile,setTempProfile]=useState(null);
-  const [mode,setMode]=useState("first"); // first | second
-  const [tempCode,setTempCode]=useState(null);
 
-  // ── Boot: check for existing profile ──────────────────────────────
+  // ── Boot ──────────────────────────────────────────────────────────
   useEffect(()=>{
-    (async()=>{
-      const saved=loadMe();
-      if(saved){
-        setMe(saved);
-        if(saved.coupleCode){
-          const cd=loadCoupleData(saved.coupleCode);
-          setCoupleData(cd);
-        }
-        setScreen("app");
-      } else {
-        setScreen("welcome");
-      }
-    })();
+    const saved=loadMe();
+    if(saved){ setMe(saved); setScreen("app"); }
+    else { setScreen("register"); }
   },[]);
 
-  // ── WELCOME: choose path ───────────────────────────────────────────
-  const handleFirst=()=>{ setMode("first"); setScreen("register"); };
-  const handleHaveCode=()=>{ setMode("second"); setScreen("register"); };
-
-  // ── REGISTER: save temp profile ───────────────────────────────────
+  // ── REGISTER → Fecha inicio ───────────────────────────────────────
   const handleRegister=(profile)=>{
-    if(mode==="first"){
-      const code=genCode();
-      const fullProfile={...profile,coupleCode:code,fechaInicio:null};
-      setTempProfile(fullProfile);
-      setTempCode(code);
-      // Save initial couple data (only self so far)
-      saveCoupleData(code,{creatorNombre:profile.nombre,partnerNombre:null,fechaInicio:null,code});
-      setScreen("share-code");
-    } else {
-      setTempProfile(profile);
-      setScreen("enter-code");
-    }
-  };
-
-  // ── SHARE CODE → continue ─────────────────────────────────────────
-  const handleShareContinue=()=>setScreen("start-date");
-  const handleSkipCode=()=>setScreen("start-date");
-
-  // ── ENTER CODE → link ─────────────────────────────────────────────
-  const handleEnterCode=(code,data)=>{
-    const fullProfile={...tempProfile,coupleCode:code};
-    setTempProfile(fullProfile);
-    // Update couple data with partner name
-    const updated={...data,partnerNombre:tempProfile.nombre};
-    saveCoupleData(code,updated);
-    setCoupleData(updated);
-    setTempCode(code);
+    setTempProfile({...profile,fechaInicio:null});
     setScreen("start-date");
   };
 
-  // ── START DATE ────────────────────────────────────────────────────
+  // ── START DATE → Notificaciones ───────────────────────────────────
   const handleStartDate=(fecha)=>{
-    const finalProfile={...tempProfile,fechaInicio:fecha};
-    setTempProfile(finalProfile);
-    // Update couple data with start date
-    if(finalProfile.coupleCode){
-      const cd=loadCoupleData(finalProfile.coupleCode)||{};
-      const updated={...cd,fechaInicio:fecha,partnerNombre:cd.partnerNombre||null};
-      saveCoupleData(finalProfile.coupleCode,updated);
-      setCoupleData(updated);
-    }
+    setTempProfile(p=>({...p,fechaInicio:fecha}));
     setScreen("notif-setup");
   };
 
-  // ── NOTIF SETUP → go to app ───────────────────────────────────────
+  // ── NOTIF SETUP → App ─────────────────────────────────────────────
   const handleNotifDone=()=>{
     saveMe(tempProfile);
     setMe(tempProfile);
@@ -1402,14 +1266,14 @@ function App(){
   // ── RESET ─────────────────────────────────────────────────────────
   const handleReset=()=>{
     try{ localStorage.removeItem(SK_ME); }catch(e){}
-    setMe(null); setCoupleData(null); setTempProfile(null);
-    setScreen("welcome");
+    setMe(null); setTempProfile(null);
+    setScreen("register");
   };
 
   // ── RENDER ────────────────────────────────────────────────────────
   if(screen==="loading") return(
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",
-      background:C.cream,fontFamily:"sans-serif"}}>
+      background:C.cream}}>
       <div style={{textAlign:"center"}}>
         <div className="pulse" style={{fontSize:48,marginBottom:12}}>💑</div>
         <p className="fr" style={{fontSize:18,color:C.coral,fontStyle:"italic"}}>Cargando tu plan...</p>
@@ -1417,17 +1281,12 @@ function App(){
     </div>
   );
 
-  if(screen==="welcome")    return <WelcomeScreen onFirst={handleFirst} onHaveCode={handleHaveCode}/>;
-  if(screen==="register")   return <RegisterScreen onSave={handleRegister} coupleCodeToLink={mode==="second"}/>;
-  if(screen==="share-code") return <CodeScreen mode="share" code={tempCode}
-    onContinue={handleShareContinue} onSkip={handleSkipCode}/>;
-  if(screen==="enter-code") return <CodeScreen mode="enter"
-    onEnterCode={handleEnterCode} onSkip={()=>{setTempCode(genCode());setScreen("start-date");}}/>;
+  if(screen==="register")   return <RegisterScreen onSave={handleRegister}/>;
   if(screen==="start-date") return <StartDateScreen onSave={handleStartDate}
-    existingDate={coupleData?.fechaInicio}/>;
+    existingDate={tempProfile?.fechaInicio}/>;
   if(screen==="notif-setup") return <NotifScreen profile={tempProfile}
     diaActual={getDayNum(tempProfile?.fechaInicio)} onDone={handleNotifDone}/>;
-  if(screen==="app") return <MainApp me={me} coupleData={coupleData} onReset={handleReset}/>;
+  if(screen==="app") return <MainApp me={me} onReset={handleReset}/>;
 
   return null;
 }
