@@ -1,1032 +1,590 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>César Jáuregui · Chihuahua 2027</title>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="theme-color" content="#E8567A"/>
+<title>Juntos de Nuevo 💑 — Plan 30 Días</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --azul:    #0A1628;
-    --azul-2:  #112240;
-    --azul-3:  #1A3461;
-    --plata:   #8CA0B8;
-    --plata-lt:#BDD0E8;
-    --oro:     #C49A3C;
-    --oro-lt:  #E0B84A;
-    --crema:   #F4F1EC;
-    --blanco:  #FFFFFF;
-    --text:    #0F1420;
-    --muted:   #2E3A4E;
-    --light:   #5A6A80;
-    --borde:   #D4CCC0;
-  }
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { font-family:'DM Sans', sans-serif; background:var(--crema); color:var(--text); overflow-x:hidden; }
-
-  /* ── NAV ── */
-  nav {
-    position:fixed; top:0; width:100%; z-index:100;
-    background:rgba(10,22,40,0.97); backdrop-filter:blur(12px);
-    border-bottom:1px solid rgba(140,160,184,0.15);
-    padding:16px 64px; display:flex; justify-content:space-between; align-items:center;
-  }
-  .nav-logo { font-family:'Crimson Pro',serif; font-size:1.1rem; font-weight:600; color:var(--blanco); letter-spacing:1px; }
-  .nav-logo span { color:var(--oro-lt); font-style:italic; }
-  .nav-links { display:flex; gap:30px; }
-  .nav-links a { font-size:0.65rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(189,208,232,0.92); text-decoration:none; transition:color 0.2s; }
-  .nav-links a:hover { color:var(--oro-lt); }
-
-  /* ── HERO ── */
-  #hero {
-    min-height:100vh; padding-top:70px;
-    display:grid; grid-template-columns:1.1fr 0.9fr;
-    background:var(--azul); position:relative; overflow:hidden;
-  }
-  .hero-bg-lines {
-    position:absolute; inset:0; pointer-events:none;
-    background:
-      linear-gradient(180deg, transparent 0%, rgba(26,52,97,0.3) 100%),
-      repeating-linear-gradient(90deg, transparent, transparent 119px, rgba(140,160,184,0.04) 120px);
-  }
-  .hero-glow {
-    position:absolute; right:5%; top:20%; width:500px; height:500px; border-radius:50%;
-    background:radial-gradient(ellipse, rgba(196,154,60,0.08) 0%, transparent 65%);
-    pointer-events:none;
-  }
-  .hero-left {
-    position:relative; z-index:2;
-    display:flex; flex-direction:column; justify-content:center;
-    padding:100px 60px 80px 80px;
-  }
-  .hero-badge {
-    display:inline-flex; align-items:center; gap:10px;
-    border:1px solid rgba(196,154,60,0.35); padding:8px 18px;
-    margin-bottom:36px; width:fit-content;
-    animation:fadeUp 0.8s ease both;
-  }
-  .badge-escudo { font-size:0.9rem; }
-  .badge-text { font-size:0.6rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--oro-lt); }
-  .hero-name {
-    font-family:'Crimson Pro',serif;
-    font-size:clamp(3rem,5.5vw,6rem);
-    font-weight:300; color:var(--blanco); line-height:1.0;
-    animation:fadeUp 0.9s 0.1s ease both;
-    letter-spacing:-1px;
-  }
-  .hero-name strong { display:block; font-weight:700; color:var(--blanco); }
-  .hero-name .apellidos { display:block; font-weight:300; font-size:0.65em; color:rgba(189,208,232,0.88); letter-spacing:4px; text-transform:uppercase; font-family:'DM Sans',sans-serif; margin-bottom:4px; font-size:0.35em; }
-  .hero-divider { width:56px; height:2px; background:linear-gradient(90deg,var(--oro),transparent); margin:28px 0; animation:scaleX 1s 0.3s ease both; transform-origin:left; }
-  .hero-cargo {
-    font-size:0.72rem; font-weight:600; letter-spacing:2px; text-transform:uppercase;
-    color:rgba(189,208,232,0.90); animation:fadeUp 1s 0.35s ease both;
-    display:flex; align-items:center; gap:10px;
-  }
-  .hero-cargo::before { content:''; width:20px; height:1px; background:rgba(189,208,232,0.5); }
-  .hero-tagline {
-    margin-top:24px; font-family:'Crimson Pro',serif; font-size:1.2rem;
-    color:rgba(189,208,232,0.95); line-height:1.6; max-width:500px; font-weight:300; font-style:italic;
-    animation:fadeUp 1s 0.4s ease both;
-  }
-  .hero-btns { display:flex; gap:14px; margin-top:38px; flex-wrap:wrap; animation:fadeUp 1s 0.5s ease both; }
-  .btn-oro { background:var(--oro); color:var(--azul); padding:14px 34px; font-size:0.68rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; border:none; cursor:pointer; text-decoration:none; display:inline-block; transition:background 0.2s,transform 0.15s; }
-  .btn-oro:hover { background:var(--oro-lt); transform:translateY(-2px); }
-  .btn-ghost { background:transparent; color:rgba(189,208,232,0.8); padding:14px 34px; font-size:0.68rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; border:1px solid rgba(189,208,232,0.2); cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
-  .btn-ghost:hover { border-color:var(--oro-lt); color:var(--oro-lt); }
-  .hero-right { position:relative; z-index:2; display:flex; flex-direction:column; justify-content:flex-end; }
-  .hero-initials { position:absolute; bottom:60px; right:60px; font-family:'Crimson Pro',serif; font-size:18rem; font-weight:700; color:rgba(26,52,97,0.4); line-height:1; letter-spacing:-6px; pointer-events:none; }
-  .hero-escudo-deco { position:absolute; top:50%; right:50%; transform:translate(50%,-50%); font-size:16rem; opacity:0.04; }
-  .hero-stats-strip {
-    position:relative; z-index:3; width:100%;
-    display:flex; border-top:1px solid rgba(140,160,184,0.12); margin-top:auto;
-  }
-  .hero-stat { flex:1; padding:26px 22px; text-align:center; border-right:1px solid rgba(140,160,184,0.1); }
-  .hero-stat:last-child { border-right:none; }
-  .stat-n { font-family:'Crimson Pro',serif; font-size:2.6rem; font-weight:600; color:var(--oro-lt); line-height:1; }
-  .stat-l { font-size:0.57rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(189,208,232,0.75); margin-top:6px; line-height:1.4; }
-
-  /* ── SHARED ── */
-  section { padding:96px 80px; }
-  .tag-row { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
-  .tag-pip { width:32px; height:2px; background:var(--oro); }
-  .tag-lbl { font-size:0.59rem; font-weight:700; letter-spacing:3.5px; text-transform:uppercase; color:var(--oro); }
-  .sec-title { font-family:'Crimson Pro',serif; font-size:clamp(2rem,3.5vw,3.2rem); font-weight:600; color:var(--azul); line-height:1.1; margin-bottom:14px; }
-  .sec-title em { font-style:italic; color:var(--azul-3); }
-  .sec-sub { font-size:0.88rem; color:var(--muted); line-height:1.8; max-width:580px; }
-
-  /* ── TRAYECTORIA ── */
-  #trayectoria { background:var(--blanco); display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
-  .tray-intro .sec-title { color:var(--azul); }
-  .tray-intro p { font-family:'Crimson Pro',serif; font-size:1.05rem; color:var(--muted); line-height:1.85; margin-top:24px; }
-  .tray-intro p + p { margin-top:14px; }
-  .tray-cita { border-left:3px solid var(--oro); padding:18px 24px; margin:28px 0; background:var(--crema); font-family:'Crimson Pro',serif; font-style:italic; font-size:1.1rem; color:var(--azul); line-height:1.5; font-weight:400; }
-  .tl-wrap { position:relative; padding-left:30px; }
-  .tl-wrap::before { content:''; position:absolute; left:5px; top:8px; bottom:0; width:2px; background:linear-gradient(180deg,var(--oro) 0%,rgba(196,154,60,0.08) 100%); }
-  .tl-item { position:relative; margin-bottom:28px; }
-  .tl-dot { position:absolute; left:-28px; top:5px; width:12px; height:12px; border-radius:50%; background:var(--blanco); border:2px solid var(--oro); }
-  .tl-item.active .tl-dot { background:var(--oro); }
-  .tl-year { font-size:0.6rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--oro); margin-bottom:4px; }
-  .tl-role { font-size:0.9rem; font-weight:700; color:var(--azul); margin-bottom:3px; }
-  .tl-org { font-size:0.76rem; color:var(--light); line-height:1.5; }
-  .tl-badge { display:inline-block; margin-top:5px; background:rgba(10,22,40,0.08); color:var(--azul-3); font-size:0.56rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:2px 9px; }
-
-  /* ── LOGROS ── */
-  #logros { background:var(--azul); position:relative; overflow:hidden; }
-  #logros::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(140,160,184,0.03) 80px); }
-  .logros-head { display:grid; grid-template-columns:1fr 2fr; gap:60px; align-items:start; margin-bottom:52px; }
-  .logros-head .sec-title { color:var(--blanco); }
-  .logros-head .tag-lbl { color:var(--oro-lt); }
-  .logros-nums { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(189,208,232,0.07); border:1px solid rgba(189,208,232,0.07); }
-  .logro-num { padding:26px 18px; background:rgba(10,22,40,0.5); text-align:center; }
-  .logro-num-n { font-family:'Crimson Pro',serif; font-size:2.6rem; font-weight:700; color:var(--oro-lt); line-height:1; }
-  .logro-num-l { font-size:0.57rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(189,208,232,0.80); margin-top:8px; line-height:1.4; }
-  .logros-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:rgba(189,208,232,0.05); margin-top:2px; }
-  .logro-card { padding:34px 28px; background:rgba(10,22,40,0.5); transition:background 0.3s; position:relative; overflow:hidden; }
-  .logro-card:hover { background:rgba(26,52,97,0.35); }
-  .logro-card::after { content:''; position:absolute; bottom:0; left:0; width:100%; height:2px; background:var(--oro); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
-  .logro-card:hover::after { transform:scaleX(1); }
-  .logro-ico { font-size:1.6rem; margin-bottom:14px; }
-  .logro-t { font-size:0.84rem; font-weight:700; color:var(--blanco); margin-bottom:10px; letter-spacing:0.3px; }
-  .logro-d { font-size:0.77rem; color:rgba(189,208,232,0.92); line-height:1.65; }
-  .logro-wide { grid-column:span 2; display:flex; gap:2px; }
-  .logro-wide .logro-card { flex:1; }
-  .logro-quote-box { background:var(--oro); padding:34px 28px; display:flex; flex-direction:column; justify-content:center; }
-  .logro-quote-box blockquote { font-family:'Crimson Pro',serif; font-size:1.1rem; font-style:italic; color:var(--azul); line-height:1.6; margin-bottom:14px; }
-  .logro-quote-box cite { font-size:0.6rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(10,22,40,0.6); }
-
-  /* ── TRAYECTORIA PAN ── */
-  #partido { background:var(--crema); }
-  .pan-grid { display:grid; grid-template-columns:380px 1fr; gap:80px; align-items:start; }
-  .pan-intro .sec-title { color:var(--azul); }
-  .pan-intro .sec-sub { color:var(--muted); margin-top:14px; }
-  .pan-intro .tray-cita { margin-top:28px; }
-  .pan-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .pan-card { background:var(--blanco); padding:22px 24px; border-bottom:3px solid transparent; transition:border-color 0.25s,transform 0.25s; }
-  .pan-card:hover { border-color:var(--oro); transform:translateY(-3px); }
-  .pan-ico { font-size:1.4rem; margin-bottom:10px; }
-  .pan-t { font-size:0.83rem; font-weight:700; color:var(--azul); margin-bottom:7px; }
-  .pan-d { font-size:0.76rem; color:var(--muted); line-height:1.65; }
-
-  /* ── ENCUESTAS ── */
-  #encuestas { background:var(--azul-2); }
-  .enc-layout { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
-  .enc-card { background:rgba(189,208,232,0.05); border:1px solid rgba(189,208,232,0.1); padding:38px; }
-  .enc-card h3 { font-family:'Crimson Pro',serif; font-size:1.1rem; color:var(--blanco); margin-bottom:28px; }
-  .bar-item { margin-bottom:22px; }
-  .bar-lbl { display:flex; justify-content:space-between; font-size:0.72rem; font-weight:600; color:var(--blanco); margin-bottom:7px; }
-  .bar-pct { color:var(--oro-lt); }
-  .bar-track { height:4px; background:rgba(189,208,232,0.15); }
-  .bar-fill { height:100%; background:linear-gradient(90deg,var(--oro) 0%,var(--oro-lt) 100%); animation:barGrow 1.5s ease both; }
-  @keyframes barGrow { from{width:0;} }
-  .enc-note { font-size:0.59rem; color:rgba(189,208,232,0.58); letter-spacing:1px; text-transform:uppercase; margin-top:16px; }
-  .enc-growth { margin-top:16px; background:rgba(196,154,60,0.12); border-left:3px solid var(--oro); padding:14px; }
-  .enc-growth-n { font-family:'Crimson Pro',serif; font-size:1.4rem; font-weight:700; color:var(--oro-lt); }
-  .enc-growth-l { font-size:0.63rem; color:rgba(189,208,232,0.72); margin-top:4px; }
-  .enc-badges { display:flex; flex-direction:column; gap:14px; }
-  .enc-badge { background:rgba(189,208,232,0.07); border:1px solid rgba(189,208,232,0.16); padding:20px; display:flex; gap:14px; align-items:flex-start; }
-  .enc-badge-ico { font-size:1.6rem; flex-shrink:0; }
-  .enc-badge-t { font-size:0.78rem; font-weight:700; color:var(--blanco); margin-bottom:5px; }
-  .enc-badge-d { font-size:0.71rem; color:rgba(189,208,232,0.85); line-height:1.6; }
-
-  /* ── VISIÓN ── */
-  #vision { background:var(--blanco); }
-  .vision-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:48px; background:var(--borde); }
-  .vision-card { background:var(--crema); padding:36px 28px; position:relative; }
-  .vision-n { font-family:'Crimson Pro',serif; font-size:4rem; font-weight:700; color:rgba(10,22,40,0.06); position:absolute; top:10px; right:14px; line-height:1; }
-  .vision-t { font-size:0.7rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--oro); margin-bottom:12px; }
-  .vision-d { font-size:0.83rem; color:var(--muted); line-height:1.75; }
-
-  /* ── VALORES ── */
-  #valores { background:var(--azul); position:relative; overflow:hidden; }
-  #valores::before { content:'CHIHUAHUA'; position:absolute; bottom:-40px; left:-20px; font-family:'Crimson Pro',serif; font-size:14rem; font-weight:700; color:rgba(26,52,97,0.5); white-space:nowrap; pointer-events:none; letter-spacing:-2px; }
-  .valores-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(189,208,232,0.07); margin-top:48px; }
-  .valor-card { background:rgba(10,22,40,0.5); padding:30px 26px; transition:background 0.3s; }
-  .valor-card:hover { background:rgba(26,52,97,0.4); }
-  .valor-ico { font-size:1.5rem; margin-bottom:12px; }
-  .valor-t { font-size:0.82rem; font-weight:700; color:var(--blanco); margin-bottom:8px; }
-  .valor-d { font-size:0.76rem; color:rgba(189,208,232,0.92); line-height:1.65; }
-
-  /* ── CHAT ── */
-  #pregunta { background:var(--azul-2); }
-  .chat-layout { display:grid; grid-template-columns:1fr 1.35fr; gap:70px; align-items:start; }
-  .chat-hd .sec-title { color:var(--blanco); }
-  .chat-hd .tag-lbl { color:var(--oro-lt); }
-  .chat-hd .tag-pip { background:var(--oro); }
-  .chat-av-row { display:flex; align-items:center; gap:14px; margin:26px 0; }
-  .chat-av { width:52px; height:52px; border-radius:50%; background:var(--oro); display:flex; align-items:center; justify-content:center; font-family:'Crimson Pro',serif; font-size:1.3rem; font-weight:700; color:var(--azul); box-shadow:0 0 0 3px rgba(196,154,60,0.25); }
-  .chat-av-name { font-size:0.85rem; font-weight:700; color:var(--blanco); }
-  .chat-av-status { display:flex; align-items:center; gap:6px; font-size:0.66rem; color:rgba(189,208,232,0.82); margin-top:3px; }
-  .s-dot { width:7px; height:7px; border-radius:50%; background:#4ade80; box-shadow:0 0 6px rgba(74,222,128,0.6); animation:pulse-dot 2s infinite; }
-  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(0.8);} }
-  .chat-nota { background:rgba(196,154,60,0.1); border:1px solid rgba(196,154,60,0.2); padding:16px 20px; margin-bottom:22px; }
-  .chat-nota p { font-size:0.78rem; color:rgba(189,208,232,0.97); line-height:1.65; }
-  .chat-nota strong { color:var(--oro-lt); }
-  .wa-btn { display:flex; align-items:center; gap:12px; background:#25D366; color:#fff; padding:13px 22px; font-size:0.79rem; font-weight:700; text-decoration:none; transition:background 0.2s,transform 0.15s; box-shadow:0 4px 20px rgba(37,211,102,0.25); width:fit-content; }
-  .wa-btn:hover { background:#1ebe5d; transform:translateY(-2px); }
-  .wa-btn svg { width:20px; height:20px; flex-shrink:0; }
-  .wa-badge { background:rgba(0,0,0,0.2); padding:2px 8px; font-size:0.57rem; letter-spacing:1px; font-weight:600; white-space:nowrap; }
-  .chat-sugg { margin-top:26px; }
-  .chat-sugg-lbl { font-size:0.57rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(189,208,232,0.65); margin-bottom:10px; }
-  .sugg-list { display:flex; flex-direction:column; gap:7px; }
-  .sugg-btn { background:rgba(189,208,232,0.05); border:1px solid rgba(189,208,232,0.12); padding:9px 14px; font-size:0.72rem; color:rgba(189,208,232,0.95); cursor:pointer; text-align:left; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
-  .sugg-btn:hover { background:rgba(196,154,60,0.1); border-color:rgba(196,154,60,0.35); color:var(--oro-lt); }
-  .chat-win { background:rgba(189,208,232,0.03); border:1px solid rgba(189,208,232,0.09); box-shadow:0 20px 60px rgba(0,0,0,0.4); }
-  .chat-topbar { background:rgba(196,154,60,0.12); border-bottom:1px solid rgba(196,154,60,0.2); padding:13px 20px; display:flex; align-items:center; justify-content:space-between; }
-  .chat-tb-l { display:flex; align-items:center; gap:10px; }
-  .chat-tb-av { width:30px; height:30px; border-radius:50%; background:var(--oro); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:700; color:var(--azul); }
-  .chat-tb-name { font-size:0.78rem; font-weight:700; color:var(--blanco); }
-  .chat-tb-sub { font-size:0.59rem; color:rgba(189,208,232,0.55); }
-  .chat-tb-badge { font-size:0.55rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--oro-lt); background:rgba(196,154,60,0.15); padding:4px 10px; border:1px solid rgba(196,154,60,0.3); }
-  .chat-msgs { padding:20px 18px; min-height:220px; max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:13px; }
-  .chat-msgs::-webkit-scrollbar { width:3px; }
-  .chat-msgs::-webkit-scrollbar-thumb { background:rgba(196,154,60,0.3); }
-  .msg { display:flex; flex-direction:column; max-width:84%; }
-  .msg.cesar { align-self:flex-start; }
-  .msg.user { align-self:flex-end; align-items:flex-end; }
-  .msg-bbl { padding:11px 15px; font-size:0.79rem; line-height:1.55; }
-  .cesar .msg-bbl { background:rgba(189,208,232,0.09); border:1px solid rgba(189,208,232,0.14); color:rgba(189,208,232,0.95); }
-  .user .msg-bbl { background:var(--oro); color:var(--azul); font-weight:600; }
-  .msg-t { font-size:0.57rem; color:rgba(189,208,232,0.25); margin-top:4px; padding:0 4px; }
-  .msg-n { font-size:0.59rem; font-weight:700; color:var(--oro-lt); margin-bottom:4px; padding:0 4px; }
-  .typing-wrap { display:flex; gap:4px; align-items:center; padding:2px 0; }
-  .ty-dot { width:7px; height:7px; border-radius:50%; background:rgba(189,208,232,0.4); animation:typing 1.2s infinite; }
-  .ty-dot:nth-child(2){animation-delay:0.2s;} .ty-dot:nth-child(3){animation-delay:0.4s;}
-  @keyframes typing { 0%,60%,100%{transform:translateY(0);opacity:0.4;} 30%{transform:translateY(-6px);opacity:1;} }
-  .chat-inp-area { border-top:1px solid rgba(189,208,232,0.07); padding:14px 18px; background:rgba(0,0,0,0.25); }
-  .chat-or { display:flex; align-items:center; gap:10px; font-size:0.59rem; letter-spacing:2px; text-transform:uppercase; color:rgba(189,208,232,0.22); margin-bottom:10px; }
-  .chat-or::before,.chat-or::after { content:''; flex:1; height:1px; background:rgba(189,208,232,0.08); }
-  .chat-name-row { display:flex; gap:8px; margin-bottom:8px; }
-  .chat-field { flex:1; background:rgba(189,208,232,0.05); border:1px solid rgba(189,208,232,0.1); padding:9px 13px; font-size:0.75rem; color:rgba(189,208,232,0.95); font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
-  .chat-field:focus { border-color:rgba(196,154,60,0.5); }
-  .chat-field::placeholder { color:rgba(189,208,232,0.25); }
-  .chat-row { display:flex; gap:8px; align-items:flex-end; }
-  .chat-ta { flex:1; background:rgba(189,208,232,0.05); border:1px solid rgba(189,208,232,0.1); padding:10px 14px; font-size:0.79rem; color:rgba(189,208,232,0.95); font-family:'DM Sans',sans-serif; outline:none; resize:none; min-height:42px; max-height:85px; transition:border-color 0.2s; line-height:1.4; }
-  .chat-ta:focus { border-color:rgba(196,154,60,0.5); }
-  .chat-ta::placeholder { color:rgba(189,208,232,0.25); }
-  .chat-send { background:var(--oro); border:none; width:42px; height:42px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; transition:background 0.2s,transform 0.15s; }
-  .chat-send:hover { background:var(--oro-lt); transform:scale(1.05); }
-  .chat-send svg { width:17px; height:17px; fill:var(--azul); }
-  .chat-ctr { font-size:0.57rem; color:rgba(189,208,232,0.2); text-align:right; margin-top:4px; }
-  .chat-disc { font-size:0.57rem; color:rgba(189,208,232,0.25); text-align:center; margin-top:8px; line-height:1.5; }
-
-  /* ── CTA ── */
-  #cta { background:var(--oro); text-align:center; padding:100px 80px; position:relative; overflow:hidden; }
-  #cta::before { content:'CHIHUAHUA'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Crimson Pro',serif; font-size:16rem; font-weight:700; color:rgba(10,22,40,0.05); white-space:nowrap; pointer-events:none; }
-  .cta-lbl { display:inline-flex; align-items:center; gap:10px; margin-bottom:20px; }
-  .cta-pip { width:24px; height:2px; background:rgba(10,22,40,0.3); }
-  .cta-etiq { font-size:0.6rem; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:rgba(10,22,40,0.5); }
-  .cta-title { font-family:'Crimson Pro',serif; font-size:clamp(2.5rem,5vw,5rem); font-weight:600; color:var(--azul); line-height:1.1; margin-bottom:16px; }
-  .cta-title strong { display:block; font-weight:700; }
-  .cta-sub { font-size:0.9rem; color:rgba(10,22,40,0.65); max-width:480px; margin:0 auto 40px; line-height:1.75; }
-  .cta-btn { background:var(--azul); color:var(--crema); padding:16px 44px; font-size:0.7rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; border:none; cursor:pointer; display:inline-block; text-decoration:none; transition:background 0.2s,transform 0.15s; }
-  .cta-btn:hover { background:var(--azul-3); transform:translateY(-2px); }
-
-  /* ── FOOTER ── */
-  footer { background:#060F1A; padding:40px 80px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(189,208,232,0.06); }
-  .foot-logo { font-family:'Crimson Pro',serif; font-size:0.95rem; color:rgba(189,208,232,0.65); }
-  .foot-logo span { color:var(--oro-lt); font-style:italic; }
-  .foot-note { font-size:0.59rem; color:rgba(189,208,232,0.3); text-align:right; line-height:1.6; }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
-  @keyframes scaleX { from{transform:scaleX(0);} to{transform:scaleX(1);} }
-  .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.75s ease,transform 0.75s ease; }
-  .reveal.visible { opacity:1; transform:translateY(0); }
-
-  /* ── DIFERENTE ── */
-  #diferente { background:var(--azul); position:relative; overflow:hidden; padding:96px 80px; }
-  #diferente::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(90deg,transparent,transparent 119px,rgba(140,160,184,0.03) 120px); pointer-events:none; }
-  .dif-intro { text-align:center; max-width:760px; margin:0 auto 60px; position:relative; z-index:2; }
-  .dif-nota { display:inline-block; background:rgba(196,154,60,0.12); border:1px solid rgba(196,154,60,0.3); padding:8px 20px; font-size:0.62rem; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--oro-lt); margin-bottom:18px; }
-  .dif-intro-title { font-family:'Crimson Pro',serif; font-size:clamp(1.8rem,3vw,3rem); font-weight:700; color:var(--blanco); line-height:1.1; margin-bottom:14px; }
-  .dif-intro-title em { font-style:italic; color:var(--oro-lt); }
-  .dif-intro-sub { font-size:0.88rem; color:rgba(189,208,232,0.88); line-height:1.8; }
-  .dif-aviso { display:inline-flex; align-items:center; gap:8px; background:rgba(189,208,232,0.06); border:1px solid rgba(189,208,232,0.14); padding:10px 18px; margin-top:20px; font-size:0.72rem; color:rgba(189,208,232,0.75); }
-  .dif-aviso strong { color:var(--oro-lt); }
-
-  /* tabla comparativa */
-  .dif-tabla-wrap { position:relative; z-index:2; overflow-x:auto; margin-bottom:48px; border:1px solid rgba(189,208,232,0.1); }
-  .dif-tabla { width:100%; border-collapse:collapse; min-width:720px; }
-  .dif-thead th { padding:16px 22px; font-size:0.61rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; text-align:left; }
-  .dif-thead th.th-cat { background:rgba(26,52,97,0.9); color:rgba(189,208,232,0.6); width:22%; }
-  .dif-thead th.th-cesar { background:var(--oro); color:var(--azul); width:26%; }
-  .dif-thead th.th-other { background:rgba(17,34,64,0.95); color:rgba(189,208,232,0.65); width:26%; }
-  .dif-tr td { padding:14px 22px; font-size:0.8rem; line-height:1.65; border-bottom:1px solid rgba(189,208,232,0.07); vertical-align:top; }
-  .dif-tr:last-child td { border-bottom:none; }
-  .dif-tr td.td-cat { background:rgba(26,52,97,0.6); color:rgba(189,208,232,0.88); font-weight:700; font-size:0.75rem; }
-  .dif-tr td.td-cat span { display:block; font-size:0.58rem; font-weight:400; color:rgba(189,208,232,0.5); margin-top:3px; letter-spacing:0.5px; }
-  .dif-tr td.td-cesar { background:rgba(196,154,60,0.07); color:rgba(189,208,232,0.95); font-weight:600; border-left:2px solid rgba(196,154,60,0.35); }
-  .dif-tr td.td-other { background:rgba(10,22,40,0.5); color:rgba(189,208,232,0.72); }
-  .check { color:var(--oro-lt); font-weight:800; margin-right:5px; }
-  .neutral { color:rgba(189,208,232,0.5); font-weight:700; margin-right:5px; }
-  .dif-badge { display:inline-block; background:var(--oro); color:var(--azul); font-size:0.52rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:2px 7px; margin-left:6px; vertical-align:middle; }
-
-  /* ventajas cards */
-  .dif-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:rgba(189,208,232,0.05); position:relative; z-index:2; }
-  .dif-card { padding:34px 28px; background:rgba(10,22,40,0.55); }
-  .dif-card.dif-star { background:rgba(196,154,60,0.1); border:1px solid rgba(196,154,60,0.2); }
-  .dif-card-ico { font-size:1.6rem; margin-bottom:14px; }
-  .dif-card-n { font-family:'Crimson Pro',serif; font-size:2.6rem; font-weight:700; color:rgba(196,154,60,0.18); line-height:1; position:absolute; top:14px; right:18px; }
-  .dif-card-wrap { position:relative; }
-  .dif-card-t { font-size:0.83rem; font-weight:700; color:var(--blanco); margin-bottom:10px; }
-  .dif-card.dif-star .dif-card-t { color:var(--oro-lt); }
-  .dif-card-d { font-size:0.77rem; color:rgba(189,208,232,0.90); line-height:1.7; }
-
-  @media(max-width:900px){
-    #diferente{padding:60px 24px;}
-    .dif-cards{grid-template-columns:1fr;}
-  }
-
-  @media(max-width:900px){
-    nav{padding:14px 20px;} .nav-links{display:none;}
-    #hero{grid-template-columns:1fr;} .hero-right{display:none;} .hero-left{padding:90px 24px 60px;}
-    section{padding:60px 24px;}
-    #trayectoria,.pan-grid,.enc-layout,.chat-layout{grid-template-columns:1fr;gap:40px;}
-    .logros-cards,.valores-grid,.vision-grid{grid-template-columns:1fr;}
-    .logros-nums{grid-template-columns:1fr 1fr;}
-    .logro-wide{flex-direction:column;}
-    .pan-cards{grid-template-columns:1fr;}
-    footer{flex-direction:column;gap:14px;text-align:center;} .foot-note{text-align:center;}
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--coral:#E8567A;--coralL:#FFF0F3;--gold:#F5A623;--goldL:#FFFAEE;--sage:#5BAD8F;--sageL:#F0FAF5;--violet:#9B72CF;--violetL:#F5F0FF;--cream:#FFF6EE;--white:#fff;--ink:#2D1B1B;--ink2:#5C3D3D;--ink3:#8B6060;--soft:#F2E4E4;--soft2:#FBF5F0}
+html,body{height:100%;background:var(--cream);font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink)}
+.fr{font-family:'Fraunces',Georgia,serif}
+button{cursor:pointer;font-family:inherit;outline:none;transition:all .18s}
+button:active{transform:scale(.97)}
+input,textarea{font-family:inherit}
+.screen{display:none;min-height:100vh;animation:fu .35s ease}
+.screen.active{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pl 2s ease-in-out infinite}
+@keyframes pl{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#F5C6D2;border-radius:4px}
+.btn-p{background:linear-gradient(135deg,var(--coral),#F07090);color:#fff;border:none;padding:14px 24px;border-radius:50px;font-weight:700;font-size:15px;width:100%;box-shadow:0 5px 20px rgba(232,86,122,.4)}
+.btn-g{background:var(--soft2);color:var(--ink2);border:none;padding:11px 24px;border-radius:50px;font-weight:600;font-size:13px;width:100%}
+.btn-sm{padding:6px 14px;border-radius:50px;font-weight:700;font-size:12px;border:none}
+.card{background:var(--white);border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);border:1.5px solid var(--soft)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.field input,.field textarea{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #E8D8D8;font-size:15px;color:var(--ink);background:#FFFAF8;transition:border-color .2s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--coral);background:#fff}
+.prog-track{height:10px;background:var(--soft);border-radius:8px;overflow:hidden}
+.prog-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--coral),var(--gold),var(--sage));transition:width .6s ease}
+.day-card{background:var(--white);border-radius:14px;border:1.5px solid var(--soft);overflow:hidden;margin-bottom:9px;transition:border-color .2s}
+.day-card.today{border-top:3px solid var(--wc,var(--coral))}
+.day-card.done{border-color:rgba(91,173,143,.5)}
+.day-card.open{border-color:var(--wc,var(--coral))}
+.day-hdr{display:flex;align-items:center;padding:13px 14px;gap:12px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.day-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;border:2px solid rgba(0,0,0,.1)}
+.day-body{display:none;padding:2px 14px 15px;border-top:1px solid var(--soft)}
+.day-card.open .day-body{display:block}
+.arrow{font-size:20px;color:var(--ink3);transition:transform .2s;margin-left:auto;flex-shrink:0}
+.day-card.open .arrow{transform:rotate(180deg)}
+.dsec{border-radius:12px;padding:13px 14px;margin-bottom:10px}
+.tab-bar{display:grid;gap:6px;margin-bottom:14px}
+.t2{grid-template-columns:1fr 1fr}.t3{grid-template-columns:1fr 1fr 1fr}.t4{grid-template-columns:repeat(4,1fr)}
+.tab-btn{padding:9px 4px;border-radius:12px;font-weight:700;font-size:11px;border:1.5px solid var(--soft);background:var(--white);color:var(--ink2);text-align:center}
+.tab-btn.on{border:none;color:#fff}
+.wbanner{border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1.5px solid rgba(0,0,0,.08)}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(45,27,27,.75);z-index:999;align-items:center;justify-content:center;padding:20px}
+.modal-ov.show{display:flex}
+.modal-box{background:var(--white);border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;animation:fu .3s ease}
+.notes-box{background:#FFFDF5;border-radius:12px;padding:13px 14px;margin-bottom:12px;border:1.5px solid #F0DCA0}
+.notes-box.over{border-color:var(--coral)}
+.nta{width:100%;resize:vertical;border:1px solid #F0DCA0;border-radius:10px;padding:10px 12px;font-size:13px;color:var(--ink);background:#FFFEF5;line-height:1.65;outline:none;min-height:80px;max-height:280px;font-family:inherit}
+.nta.over{border-color:rgba(232,86,122,.5);background:#FFF5F7}
+.rcard{display:block;background:var(--white);border-radius:14px;padding:14px 15px;border:1.5px solid rgba(0,0,0,.07);text-decoration:none;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.app-hdr{padding:20px 14px 18px;position:relative;overflow:hidden;background:linear-gradient(140deg,var(--coralL),var(--goldL),var(--sageL));border-bottom:2px solid rgba(232,86,122,.15)}
+.inner{max-width:660px;margin:0 auto;padding:0 14px 72px}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Lic. César <span>Jáuregui</span></div>
-  <div class="nav-links">
-    <a href="#trayectoria">Trayectoria</a>
-    <a href="#logros">Logros</a>
-    <a href="#diferente">Su Ventaja</a>
-    <a href="#partido">PAN</a>
-    <a href="#encuestas">Encuestas</a>
-    <a href="#vision">Visión</a>
-    <a href="#valores">Valores</a>
-    <a href="#pregunta">Contáctalo</a>
-  </div>
-</nav>
+<div id="s-loading" class="screen active" style="display:flex;align-items:center;justify-content:center;min-height:100vh">
+  <div style="text-align:center"><div class="pulse" style="font-size:52px;margin-bottom:14px">💑</div><p class="fr" style="font-size:20px;color:var(--coral);font-style:italic">Cargando tu plan...</p></div>
+</div>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg-lines"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-left">
-    <div class="hero-badge"><span class="badge-escudo">⚖️</span><span class="badge-text">Chihuahua 2027 · Partido Acción Nacional</span></div>
-    <h1 class="hero-name">
-      <span class="apellidos">Fiscal General del Estado · +30 años de servicio</span>
-      <strong>Lic. César Jáuregui</strong>
-      Moreno
-    </h1>
-    <div class="hero-divider"></div>
-    <div class="hero-cargo">Fiscal General del Estado de Chihuahua · 2023–Presente</div>
-    <p class="hero-tagline">"Me he preparado toda mi vida para esto. La experiencia no se improvisa — se construye con tres décadas de servicio al Estado de Derecho."</p>
-    <div class="hero-btns">
-      <a href="#logros" class="btn-oro">Ver su récord</a>
-      <a href="#trayectoria" class="btn-ghost">30 años de carrera</a>
+<div id="s-register" class="screen" style="min-height:100vh;background:var(--cream);padding:28px 20px">
+  <div style="max-width:420px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:24px">
+      <svg viewBox="0 0 160 100" fill="none" style="width:min(180px,55vw);margin:0 auto 16px">
+        <ellipse cx="52" cy="88" rx="28" ry="9" fill="#F5A623" opacity=".18"/>
+        <ellipse cx="108" cy="88" rx="28" ry="9" fill="#E8567A" opacity=".18"/>
+        <circle cx="47" cy="26" r="16" fill="#FDDDD7"/>
+        <rect x="33" y="42" width="28" height="38" rx="14" fill="#E8567A"/>
+        <circle cx="113" cy="26" r="16" fill="#FAE0B8"/>
+        <rect x="99" y="42" width="28" height="38" rx="14" fill="#F5A623"/>
+        <path d="M80 56C73 44 60 48 60 60C60 70 80 82 80 82C80 82 100 70 100 60C100 48 87 44 80 56Z" fill="#E8567A" opacity=".85"/>
+        <circle cx="80" cy="56" r="3.5" fill="#fff" opacity=".45"/>
+      </svg>
+      <h1 class="fr" style="font-size:clamp(26px,6vw,36px);color:var(--coral);margin-bottom:6px">Juntos de Nuevo</h1>
+      <p class="fr" style="font-size:16px;font-style:italic;color:var(--ink2);margin-bottom:4px">30 días para volver a encontrarse</p>
+      <p style="font-size:12px;color:var(--ink3)">Tu plan personal de reconciliación comienza aquí.</p>
     </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-escudo-deco">⚖️</div>
-    <div class="hero-initials">CJ</div>
-    <div class="hero-stats-strip">
-      <div class="hero-stat"><div class="stat-n">30+</div><div class="stat-l">Años en<br>servicio público</div></div>
-      <div class="hero-stat"><div class="stat-n">28.6%</div><div class="stat-l">Preferencia PAN<br>Nov. 2025 (Gobernarte)</div></div>
-      <div class="hero-stat"><div class="stat-n">113</div><div class="stat-l">Prófugos<br>capturados en Feb.</div></div>
+    <div class="card" style="padding:24px 20px">
+      <h2 class="fr" style="font-size:20px;color:var(--ink);margin-bottom:4px">Tu perfil personal</h2>
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:20px">Sin apellido — solo como quieres que te llamen.</p>
+      <div class="field"><label>😊 Tu nombre o apodo</label><input id="i-nom" type="text" placeholder="Ej: Mari, Toño, Luz..." maxlength="30"/></div>
+      <div class="field"><label>📧 Correo electrónico</label><input id="i-email" type="email" placeholder="tucorreo@email.com"/></div>
+      <div class="field"><label>📱 WhatsApp / Celular <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3)">(opcional)</span></label><input id="i-tel" type="tel" placeholder="614 123 4567"/></div>
+      <div class="field"><label>⏰ Hora del recordatorio diario</label><input id="i-hora" type="time" value="08:00"/></div>
+      <p id="reg-err" style="font-size:13px;color:var(--coral);font-weight:600;margin-bottom:12px;display:none"></p>
+      <button class="btn-p" onclick="doReg()">Continuar →</button>
     </div>
+    <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic;text-align:center;margin-top:16px">Lic. Agustín Flores C. · 2026</p>
   </div>
-</section>
+</div>
 
-<!-- TRAYECTORIA -->
-<section id="trayectoria">
-  <div class="tray-intro reveal">
-    <div class="tag-row"><div class="tag-pip"></div><span class="tag-lbl">Su Historia</span></div>
-    <h2 class="sec-title">Treinta años<br><em>al servicio de Chihuahua</em></h2>
-    <p>César Jáuregui Moreno nació en Ciudad Juárez y creció en la frontera más visible de México. Estudió Derecho en la Universidad Autónoma de Chihuahua y desde 1992 no ha dejado de servir: en el Congreso, en tres ayuntamientos distintos, como diputado local en dos legislaturas, como Secretario General de Gobierno y hoy como Fiscal General del Estado.</p>
-    <p>Conoce Chihuahua como pocos: trabajó en Juárez, gobernó en Delicias, legisló en la capital y hoy dirige la procuración de justicia de los 67 municipios del estado más grande de México.</p>
-    <div class="tray-cita">"Me he preparado toda mi vida para esto. A lo largo de los años he desempeñado diversos roles dentro de la política, lo que me ha permitido adquirir experiencia en la toma de decisiones." — César Jáuregui, marzo 2026</div>
-    <p>En junio de 2026 cumplirá 60 años. Candidatos más jóvenes tienen energía; él tiene la combinación más valiosa en política: energía <em>y</em> experiencia. Los problemas de Chihuahua no son nuevos — y quien los conoce desde adentro está mejor equipado para resolverlos.</p>
-  </div>
-  <div class="tl-wrap reveal">
-    <div class="tl-item active">
-      <div class="tl-dot"></div>
-      <div class="tl-year">2023 — Presente</div>
-      <div class="tl-role">Fiscal General del Estado de Chihuahua</div>
-      <div class="tl-org">La institución de justicia más importante de Chihuahua. Responsable de procuración de justicia en los 67 municipios del estado.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">2021 — 2023</div>
-      <div class="tl-role">Secretario General de Gobierno</div>
-      <div class="tl-org">Gobierno del Estado de Chihuahua · Coordinador de campaña de Maru Campos. El cargo político más cercano a la gobernadora.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">2016 — 2021</div>
-      <div class="tl-role">Secretario del Ayuntamiento de Chihuahua Capital</div>
-      <div class="tl-org">Municipio de Chihuahua · 5 años en el corazón del gobierno de la capital. Conoce el municipio desde sus cimientos.</div>
-      <span class="tl-badge">Capital</span>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">2014 — 2016</div>
-      <div class="tl-role">Diputado Local · Coordinador GP PAN · LXIV Legislatura</div>
-      <div class="tl-org">H. Congreso del Estado de Chihuahua · Segunda diputación, segunda coordinación. Legislador de experiencia y liderazgo parlamentario.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">2010 — 2013</div>
-      <div class="tl-role">Secretario del Ayuntamiento de Delicias</div>
-      <div class="tl-org">Municipio de Delicias, Chihuahua · El candidato que también conoce el interior del estado, no solo sus capitales.</div>
-      <span class="tl-badge">Delicias</span>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">2004 — 2007</div>
-      <div class="tl-role">Diputado Local · Coordinador GP PAN · LXI Legislatura</div>
-      <div class="tl-org">H. Congreso del Estado · Primera de dos legislaturas como diputado-coordinador. Construyó su liderazgo parlamentario durante 6 años acumulados.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">2000 — 2001</div>
-      <div class="tl-role">Secretario del Ayuntamiento de Ciudad Juárez</div>
-      <div class="tl-org">El político que también gobernó Juárez. Entiende la frontera no como visitante, sino como funcionario que la administró.</div>
-      <span class="tl-badge">Juárez</span>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">1994 — 1998</div>
-      <div class="tl-role">Director de Gobierno, Ayuntamiento de Juárez · CEN PAN</div>
-      <div class="tl-org">Director Jurídico del Comité Ejecutivo Nacional del PAN durante la presidencia de Felipe Calderón. Operó política a nivel nacional desde joven.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-year">1992 — 1994</div>
-      <div class="tl-role">Director de Investigación Legislativa · Congreso del Estado</div>
-      <div class="tl-org">Inicio de carrera pública. 30+ años ininterrumpidos de servicio desde el primer día.</div>
-    </div>
-  </div>
-</section>
-
-<!-- LOGROS -->
-<section id="logros">
-  <div class="logros-head reveal">
-    <div>
-      <div class="tag-row"><div class="tag-pip"></div><span class="tag-lbl">Resultados</span></div>
-      <h2 class="sec-title" style="color:var(--blanco);">El Fiscal<br><em style="color:var(--oro-lt);">que actúa</em></h2>
-    </div>
-    <div class="logros-nums">
-      <div class="logro-num"><div class="logro-num-n">134</div><div class="logro-num-l">Sentencias<br>1er semestre</div></div>
-      <div class="logro-num"><div class="logro-num-n">399</div><div class="logro-num-l">Armas aseguradas<br>↑23.5%</div></div>
-      <div class="logro-num"><div class="logro-num-n">105</div><div class="logro-num-l">Cuerpos identificados<br>Crematorio Plenitud</div></div>
-      <div class="logro-num"><div class="logro-num-n">2,400</div><div class="logro-num-l">Viajes gratuitos<br>mujeres víctimas DiDi</div></div>
-    </div>
-  </div>
-  <div class="logros-cards reveal">
-    <div class="logro-card">
-      <div class="logro-ico">💻</div>
-      <div class="logro-t">Plataforma Justicia Digital</div>
-      <div class="logro-d">Primera en su tipo en el país. La presentó personalmente con la Gobernadora ante medios de comunicación. Permite servicios automatizados de la FGE en línea, incluyendo la Cédula de Identificación Forense para que cualquier familia pueda consultar si un ser querido desaparecido está en el SEMEFO. "Está a la vanguardia en la identificación de personas." — C. Jáuregui</div>
-    </div>
-    <div class="logro-card">
-      <div class="logro-ico">⚖️</div>
-      <div class="logro-t">13 Sentencias Ejemplares de Alto Impacto</div>
-      <div class="logro-d">De diciembre 2024 a marzo 2025: incluyó 113 años por violación agravada a una adolescente en Parral, y 100 años a cada uno de los 5 responsables del intento de homicidio de policías municipales en Juárez. Chihuahua no negocia con quienes atacan a su gente.</div>
-    </div>
-    <div class="logro-card">
-      <div class="logro-ico">🔫</div>
-      <div class="logro-t">399 Armas Aseguradas · +23.5%</div>
-      <div class="logro-d">Incremento del 23.5% en aseguramiento de armamento respecto al período anterior. En solo febrero de 2026, la AEI Zona Norte aseguró más de 25 kilos de droga y 200 cartuchos. Cada arma fuera de circulación es una vida protegida.</div>
-    </div>
-    <div class="logro-card">
-      <div class="logro-ico">🏃</div>
-      <div class="logro-t">113 Prófugos Capturados · Solo Febrero 2026</div>
-      <div class="logro-d">La AEI detuvo en un solo mes a 113 personas que se encontraban con órdenes de aprehensión pendientes. No se espera a que el crimen se presente — se va a buscarlo. La Fiscalía que opera, no que reacciona.</div>
-    </div>
-    <div class="logro-card">
-      <div class="logro-ico">🚗</div>
-      <div class="logro-t">62.5% de Eficacia · 1,173 Vehículos Recuperados</div>
-      <div class="logro-d">Más de 62 de cada 100 vehículos robados fueron recuperados durante su gestión. Un índice de eficacia que impacta directamente en el patrimonio y la economía de las familias chihuahuenses. Resultado de la coordinación entre AEI y REPUVE.</div>
-    </div>
-    <div class="logro-card">
-      <div class="logro-ico">🚺</div>
-      <div class="logro-t">Convenio DiDi · 2,400 Viajes para Mujeres Víctimas</div>
-      <div class="logro-d">Firmó con DiDi México la donación de 2,400 cupones de viaje gratuito para trasladar a mujeres y familias en situación de violencia de género hasta la FEM y el CEJUM. "Es un paso positivo que impulsa su acceso a la justicia." Un Fiscal que también innova en protección.</div>
-    </div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:rgba(189,208,232,0.05);margin-top:2px;" class="reveal">
-    <div class="logro-card">
-      <div class="logro-ico">🏫</div>
-      <div class="logro-t">GOECHI · Programa "Soy Asertivo" en Escuelas</div>
-      <div class="logro-d">El Grupo de Orientación Escolar Chihuahuense opera en preparatorias de Juárez y Parral con el programa formativo "Soy Asertivo" para adolescentes en conflicto. El Fiscal que también previene. La seguridad empieza en las escuelas.</div>
-    </div>
-    <div class="logro-card">
-      <div class="logro-ico">🤝</div>
-      <div class="logro-t">Coordinación Nacional · Noreste y Noroeste</div>
-      <div class="logro-d">Se reunió en Durango con sus homólogos del noreste y noroeste del país para analizar avances en procuración de justicia. Además coordinó con la Fiscalía de Sonora para combate a bandas criminales. Jáuregui opera en red, no en isla.</div>
-    </div>
-    <div class="logro-card" style="padding:0;">
-      <div class="logro-quote-box" style="height:100%;">
-        <blockquote>"Lo más importante que tenemos en nuestras vidas son nuestros niños, no solo porque son nuestros, sino porque representan el futuro. Estamos tratando con todos los elementos que tenemos de reparar esa situación."</blockquote>
-        <cite>— César Jáuregui · Evento CEAVE, Dic. 2024</cite>
+<div id="s-date" class="screen" style="min-height:100vh;background:var(--cream);padding:28px 20px">
+  <div style="max-width:420px;margin:0 auto;text-align:center">
+    <div style="font-size:44px;margin-bottom:12px">📅</div>
+    <h2 class="fr" style="font-size:26px;color:var(--coral);margin-bottom:8px">¿Cuándo empiezan?</h2>
+    <p style="font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:24px">Puedes elegir hoy o una fecha futura.</p>
+    <div class="card" style="padding:24px 20px;margin-bottom:20px;text-align:left">
+      <label style="display:block;font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">📅 Fecha de inicio</label>
+      <input id="i-fecha" type="date" oninput="updFin()" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid rgba(232,86,122,.4);font-size:16px;color:var(--ink);background:var(--coralL);text-align:center"/>
+      <div style="background:var(--sageL);border-radius:12px;padding:12px 14px;margin-top:14px;border:1px solid rgba(91,173,143,.35)">
+        <p style="font-size:13px;color:var(--ink2)">📆 Tu plan termina el: <strong id="fecha-fin">—</strong></p>
       </div>
     </div>
+    <button class="btn-p" onclick="doDate()">¡Empezar el plan! 🚀</button>
   </div>
-  <div style="display:grid;grid-template-columns:2fr 1fr;gap:2px;background:rgba(189,208,232,0.05);margin-top:2px;" class="reveal">
-    <div class="logro-card">
-      <div class="logro-ico">🔬</div>
-      <div class="logro-t">Cédula de Identificación Forense · Innovación para familias con desaparecidos</div>
-      <div class="logro-d">La plataforma Justicia Digital incorpora la Cédula de Identificación Forense: cualquier familiar puede consultar en línea si un cuerpo no identificado en el SEMEFO corresponde a su ser querido. Una herramienta que ninguna otra fiscalía del norte del país ofrece. La tecnología al servicio del duelo y la certeza jurídica. En el caso Crematorio Plenitud, la Fiscalía ha identificado ya 105 cuerpos de los 386 hallados y entregado cerca de 200 familias, con un equipo permanente de criminólogos y antropólogos.</div>
-    </div>
-    <div class="logro-card">
-      <div class="logro-ico">📡</div>
-      <div class="logro-t">$150M en Tecnología Forense · FGE reconocida "de las mejores del país"</div>
-      <div class="logro-d">Inversión de 150 millones de pesos en equipamiento de punta. El propio Jáuregui afirmó ante agentes de la AEI que la FGE Chihuahua es reconocida como una de las mejores fiscalías de México. Tecnología + Capacitación = Resultados medibles.</div>
-    </div>
-  </div>
-</section>
+</div>
 
-<!-- DIFERENTE -->
-<section id="diferente">
-  <div class="dif-intro reveal">
-    <div class="tag-row" style="justify-content:center;"><div class="tag-pip"></div><span class="tag-lbl" style="color:var(--oro-lt);">Su Ventaja Diferencial</span><div class="tag-pip"></div></div>
-    <div class="dif-nota">Un perfil que Chihuahua no ha visto antes en una boleta municipal</div>
-    <h2 class="dif-intro-title">Lo que hace único<br>a <em>Lic. César Jáuregui</em></h2>
-    <p class="dif-intro-sub">Chihuahua tiene la fortuna de contar con personas talentosas, de valores y principios sólidos, interesadas en servir a la capital. Ese es un privilegio. Lo que aquí presentamos no es una descalificación de nadie — es un análisis honesto del perfil específico que Jáuregui aporta y que ningún otro aspirante al mismo cargo puede replicar.</p>
-    <div class="dif-aviso">⚖️&nbsp;&nbsp;<strong>Nota:</strong> Chihuahua merece el mejor debate de ideas. Este análisis es de perfiles y trayectorias — no de personas.</div>
+<div id="s-notif" class="screen" style="min-height:100vh;background:var(--cream);padding:28px 20px">
+  <div style="max-width:440px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:44px;margin-bottom:10px">🔔</div>
+      <h2 class="fr" style="font-size:24px;color:var(--coral);margin-bottom:6px">Mensajes diarios</h2>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.65">Tu mensaje motivador cada día a las <strong id="n-hora">08:00</strong>.</p>
+    </div>
+    <div class="tab-bar t2" style="margin-bottom:16px">
+      <button class="tab-btn on" id="nt-push" onclick="switchNT('push')" style="background:var(--coral)">📱 Push</button>
+      <button class="tab-btn" id="nt-email" onclick="switchNT('email')">📧 Email</button>
+    </div>
+    <div id="np-push" class="card" style="padding:20px;margin-bottom:16px">
+      <p style="font-size:11px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Estado actual</p>
+      <div id="ps-box" style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--coralL);border-radius:12px;border:1px solid rgba(232,86,122,.25);margin-bottom:12px">
+        <span id="ps-ico" style="font-size:20px;flex-shrink:0">🔕</span>
+        <div><p id="ps-title" style="font-size:13px;font-weight:700;color:var(--coral)">Notificaciones inactivas</p><p id="ps-sub" style="font-size:11px;color:var(--ink3);margin-top:3px">Toca el botón para activarlas.</p></div>
+      </div>
+      <button id="ps-btn" class="btn-p" style="font-size:14px;margin-bottom:12px" onclick="doPush()">🔔 Activar notificaciones push</button>
+      <div style="background:var(--soft2);border-radius:12px;padding:12px 14px">
+        <p style="font-size:11px;color:var(--ink3);line-height:1.65">💡 <strong>Tu mensaje de hoy:</strong><br/><em id="pp-t" style="color:var(--coral)"></em><br/><span id="pp-b" style="color:var(--ink2)"></span></p>
+      </div>
+    </div>
+    <div id="np-email" class="card" style="padding:20px;margin-bottom:16px;display:none">
+      <p style="font-size:11px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Tu correo</p>
+      <div style="background:var(--coralL);border-radius:12px;padding:11px 14px;border:1px solid rgba(232,86,122,.2);margin-bottom:14px"><p id="ne-email" style="font-size:13px;font-weight:700;color:var(--ink)">📧 —</p></div>
+      <div style="background:var(--goldL);border-radius:12px;padding:13px 14px;margin-bottom:14px;border:1px solid rgba(245,166,35,.35)">
+        <p style="font-size:11px;font-weight:700;color:#7A5500;margin-bottom:5px">Asunto del email de hoy:</p>
+        <p id="ne-asunto" style="font-size:13px;color:var(--ink);font-style:italic"></p>
+      </div>
+      <button class="btn-p" style="background:linear-gradient(135deg,var(--gold),#E09A10);color:var(--ink);font-size:14px;margin-bottom:12px" onclick="doEmailPrev()">📧 Abrir email de muestra</button>
+      <p style="font-size:11px;color:var(--ink3);line-height:1.65">💡 Para envío automático: <strong>EmailJS</strong> (emailjs.com · gratis 200/mes).</p>
+    </div>
+    <button class="btn-p" id="nd-btn" onclick="doNotifDone()">Ir al plan →</button>
   </div>
+</div>
 
-  <!-- TABLA COMPARATIVA -->
-  <div class="dif-tabla-wrap reveal">
-    <table class="dif-tabla">
-      <thead class="dif-thead">
-        <tr>
-          <th class="th-cat">Criterio</th>
-          <th class="th-cesar">⭐ Lic. César Jáuregui M. <span style="display:block;font-size:0.52rem;font-weight:600;opacity:0.8;margin-top:3px;">Fiscal General del Estado</span></th>
-          <th class="th-other">Persona A <span style="display:block;font-size:0.52rem;font-weight:600;opacity:0.65;margin-top:3px;">Sec. de Desarrollo Humano y Bien Común</span></th>
-          <th class="th-other">Persona B <span style="display:block;font-size:0.52rem;font-weight:600;opacity:0.65;margin-top:3px;">Sec. General de Gobierno del Estado</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="dif-tr">
-          <td class="td-cat">📅 Años en servicio público<span>Experiencia acumulada continua</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>30+ años</strong> desde 1992 — ininterrumpidos.<span class="dif-badge">Máximo</span></td>
-          <td class="td-other">~10 años continuos en cargos públicos</td>
-          <td class="td-other">26+ años con participación intermitente</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">🏙️ Municipios gobernados<span>Cargos ejecutivos municipales reales</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>3 municipios distintos:</strong> frontera, interior y capital.<span class="dif-badge">Máximo</span></td>
-          <td class="td-other">Cargo municipal en la capital solamente</td>
-          <td class="td-other">Cargo municipal en la capital solamente</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">📜 Experiencia legislativa<span>Diputaciones y liderazgo parlamentario</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>2 legislaturas · 6 años</strong> como Diputado y Coordinador del GP PAN.<span class="dif-badge">Único</span></td>
-          <td class="td-other">Sin experiencia legislativa</td>
-          <td class="td-other">Sin experiencia legislativa local</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">🔒 Seguridad y procuración de justicia<span>Dirección operativa real de instituciones de seguridad</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>Fiscal General:</strong> dirige la institución de justicia de los 67 municipios del estado más grande del país.<span class="dif-badge">Único</span></td>
-          <td class="td-other">Perfil de desarrollo social — sin experiencia en seguridad operativa</td>
-          <td class="td-other">Perfil de coordinación política — sin mando operativo en seguridad</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">🌐 Presencia institucional en Juárez<span>Cargos ejecutivos reales en la frontera</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>Nacido en Juárez.</strong> Director de Gobierno, Secretario del Ayuntamiento y candidato a alcalde en esa ciudad.<span class="dif-badge">Máximo</span></td>
-          <td class="td-other">Programas sociales que llegan a Juárez, sin cargo ejecutivo fronterizo</td>
-          <td class="td-other">Logros de movilidad en Juárez, sin residencia ni cargo local en la ciudad</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">🏛️ Los 3 niveles de gobierno<span>Federal · Estatal · Municipal</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>Los tres simultáneamente:</strong> CEN PAN federal, Congreso y Fiscalía estatal, tres secretarías municipales.<span class="dif-badge">Único</span></td>
-          <td class="td-other">Estatal y municipal (2 niveles)</td>
-          <td class="td-other">Federal temprano y estatal activo (2 niveles principales)</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">📊 Liderazgo en encuestas<span>Preferencia ciudadana · Alcaldía Capital</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>28.6%</strong> Gobernarte nov. 2025. <strong>22.2%</strong> Massive Caller feb. 2026. Encabeza todas las mediciones.<span class="dif-badge">1° lugar</span></td>
-          <td class="td-other">Crecimiento sostenido y positivo — perfil en ascenso</td>
-          <td class="td-other">Posicionamiento sólido — segundo lugar histórico</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">🤝 Cohesión interna<span>Relación con todas las corrientes del partido</span></td>
-          <td class="td-cesar"><span class="check">✔</span> <strong>"Sin fricciones con ningún grupo o corriente"</strong> — consenso transversal documentado (El Pueblo, ene. 2026)</td>
-          <td class="td-other">Respaldo sólido de figuras clave del gobierno estatal</td>
-          <td class="td-other">Militante de carrera con bases panistas leales</td>
-        </tr>
-        <tr class="dif-tr">
-          <td class="td-cat">🌿 Conocimiento territorial<span>Chihuahua más allá de la capital</span></td>
-          <td class="td-cesar"><span class="check">✔</span> Fiscalía atiende los 67 municipios — desde la sierra Tarahumara hasta la frontera norte. Lo conoce institucionalmente todo.</td>
-          <td class="td-other">Raíces serranas auténticas — conexión genuina con municipios rurales y comunidades indígenas</td>
-          <td class="td-other">Perfil urbano capitalino — conocimiento jurídico e institucional de la ciudad</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- VENTAJAS EXCLUSIVAS EN CARDS -->
-  <h3 style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-weight:700;color:var(--blanco);margin:48px 0 24px;position:relative;z-index:2;display:flex;align-items:center;gap:12px;"><span style="display:inline-block;width:4px;height:20px;background:var(--oro);border-radius:2px;"></span>Las 6 ventajas que solo Jáuregui puede ofrecer</h3>
-  <div class="dif-cards reveal">
-    <div class="dif-card dif-star dif-card-wrap">
-      <div class="dif-card-n">01</div>
-      <div class="dif-card-ico">⚖️</div>
-      <div class="dif-card-t">El único con mando real en seguridad</div>
-      <div class="dif-card-d">Ningún otro aspirante al mismo cargo ha dirigido jamás una institución de seguridad o procuración de justicia. Jáuregui lleva más de dos años coordinando investigación criminal, combate al crimen organizado y protección a víctimas en los 67 municipios de Chihuahua. Si la seguridad es el tema número uno para los ciudadanos, el Fiscal General es el candidato natural — no por promesa, sino por historial operativo.</div>
-    </div>
-    <div class="dif-card dif-card-wrap">
-      <div class="dif-card-n">02</div>
-      <div class="dif-card-ico">🏙️</div>
-      <div class="dif-card-t">El único candidato que también es de Juárez</div>
-      <div class="dif-card-d">Nació en Ciudad Juárez. Fue Director de Gobierno municipal, Secretario del Ayuntamiento de Juárez y candidato a su alcaldía. Hoy su Fiscalía opera en la frontera cada día. En una elección donde Juárez representa el 55% del voto estatal, ser el candidato que realmente conoce esa ciudad desde sus instituciones —no solo desde visitas— es una ventaja que ningún otro perfil puede replicar.</div>
-    </div>
-    <div class="dif-card dif-card-wrap">
-      <div class="dif-card-n">03</div>
-      <div class="dif-card-ico">📜</div>
-      <div class="dif-card-t">El único con experiencia legislativa real</div>
-      <div class="dif-card-d">Dos veces Diputado Local y Coordinador del Grupo Parlamentario del PAN en el Congreso del Estado — seis años en total como legislador y líder de bancada. Sabe exactamente cómo se aprueba el presupuesto municipal en el Congreso, cómo se negocia con mayorías opositoras y cómo funciona el Estado desde los tres poderes. Esa habilidad parlamentaria convierte a un buen alcalde en un alcalde que realmente gobierna.</div>
-    </div>
-    <div class="dif-card dif-card-wrap">
-      <div class="dif-card-n">04</div>
-      <div class="dif-card-ico">🕰️</div>
-      <div class="dif-card-t">La trayectoria más larga y diversa de los aspirantes</div>
-      <div class="dif-card-d">Desde 1992 sin interrupción: Congreso estatal, Dir. de Gobierno en Juárez, CEN PAN federal bajo Felipe Calderón, presidencia del Comité Municipal PAN Juárez, dos legislaturas, tres secretarías municipales (Juárez, Delicias, Capital), Secretaría General de Gobierno y Fiscalía General. Esa variedad de experiencias en todos los órdenes es lo que permite gobernar una ciudad compleja con criterio, no con improvisación.</div>
-    </div>
-    <div class="dif-card dif-card-wrap">
-      <div class="dif-card-n">05</div>
-      <div class="dif-card-ico">🤝</div>
-      <div class="dif-card-t">El perfil que une — sin divisiones internas</div>
-      <div class="dif-card-d">Construyó durante tres décadas relaciones con todos los grupos y corrientes de Acción Nacional en Chihuahua. Cuando llegue el momento de la selección interna, ese capital de confianza acumulado vale más que cualquier declaración de intención. Un candidato que genera adhesiones amplias dentro de su partido llega a la elección con el partido unido detrás de él — y eso se traduce en votos el día de la jornada.</div>
-    </div>
-    <div class="dif-card dif-star dif-card-wrap">
-      <div class="dif-card-n">06</div>
-      <div class="dif-card-ico">📡</div>
-      <div class="dif-card-t">Resultados verificables — todos los días</div>
-      <div class="dif-card-d">Plataforma Justicia Digital (primera en el norte del país), convenio DiDi para mujeres víctimas, GOECHI en escuelas, $150M en tecnología forense, 113 prófugos capturados en un solo mes, 134 sentencias en el primer semestre, caso Crematorio Plenitud atendido con rigor técnico y humano. Sus resultados no son gestión de escritorio — son operación de alto impacto que cualquier ciudadano puede verificar hoy mismo.</div>
-    </div>
-  </div>
-</section>
-
-<!-- TRAYECTORIA PAN -->
-<section id="partido">
-  <div class="pan-grid reveal">
-    <div class="pan-intro">
-      <div class="tag-row"><div class="tag-pip"></div><span class="tag-lbl">Militancia PAN</span></div>
-      <h2 class="sec-title">Más de 30 años<br><em>construyendo al PAN</em></h2>
-      <p class="sec-sub">No llegó al PAN cuando era conveniente — llegó antes de que fuera poderoso. Su militancia comenzó en 1990, cuando el partido aún construía su fuerza electoral en Chihuahua.</p>
-      <div class="tray-cita" style="margin-top:28px;">"No tiene bola incómoda con ninguno de los grupos o corrientes internos de Acción Nacional." — El Pueblo, enero 2026</div>
-    </div>
-    <div class="pan-cards">
-      <div class="pan-card">
-        <div class="pan-ico">📋</div>
-        <div class="pan-t">1990 · Fotocredencialización del IFE por el PAN</div>
-        <div class="pan-d">Encargado del programa de credencialización del Registro Federal de Electores por parte del PAN. Construyó bases democráticas desde el inicio de su carrera.</div>
-      </div>
-      <div class="pan-card">
-        <div class="pan-ico">⚖️</div>
-        <div class="pan-t">Dir. Jurídico CEN PAN · Felipe Calderón (Pdte.)</div>
-        <div class="pan-d">Director Jurídico del Comité Ejecutivo Nacional bajo la presidencia de Felipe Calderón Hinojosa. Operó la defensa jurídica del PAN a nivel nacional en años clave.</div>
-      </div>
-      <div class="pan-card">
-        <div class="pan-ico">🗳️</div>
-        <div class="pan-t">2002–2004 · Presidente Comité Municipal PAN Juárez</div>
-        <div class="pan-d">Dirigió el comité más grande del PAN en Chihuahua en términos de militancia y complejidad territorial. Entiende la estructura de base del partido como pocos.</div>
-      </div>
-      <div class="pan-card">
-        <div class="pan-ico">📣</div>
-        <div class="pan-t">2010 · Candidato a Presidencia Municipal Juárez</div>
-        <div class="pan-d">Compitió por la alcaldía juarense. Conoce la ciudad no solo desde el escritorio, sino desde la batalla electoral en las colonias y los debates públicos.</div>
-      </div>
-      <div class="pan-card">
-        <div class="pan-ico">🤝</div>
-        <div class="pan-t">Coordinador de campaña · Maru Campos</div>
-        <div class="pan-d">Fue coordinador clave de la campaña que llevó a Maru Campos a la gobernatura. Su relación con el liderazgo estatal del PAN es de las más sólidas dentro del partido.</div>
-      </div>
-      <div class="pan-card">
-        <div class="pan-ico">🏛️</div>
-        <div class="pan-t">Dos veces Coordinador GP PAN en Congreso Local</div>
-        <div class="pan-d">Representó al PAN como líder de la bancada en dos legislaturas distintas (2004–2007 y 2014–2016). El legislador que también fue ejecutivo — una combinación única.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ENCUESTAS -->
-<section id="encuestas">
-  <div style="margin-bottom:48px;" class="reveal">
-    <div class="tag-row"><div class="tag-pip"></div><span class="tag-lbl">Posicionamiento</span></div>
-    <h2 class="sec-title" style="color:var(--blanco);">El favorito<br><em style="color:var(--oro-lt);">que mantiene la delantera</em></h2>
-    <p class="sec-sub" style="color:rgba(189,208,232,0.65);margin-top:12px;">Jáuregui ha encabezado las preferencias del PAN para la alcaldía capital de manera constante desde que comenzaron las mediciones. El candidato con el perfil más sólido de la contienda interna.</p>
-  </div>
-  <div class="enc-layout reveal">
-    <div>
-      <div class="enc-card">
-        <h3>Preferencia interna PAN — Alcaldía Capital (Gobernarte / Massive Caller)</h3>
-        <div class="bar-item">
-          <div class="bar-lbl"><span>Octubre 2025 · Gobernarte</span><span class="bar-pct">25.7%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:25.7%"></div></div>
-        </div>
-        <div class="bar-item">
-          <div class="bar-lbl"><span>Noviembre 2025 · Gobernarte</span><span class="bar-pct">28.6%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:28.6%"></div></div>
-        </div>
-        <div class="bar-item">
-          <div class="bar-lbl"><span>Febrero 2026 · Massive Caller</span><span class="bar-pct">22.2%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:22.2%"></div></div>
-        </div>
-        <div class="enc-note">Fuentes: Gobernarte "Capitales de México" · Massive Caller Feb. 2026 · El Diario de Chihuahua</div>
-        <div class="enc-growth">
-          <div class="enc-growth-n">🥇 Líder histórico PAN Capital</div>
-          <div class="enc-growth-l">Único candidato que ha encabezado todas las mediciones de preferencia interna del PAN para la alcaldía capital desde octubre de 2025.</div>
-        </div>
-      </div>
-    </div>
-    <div class="enc-badges">
-      <div class="enc-badge">
-        <div class="enc-badge-ico">📊</div>
+<div id="s-app" class="screen">
+  <div class="app-hdr">
+    <div style="position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#F9A8D4,transparent 70%);opacity:.28;pointer-events:none"></div>
+    <div style="max-width:660px;margin:0 auto;position:relative">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
         <div>
-          <div class="enc-badge-t">PAN lidera la intención de voto con 42.6%</div>
-          <div class="enc-badge-d">En la capital del estado, el PAN supera a Morena (32.7%) por casi 10 puntos. El candidato del PAN parte con una ventaja estructural importante. (Massive Caller, feb. 2026)</div>
+          <p style="font-size:11px;font-weight:700;color:var(--coral);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px">💑 Juntos de Nuevo</p>
+          <h1 class="fr" style="font-size:clamp(18px,4vw,26px);font-weight:700;color:var(--ink);line-height:1.15">Hola, <span id="h-nom" style="color:var(--coral)"></span> 👋</h1>
         </div>
+        <button onclick="goProfile()" style="width:42px;height:42px;border-radius:50%;background:#fff;border:2px solid rgba(232,86,122,.25);font-size:18px;flex-shrink:0;box-shadow:0 2px 10px rgba(232,86,122,.12)">👤</button>
       </div>
-      <div class="enc-badge">
-        <div class="enc-badge-ico">⚡</div>
-        <div>
-          <div class="enc-badge-t">"La experiencia y manejo que se requiere, a todas luces la tiene Jáuregui"</div>
-          <div class="enc-badge-d">Análisis de El Pueblo (ene. 2026): "Su posible proyecto puede permear y convencer a las bases blanquiazules y a la ciudadanía chihuahuita." Reconocimiento editorial de su perfil superior.</div>
+      <div style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--ink2);font-weight:600">Día <strong id="h-dia" style="color:var(--coral)">1</strong> de 30</span>
+          <span id="h-pct" style="font-size:12px;color:var(--coral);font-weight:700">0%</span>
         </div>
-      </div>
-      <div class="enc-badge">
-        <div class="enc-badge-ico">🤝</div>
-        <div>
-          <div class="enc-badge-t">Sin fricciones internas dentro del PAN</div>
-          <div class="enc-badge-d">"No tiene bola incómoda con ninguno de los grupos o corrientes internos de Acción Nacional." Un perfil que genera consenso dentro del partido — ventaja decisiva para ganar la candidatura.</div>
-        </div>
-      </div>
-      <div class="enc-badge">
-        <div class="enc-badge-ico">🚺</div>
-        <div>
-          <div class="enc-badge-t">8 Mar 2026 · Convenio Paz y Justicia para las Mujeres</div>
-          <div class="enc-badge-d">El Día Internacional de la Mujer, encabezó junto a Maru Campos la firma del Convenio para la Paz y Justicia de las Mujeres entre FGE, Ichimujeres y TSJ. Las instituciones que permanecen deben formalizarse en acuerdos — no depender de voluntades individuales.</div>
-        </div>
+        <div class="prog-track"><div id="h-prog" class="prog-fill" style="width:0%"></div></div>
+        <p id="h-ini" style="font-size:11px;color:var(--ink3);margin-top:5px"></p>
       </div>
     </div>
   </div>
-</section>
-
-<!-- VISIÓN -->
-<section id="vision">
-  <div class="reveal">
-    <div class="tag-row"><div class="tag-pip"></div><span class="tag-lbl">Agenda para Chihuahua Capital</span></div>
-    <h2 class="sec-title">Propuestas desde<br><em>quien conoce los problemas por dentro</em></h2>
-    <p class="sec-sub" style="margin-top:12px;">No habla de seguridad desde un manual — la administra diariamente. Sus propuestas para la capital son extensiones naturales de lo que ya implementó como Secretario del Ayuntamiento y como Fiscal General.</p>
-  </div>
-  <div class="vision-grid reveal">
-    <div class="vision-card">
-      <div class="vision-n">01</div>
-      <div class="vision-t">Seguridad ciudadana coordinada</div>
-      <div class="vision-d">Como alcalde, coordinará con la Fiscalía, la policía estatal y las fuerzas federales desde el mismo lenguaje institucional que ya domina. La alcaldía que trabaja con el fiscal —no contra él— protege mejor a su gente.</div>
+  <div class="inner">
+    <div id="msg-card" class="card" style="margin:18px 0;overflow:hidden">
+      <div style="height:4px;background:linear-gradient(90deg,var(--coral),var(--gold),var(--sage))"></div>
+      <div style="padding:16px 16px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div><span id="mc-lbl" style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--coral);text-transform:uppercase">Tu mensaje de hoy</span>
+          <h3 class="fr" id="mc-tit" style="font-size:17px;color:var(--ink);margin-top:3px"></h3></div>
+          <button onclick="document.getElementById('msg-card').style.display='none'" style="font-size:22px;color:var(--ink3);background:none;border:none;flex-shrink:0;line-height:1;margin-top:-4px">×</button>
+        </div>
+        <p id="mc-body" style="font-size:14px;color:var(--ink2);line-height:1.75;margin-bottom:12px"></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-sm" id="mc-email" style="background:var(--goldL);color:#7A5500;border:1px solid rgba(245,166,35,.4)">📧 Ver email</button>
+          <button class="btn-sm" id="mc-push" style="background:var(--sageL);color:var(--sage);border:1px solid rgba(91,173,143,.4);display:none" onclick="tPush()">🔔 Push prueba</button>
+          <button class="btn-sm" id="mc-day" style="background:var(--coralL);color:var(--coral);border:1px solid rgba(232,86,122,.4)" onclick="goToday()">👁️ Ver actividad</button>
+        </div>
+      </div>
     </div>
-    <div class="vision-card">
-      <div class="vision-n">02</div>
-      <div class="vision-t">Estado de Derecho en cada colonia</div>
-      <div class="vision-d">Más patrullaje, alumbrado, cámaras y respuesta eficaz. La seguridad no empieza en el periódico — empieza en la calle de la casa. Llevará la lógica de procuración de justicia al nivel más cercano al ciudadano.</div>
+    <div class="tab-bar t4" id="wk-tabs"></div>
+    <div id="wk-banner" class="wbanner"></div>
+    <div class="tab-bar t3">
+      <button class="tab-btn on" id="st-days" onclick="switchTab('days')" style="background:var(--coral)">📅 Días</button>
+      <button class="tab-btn" id="st-media" onclick="switchTab('media')">🎬 Multimedia</button>
+      <button class="tab-btn" id="st-progs" onclick="switchTab('progs')">🤝 Programas</button>
     </div>
-    <div class="vision-card">
-      <div class="vision-n">03</div>
-      <div class="vision-t">Ciudad ordenada y transparente</div>
-      <div class="vision-d">30 años de servicio sin señalamientos de corrupción son la mejor garantía. Un gobierno municipal honesto, con cuentas claras, contratos transparentes y presupuesto al servicio de los vecinos.</div>
-    </div>
-    <div class="vision-card">
-      <div class="vision-n">04</div>
-      <div class="vision-t">Atención real a las víctimas</div>
-      <div class="vision-d">Aprendió en la Fiscalía que las instituciones de justicia existen para las víctimas, no para los trámites. Llevaría esa misma filosofía al ayuntamiento: gobierno que atiende, no que atiende mal y lento.</div>
-    </div>
-    <div class="vision-card">
-      <div class="vision-n">05</div>
-      <div class="vision-t">Desarrollo económico con certeza jurídica</div>
-      <div class="vision-d">"Sin seguridad no hay inversiones, no hay empleo y no hay calidad de vida." La certeza jurídica que da un alcalde que fue Fiscal General atrae inversiones que otros municipios no pueden garantizar.</div>
-    </div>
-    <div class="vision-card">
-      <div class="vision-n">06</div>
-      <div class="vision-t">Juárez y la capital: un estado sin divisiones</div>
-      <div class="vision-d">Trabajó en Juárez, legisló desde la capital, gobernó en Delicias. Como alcalde de la capital, entenderá que las decisiones de Chihuahua afectan a Juárez y viceversa. El único candidato con raíces genuinas en ambas ciudades.</div>
+    <div id="p-days"></div>
+    <div id="p-media" style="display:none"></div>
+    <div id="p-progs" style="display:none"></div>
+    <div style="margin-top:28px;border-radius:20px;background:linear-gradient(135deg,var(--coralL),var(--goldL),var(--sageL));padding:22px 18px;border:1.5px solid rgba(232,86,122,.18);text-align:center">
+      <div style="margin-bottom:10px;font-size:18px">❤️ 🧡 💛 💚 💜</div>
+      <p class="fr" style="font-size:15px;font-style:italic;color:var(--ink);line-height:1.85;margin-bottom:10px">"Cada noche que eligen buscarse,<br/>la distancia pierde terreno.<br/><strong style="color:var(--coral)">¿Quién va a moverse primero?</strong>"</p>
+      <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic">Lic. Agustín Flores C. · 2026 · Derechos Reservados</p>
     </div>
   </div>
-</section>
+</div>
 
-<!-- VALORES -->
-<section id="valores">
-  <div class="reveal">
-    <div class="tag-row"><div class="tag-pip" style="background:var(--oro-lt);"></div><span class="tag-lbl" style="color:var(--oro-lt);">Sus convicciones</span></div>
-    <h2 class="sec-title" style="color:var(--blanco);">Lo que guía<br><em style="color:var(--oro-lt);">cada decisión</em></h2>
-    <p class="sec-sub" style="color:rgba(189,208,232,0.65);margin-top:12px;">Sus valores no se construyeron en una junta de imagen. Se forjaron en 30 años de negociaciones difíciles, casos complejos y momentos donde fue más fácil ceder que defender el Estado de Derecho.</p>
+<div id="s-profile" class="screen" style="min-height:100vh;background:var(--cream);padding:20px 16px">
+  <div style="max-width:440px;margin:0 auto">
+    <button onclick="showScr('s-app')" style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--coral);font-weight:700;background:none;border:none;margin-bottom:20px;padding:4px 0">← Volver al plan</button>
+    <div class="card" style="padding:22px 18px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--gold));display:flex;align-items:center;justify-content:center;font-size:24px">😊</div>
+        <div><h2 class="fr" id="pr-nom" style="font-size:22px;color:var(--ink)"></h2><p id="pr-email" style="font-size:12px;color:var(--ink3)"></p><p id="pr-tel" style="font-size:12px;color:var(--ink3)"></p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">📅 Inicio</p><p id="pr-ini" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">📆 Día actual</p><p id="pr-dia" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">⏰ Recordatorio</p><p id="pr-hora" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">🔔 Push</p><p id="pr-push" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+      </div>
+    </div>
+    <div style="background:var(--goldL);border-radius:18px;padding:18px;border:1px solid rgba(245,166,35,.4);margin-bottom:14px">
+      <p style="font-size:11px;font-weight:700;color:#7A5500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">📧 Email de hoy — vista previa</p>
+      <p style="font-size:12px;color:var(--ink2);margin-bottom:4px"><strong>Asunto:</strong> <span id="pr-easunto"></span></p>
+      <p id="pr-ecuerpo" style="font-size:12px;color:var(--ink2);line-height:1.65;white-space:pre-line"></p>
+      <button onclick="prEmail()" style="margin-top:10px;font-size:12px;font-weight:700;color:#7A5500;background:rgba(245,166,35,.2);border:1px solid rgba(245,166,35,.5);border-radius:50px;padding:7px 16px">📧 Enviar a mi correo</button>
+    </div>
+    <button class="btn-g" style="color:var(--ink3)" onclick="if(confirm('¿Reiniciar el plan? Perderás todo el progreso.'))doReset()">🔄 Reiniciar perfil</button>
   </div>
-  <div class="valores-grid reveal">
-    <div class="valor-card">
-      <div class="valor-ico">⚖️</div>
-      <div class="valor-t">Estado de Derecho sin negociación</div>
-      <div class="valor-d">Ante la liberación del dueño del Crematorio Plenitud por un amparo federal, Jáuregui presentó de inmediato recurso de revisión, recurso de queja y acudió personalmente a Juárez a reunirse con las familias. No se rinde ante resoluciones injustas — las combate por la vía legal.</div>
-    </div>
-    <div class="valor-card">
-      <div class="valor-ico">👂</div>
-      <div class="valor-t">Escuchar antes de actuar</div>
-      <div class="valor-d">"La lección más importante de la función pública es atender a la ciudadanía, escuchar a la gente y ofrecer resultados." Se reunió personalmente con los colectivos de víctimas del Crematorio Plenitud, con iglesias evangélicas de Chihuahua y con empresarios de la CANACO Juárez. Un Fiscal de puertas abiertas.</div>
-    </div>
-    <div class="valor-card">
-      <div class="valor-ico">🔗</div>
-      <div class="valor-t">Coordinación interinstitucional probada</div>
-      <div class="valor-d">Firmó convenios con DiDi, con el Claustro Universitario, con el TSJ, la Procuraduría de NNA, la SSPE y la CEAVE. Se coordina con fiscales de 6 estados del norte. "La colaboración entre los diferentes órdenes de gobierno es esencial para enfrentar los retos de seguridad."</div>
-    </div>
-    <div class="valor-card">
-      <div class="valor-ico">🛡️</div>
-      <div class="valor-t">Honestidad probada · 30 años</div>
-      <div class="valor-d">Más de 30 años en el servicio público — diputado, secretario de ayuntamiento en tres municipios, Secretario General de Gobierno y Fiscal General — sin señalamientos de corrupción. En tiempos de desconfianza política, esa trayectoria limpia es argumento definitivo.</div>
-    </div>
-    <div class="valor-card">
-      <div class="valor-ico">👶</div>
-      <div class="valor-t">Las víctimas y los niños, primero</div>
-      <div class="valor-d">"Estamos plena y absolutamente conscientes del drama que muchos de ustedes vivieron." Lo dijo ante 400 niños víctimas en el evento de CEAVE. Creó el programa "Soy Asertivo" para jóvenes en conflicto. Implementó la Ruta de Atención a NNA Víctimas del Delito. El Fiscal humano.</div>
-    </div>
-    <div class="valor-card">
-      <div class="valor-ico">🏙️</div>
-      <div class="valor-t">Chihuahua completo · Juárez, Capital, Sierra</div>
-      <div class="valor-d">Trabajó en Juárez (2000–2010), legisló en la capital, gobernó en Delicias. Su Fiscalía atiende los 67 municipios del estado más grande de México — desde Guadalupe y Calvo hasta Ciudad Juárez. No promete conocer Chihuahua: ya la conoce entera.</div>
-    </div>
+</div>
+
+<div id="modal-cel" class="modal-ov">
+  <div class="modal-box">
+    <div style="font-size:52px;margin-bottom:12px">🎉</div>
+    <h2 class="fr" style="font-size:26px;color:var(--sage);margin-bottom:8px">¡Lo lograron!</h2>
+    <p id="cel-txt" style="font-size:15px;color:var(--ink2);line-height:1.75;margin-bottom:16px"></p>
+    <p class="fr" style="font-size:13px;font-style:italic;color:var(--ink3);margin-bottom:20px">"Este es solo el primer día del resto."</p>
+    <button class="btn-p" style="background:linear-gradient(135deg,var(--sage),#3A9A72)" onclick="document.getElementById('modal-cel').classList.remove('show')">🌿 Celebrar y continuar</button>
   </div>
-</section>
-
-<!-- PREGUNTA -->
-<section id="pregunta">
-  <div class="chat-layout reveal">
-    <div class="chat-hd">
-      <div class="tag-row"><div class="tag-pip"></div><span class="tag-lbl">Contacto Directo</span></div>
-      <h2 class="sec-title">Pregúntale<br>a <em style="color:var(--oro-lt);">César</em></h2>
-      <div class="chat-av-row">
-        <div class="chat-av">CJ</div>
-        <div>
-          <div class="chat-av-name">César Jáuregui Moreno</div>
-          <div class="chat-av-status"><div class="s-dot"></div>Responde en menos de 48 horas</div>
-        </div>
-      </div>
-      <div class="chat-nota">
-        <p>César revisa cada mensaje de manera personal. Escríbele tu pregunta o tu propuesta — te responderá en <strong>menos de 48 horas</strong> directamente.</p>
-      </div>
-      <a href="https://wa.me/message/A6U6KU4MQAQMH1" target="_blank" class="wa-btn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.854L.054 23.077a.75.75 0 0 0 .916.932l5.487-1.461A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.927 0-3.736-.518-5.293-1.42l-.379-.214-3.927 1.046 1.073-3.816-.234-.389A9.953 9.953 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-        Escríbele por WhatsApp
-        <span class="wa-badge">Responde en &lt; 48 hrs</span>
-      </a>
-      <div class="chat-sugg" style="margin-top:26px;">
-        <div class="chat-sugg-lbl">Preguntas frecuentes</div>
-        <div class="sugg-list">
-          <button class="sugg-btn" onclick="setSugg(this)">¿Cuál es tu propuesta concreta para la seguridad en la capital?</button>
-          <button class="sugg-btn" onclick="setSugg(this)">¿Por qué ser alcalde si ya eres Fiscal General?</button>
-          <button class="sugg-btn" onclick="setSugg(this)">¿Cómo mejorarías los servicios municipales básicos?</button>
-          <button class="sugg-btn" onclick="setSugg(this)">¿Qué harías diferente a las administraciones anteriores?</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="chat-win">
-      <div class="chat-topbar">
-        <div class="chat-tb-l">
-          <div class="chat-tb-av">CJ</div>
-          <div>
-            <div class="chat-tb-name">César Jáuregui</div>
-            <div class="chat-tb-sub">Fiscal General · Chihuahua 2027</div>
-          </div>
-        </div>
-        <div class="chat-tb-badge">⏱ &lt; 48 hrs</div>
-      </div>
-      <div class="chat-msgs" id="chatMsgs">
-        <div class="msg cesar">
-          <div class="msg-n">César Jáuregui</div>
-          <div class="msg-bbl">Gracias por tomarte el tiempo de escribirme. Para mí, cada chihuahuense que se interesa por su ciudad es alguien que ya está aportando a su comunidad. ⚖️</div>
-          <div class="msg-t">Hoy</div>
-        </div>
-        <div class="msg cesar">
-          <div class="msg-bbl">Treinta años en la función pública me enseñaron que los problemas se resuelven escuchando primero. Cuéntame tu pregunta o lo que le preocupa a tu colonia.</div>
-          <div class="msg-t">Hoy</div>
-        </div>
-      </div>
-      <div class="chat-inp-area">
-        <div class="chat-or">o escribe aquí y te respondemos por correo</div>
-        <div class="chat-name-row">
-          <input class="chat-field" id="chatName" type="text" placeholder="Tu nombre" maxlength="60"/>
-          <input class="chat-field" id="chatEmail" type="email" placeholder="Tu correo electrónico" maxlength="80"/>
-        </div>
-        <div class="chat-row">
-          <textarea class="chat-ta" id="chatInput" placeholder="Escríbele a César tu pregunta o propuesta..." rows="1" maxlength="300" oninput="updateCtr(this)"></textarea>
-          <button class="chat-send" onclick="sendMsg()">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          </button>
-        </div>
-        <div class="chat-ctr" id="chatCtr">0 / 300</div>
-        <div class="chat-disc">Al enviar aceptas que tu mensaje sea revisado por el equipo de César Jáuregui · Tu información es confidencial</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section id="cta">
-  <div class="cta-lbl"><div class="cta-pip"></div><span class="cta-etiq">Chihuahua 2027</span></div>
-  <h2 class="cta-title">Chihuahua necesita<br><strong>al que más la conoce.</strong></h2>
-  <p class="cta-sub">30 años de servicio ininterrumpido. Juárez, Delicias, la capital, el Congreso, la Secretaría General y la Fiscalía. César Jáuregui no llega a conocer Chihuahua — ya la conoce toda.</p>
-  <a href="#trayectoria" class="cta-btn">Conoce su trayectoria</a>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="foot-logo">Lic. César Jáuregui · <span>Chihuahua 2027</span></div>
-  <div class="foot-note">Material informativo Chihuahua 2027 · Estado de Chihuahua, México<br>Información basada en fuentes públicas verificadas<br><br>Página creada y desarrollada por: <span style="color:var(--oro-lt);font-style:italic;">Lic. Agustín Flores C.</span> · Derechos Reservados 2026</div>
-</footer>
-
-<!-- BOTÓN FLOTANTE CHATEA CON CÉSAR -->
-<button onclick="document.getElementById('pregunta').scrollIntoView({behavior:'smooth'})" class="float-btn" title="Chatea con César">
-  💬 ¡Chatea con César!
-</button>
-
-<style>
-  .float-btn {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    z-index: 999;
-    background: rgba(10,22,40,0.97);
-    color: var(--oro-lt);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 1px solid rgba(196,154,60,0.45);
-    padding: 13px 22px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
-    animation: floatIn 0.8s 1.2s ease both;
-    text-decoration: none;
-  }
-  .float-btn:hover {
-    background: var(--oro);
-    color: var(--azul);
-    border-color: var(--oro);
-    transform: translateY(-2px);
-  }
-  @keyframes floatIn {
-    from { opacity:0; transform:translateY(20px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-  @media(max-width:600px){
-    .float-btn { bottom:18px; right:16px; left:16px; text-align:center; }
-  }
-</style>
+</div>
 
 <script>
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, {threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-  document.querySelectorAll('.logros-cards,.valores-grid,.vision-grid,.pan-cards,.enc-badges').forEach(g=>{
-    g.querySelectorAll(':scope > *').forEach((c,i)=>{ c.style.transitionDelay=`${i*65}ms`; });
+const WKS={
+  1:{l:"Reconocimiento",c:"#E8567A",li:"#FFF0F3",e:"👁️",tl:"Ver con honestidad para poder avanzar"},
+  2:{l:"Reconexión",    c:"#F5A623",li:"#FFFAEE",e:"🤝",tl:"Conocerse otra vez, más profundo que antes"},
+  3:{l:"Intimidad",     c:"#9B72CF",li:"#F5F0FF",e:"🌸",tl:"El perdón real y el contacto que sana"},
+  4:{l:"Compromiso",    c:"#5BAD8F",li:"#F0FAF5",e:"🌿",tl:"Construir la versión del amor que eligieron"},
+};
+const DYS=[
+  {d:1,w:1,t:"El Primer Gesto",i:"👁️",a:"Esta noche, sin teléfono, siéntense frente a frente 5 minutos. Ninguno habla. Solo mírense a los ojos. Al terminar, cada uno dice una sola palabra de lo que sintió.",r:"El amor no se fue. Se cubrió de costumbre. Hoy empiezas a descubrirlo.",p:"Apaga notificaciones desde las 9 PM. Coloca el teléfono en otra habitación."},
+  {d:2,w:1,t:"La Pregunta Real",i:"💬",a:"Pregunta genuinamente: '¿Cómo estás tú... de verdad?' Escucha sin responder, sin aconsejar. Solo recibe.",r:"Escuchar es el primer acto de amor que olvidamos y el primero que debemos recuperar.",p:"No interrumpas. No defiendas. Solo escucha con los ojos, el cuerpo y el corazón."},
+  {d:3,w:1,t:"La Carta Silenciosa",i:"✍️",a:"Escribe una carta a mano donde reconoces 3 momentos en los que elegiste la distancia. No acuses. Solo confiesa lo tuyo.",r:"La reconciliación empieza cuando alguien tiene el valor de decir: yo también me alejé.",p:"No es para culparte. Es para nombrarlo. Lo que se nombra puede ser cambiado."},
+  {d:4,w:1,t:"El Archivo del Amor",i:"📸",a:"Busquen juntos 3 fotos de cuando eran felices. Cuenten la historia detrás de cada una.",r:"Esa versión de ustedes no murió. Solo está esperando ser convocada de nuevo.",p:"No compares ese entonces con el hoy con amargura. Úsalo como brújula, no como herida."},
+  {d:5,w:1,t:"El Pacto del Umbral",i:"🚪",a:"Establezcan UN ritual de llegada: un abrazo de al menos 6 segundos cada vez que uno llega. Sin excepción.",r:"Los rituales pequeños construyen la arquitectura del amor cotidiano.",p:"6 segundos es el tiempo mínimo para que el cuerpo libere oxitocina, la hormona del vínculo."},
+  {d:6,w:1,t:"Nombrar lo que Duele",i:"💧",a:"Cada uno completa: 'Me duele que... pero entiendo que...' Hablen de UN solo tema hoy.",r:"Decir lo que duele con amor no es atacar. Es construir el puente que faltaba.",p:"Usa siempre 'yo siento' antes que 'tú hiciste'. Esto no es técnica, es respeto."},
+  {d:7,w:1,t:"Noche sin Pantallas",i:"🌙",a:"Una noche completa sin televisión, teléfono ni tablet después de las 8 PM. Cocinen, jueguen, platiquen.",r:"La pantalla no los separó. Pero llenarla de ustedes los volverá a unir.",p:"Si el silencio se siente incómodo, es buena señal: hay algo importante esperando ser dicho."},
+  {d:8,w:2,t:"El Mapa de tu Pareja",i:"🗺️",a:"Cada uno responde por escrito: ¿Cuál es el mayor sueño de tu pareja? ¿Su mayor miedo? ¿Lo que más le pesa? Compárenlo.",r:"La intimidad es saber qué le quita el sueño a la persona que duerme a tu lado.",p:"Concepto Gottman: 'Mapa del amor'. Las parejas que se conocen profundamente resisten las crisis."},
+  {d:9,w:2,t:"La Deuda de Gratitud",i:"🙏",a:"Cada uno menciona 5 cosas específicas por las que está agradecido. No 'eres bueno', sino el ejemplo concreto.",r:"La gratitud específica es reconocimiento. El reconocimiento es oxígeno para el amor.",p:"La gratitud diaria es el predictor más fuerte de satisfacción matrimonial."},
+  {d:10,w:2,t:"Sanar una Herida Vieja",i:"🩹",a:"Elijan UNA herida del pasado. Quien la causó dice 'me arrepiento de...' y escucha sin defenderse.",r:"Las heridas no procesadas se convierten en la distancia que no saben explicar.",p:"Si es una herida muy profunda, consideren apoyo profesional."},
+  {d:11,w:2,t:"La Cita Inesperada",i:"🌹",a:"Uno de los dos organiza una sorpresa pequeña: cena en el piso, paseo nocturno, nota escondida.",r:"La iniciativa amorosa dice: 'Pensé en ti cuando no tenías por qué estar en mi mente.'",p:"El romanticismo no muere. Solo deja de ser prioridad. Hoy vuelve a serlo."},
+  {d:12,w:2,t:"El Lenguaje del Amor",i:"🔑",a:"¿Cómo sabes que eres amado/a? Comparen sus respuestas. ¿Han estado amando al otro en el lenguaje equivocado?",r:"Muchas parejas se aman profundamente y se sienten solas porque hablan idiomas distintos.",p:"Basado en Gary Chapman. Test gratuito: 5lovelanguages.com."},
+  {d:13,w:2,t:"Vulnerabilidad Compartida",i:"✨",a:"Compartan en voz alta lo que agradecen de su relación y lo que necesitan sanar.",r:"La vulnerabilidad compartida crea intimidad que pocas conversaciones logran.",p:"Programa recomendado: Retrouvaille — para parejas en crisis. retrouvaille.org"},
+  {d:14,w:2,t:"Revisión de Mitad",i:"📊",a:"¿Qué ha cambiado en mí? ¿Qué he notado en mi pareja? ¿Qué me ha costado más? Compártanlo sin juzgar.",r:"El progreso no siempre se siente. A veces solo se ve cuando te detienes a mirarlo.",p:"No se comparen con otras parejas. Su proceso es único."},
+  {d:15,w:3,t:"El Sueño Compartido",i:"🌅",a:"Construyan juntos una visión a 5 años. Escríbanla como si ya fuera realidad: 'En 2030 nosotros...'",r:"Las parejas con narrativa compartida del futuro tienen un ancla para los momentos de tormenta.",p:"Equipos de Nuestra Señora — movimiento de espiritualidad conyugal con retiros y encuentros."},
+  {d:16,w:3,t:"Conversaciones Profundas",i:"🌊",a:"Tres preguntas (15 min c/u): ¿Momento más feliz de tu vida? ¿Qué parte tuya no conozco? ¿De qué tienes miedo?",r:"La profundidad no llega por accidente. Se convoca con las preguntas correctas.",p:"Apaguen todo. Sin prisas."},
+  {d:17,w:3,t:"Acuerdos Nuevos",i:"📋",a:"Escriban 5 compromisos vivos. Ej: 'Nos decimos buenas noches aunque estemos enojados'. Fírmenlo.",r:"Los matrimonios sanos tienen acuerdos que protegen el amor en los días difíciles.",p:"Guárdenlo y léanlo en voz alta cada primer domingo del mes."},
+  {d:18,w:3,t:"Tocar y Ser Tocado",i:"🤲",a:"Masaje de espalda 10 min en silencio. El que recibe solo acepta. El que da: presencia total. Luego cambien.",r:"El contacto físico sin agenda sexual es uno de los vínculos más sanadores del matrimonio.",p:"El tacto activa el sistema nervioso parasimpático. Es necesidad biológica."},
+  {d:19,w:3,t:"Perdón Profundo",i:"🕊️",a:"Cada uno escribe: lo que nunca pidió perdón + lo que no ha perdonado del todo. Léanselo. Rompan el papel juntos.",r:"Perdonar no es olvidar. Es elegir que esa herida ya no dicte tu presente.",p:"El ritual de destruir el papel es simbólico pero poderoso. El cuerpo necesita gestos."},
+  {d:20,w:3,t:"El Día de Servicio",i:"🎁",a:"Elige UNA cosa que tu pareja odia hacer y hazla hoy, sin mencionarlo, sin esperar reconocimiento.",r:"Servir sin llevar la cuenta es el amor maduro que los veteranos atesoran.",p:"Movimiento Familiar Cristiano (MFC) — grupos de crecimiento matrimonial en parroquias locales."},
+  {d:21,w:3,t:"La Noche Especial",i:"💍",a:"Recreen algo de su historia especial. Una canción, un platillo, un lugar. No la perfección: la intención.",r:"No se trata de volver al pasado. Se trata de recordarle al presente que ese amor existe.",p:"Fin de semana 3. El trabajo más difícil ya está hecho."},
+  {d:22,w:4,t:"Conocerse de Nuevo",i:"🔄",a:"Preguntas como si se acabaran de conocer: ¿Película favorita hoy? ¿Música? ¿Mayor proyecto personal?",r:"Muchas parejas están enamoradas de quien fue su pareja, no de quien es hoy.",p:"Las personas cambian cada 5-7 años. El amor que no se actualiza envejece mal."},
+  {d:23,w:4,t:"Carta al Futuro",i:"📬",a:"Cada uno escribe una carta a su relación dentro de 10 años. Guárdenla en un sobre sellado con la fecha.",r:"La intención sostenida en el tiempo se convierte en destino.",p:"Conviértanla en un ritual anual: ábrela y escriban una nueva."},
+  {d:24,w:4,t:"Hablar del Dinero",i:"💰",a:"Sin reproches: ¿Qué relación tiene cada uno con el dinero? ¿Miedos financieros? ¿Meta económica común?",r:"El dinero es el segundo tema que más destruye relaciones y el primero que menos se habla con amor.",p:"No resuelvan todo hoy. Solo abran el tema con honestidad. Eso ya es enorme."},
+  {d:25,w:4,t:"Solo Ustedes Dos",i:"👫",a:"Planeen algo sin hijos, trabajo ni familia. Una actividad nueva que ninguno haya hecho. Solo diferente y juntos.",r:"La novedad compartida reactiva el sistema de recompensa del cerebro. Se enamoran de nuevo.",p:"Investigación de Aron: parejas que hacen actividades nuevas juntas reportan mayor satisfacción."},
+  {d:26,w:4,t:"Un Retiro de Pareja",i:"⛪",a:"Investiguen y agenden un retiro: Retrouvaille (crisis), Encuentro Matrimonial Mundial, Equipos de Nuestra Señora.",r:"El amor no se mantiene solo. Necesita comunidad y espacios para renovarse.",p:"Retrouvaille: retrouvaille.org | Encuentro Matrimonial: wwme.org"},
+  {d:27,w:4,t:"El Inventario del Amor",i:"📝",a:"Lista: 10 cosas que amo de ti HOY. Escríbanlas. Luego léanselas lentamente, mirándose.",r:"El amor que no se dice en voz alta se convierte en amor que el otro no puede sentir.",p:"Guarden estas listas. Léanlas en los días difíciles que inevitablemente vendrán."},
+  {d:28,w:4,t:"Pedir Ayuda",i:"🆘",a:"Evalúen: ¿Necesitan apoyo profesional? Si hay duda, investiguen juntos un terapeuta EFT y agenden UNA sesión.",r:"Las parejas que buscan ayuda a tiempo tienen 70% más probabilidades de superar su crisis.",p:"En México: busca psicólogos con certificación en EFT (Terapia Focalizada en Emociones)."},
+  {d:29,w:4,t:"Renovación de Votos",i:"💒",a:"En privado, cada uno dice por qué elige seguir. 'Te elijo porque...' Razones reales. De hoy.",r:"El amor no es un contrato que se firmó una vez. Es una elección que se renueva cada día.",p:"Si desean hacerlo con dimensión sacramental, contácten a su parroquia."},
+  {d:30,w:4,t:"El Primer Día del Resto",i:"🌄",a:"Revisen el plan completo. ¿Qué rituales conservan? Elijan 3 prácticas permanentes y escríbanlas como su 'Código de Pareja'.",r:"30 días no arreglan una relación. Pero sí pueden ser el punto en que decidieron que valía la pena arreglarla.",p:"Celebren hoy. No porque terminaron: sino porque empezaron. Eso es lo más difícil."},
+];
+const MGS=[
+  {t:"¡Comienza tu Día 1!",push:"Hoy das el primer paso, {n}. Esta noche: 5 minutos sin teléfono, solo mírense a los ojos.",as:"Día 1 — Tu primer gesto, {n} 💑",cu:"Hola {n},\n\nHoy es el Día 1 de tu plan «Juntos de Nuevo».\n\nActividad: Siéntense frente a frente 5 minutos sin teléfono. Solo mírense. Al terminar, digan una sola palabra de lo que sintieron.\n\nEl amor no se fue. Se cubrió de costumbre. Hoy empieza a descubrirse.\n\n💑 Juntos de Nuevo"},
+  {t:"Día 2 — Pregunta de verdad",push:"Hoy, {n}: pregunta '¿Cómo estás tú... de verdad?' y escucha sin dar consejos.",as:"Día 2 — La pregunta más importante que puedes hacer hoy",cu:"Hola {n},\n\nHoy: pregunta genuinamente. No el '¿cómo estás?' de rutina. El de verdad.\n\nEscucha sin interrumpir. Sin defender. Solo recibe.\n\nEscuchar es el primer acto de amor que olvidamos. 💬\n\n💑 Juntos de Nuevo"},
+  {t:"Día 3 — Tu carta",push:"Escribe a mano 3 momentos en que elegiste la distancia. No para culparte: para nombrarlo.",as:"Día 3 — La carta que puede cambiarlo todo, {n}",cu:"Hola {n},\n\nHoy escribes una carta. Solo confiesa lo tuyo: 3 momentos en que sí elegiste alejarte.\n\nNo es para culparte. Es para nombrarlo. Lo que se nombra puede ser cambiado.\n\n💑 Juntos de Nuevo"},
+  {t:"Día 4 — El archivo del amor",push:"Busquen juntos 3 fotos de cuando eran felices. Esa versión de ustedes sigue ahí.",as:"Día 4 — Hay fotos esperando ser redescubiertas",cu:"Hola {n},\n\nHoy buscan juntos 3 fotos de cuando eran felices.\n\nCuenten la historia detrás de cada una. ¿Quiénes eran en ese momento?\n\nEsa versión de ustedes no murió. 📸\n\n💑 Juntos de Nuevo"},
+  {t:"Día 5 — El abrazo del umbral",push:"Ritual nuevo, {n}: un abrazo de 6 segundos cada vez que uno llega a casa.",as:"Día 5 — 6 segundos que cambian la química del amor",cu:"Hola {n},\n\nHoy establecen su ritual del umbral: un abrazo de mínimo 6 segundos cada vez que uno llega.\n\n6 segundos = oxitocina, la hormona del vínculo. Un ritual pequeño que construye algo enorme. 🚪\n\n💑 Juntos de Nuevo"},
+  {t:"Día 6 — Nombrar lo que duele",push:"{n}, hoy: 'Me duele que... pero entiendo que...' Un solo tema. Con amor.",as:"Día 6 — Decir lo que duele no es atacar, {n}",cu:"Hola {n},\n\nHoy usan esta frase: 'Me duele que... pero entiendo que...'\n\nPrimero 'yo siento', nunca 'tú hiciste'.\n\nDecir lo que duele con amor no es atacar. Es construir el puente que faltaba. 💧\n\n💑 Juntos de Nuevo"},
+  {t:"Día 7 — Sin pantallas",push:"Noche sin pantallas, {n}. Sin teléfono, sin tele después de las 8 PM.",as:"Día 7 — Una semana. Esta noche, solo ustedes.",cu:"Hola {n},\n\n¡Una semana! Ya son diferentes de como empezaron.\n\nHoy: sin dispositivos después de las 8 PM. Cocinen, jueguen, platiquen.\n\nSi el silencio se siente incómodo, es buena señal. 🌙\n\n💑 Juntos de Nuevo"},
+  {t:"Semana 2 — El mapa de tu pareja",push:"Semana 2, {n}. ¿Sabes cuál es el mayor sueño de tu pareja hoy?",as:"Semana 2, Día 8 — ¿Cuánto conoces a tu pareja hoy?",cu:"Hola {n},\n\n¡Bienvenido/a a la Semana 2: Reconexión!\n\nHoy responden por escrito: ¿Cuál es el mayor sueño de tu pareja? ¿Su mayor miedo?\n\nLa intimidad real es saber qué le quita el sueño a quien duerme a tu lado. 🗺️\n\n💑 Juntos de Nuevo"},
+  {t:"Día 9 — La deuda de gratitud",push:"Hoy, {n}: 5 cosas específicas por las que agradeces a tu pareja. Sé específico/a.",as:"Día 9 — La gratitud que tu pareja todavía no sabe que sientes",cu:"Hola {n},\n\nHoy: 5 cosas específicas por las que agradeces a tu pareja.\n\nNo 'eres bueno/a'. Sé específico/a: 'el martes que llegaste cansado/a y aún así me abrazaste'.\n\nLa gratitud diaria: predictor más fuerte de satisfacción matrimonial. 🙏\n\n💑 Juntos de Nuevo"},
+  {t:"Día 10 — Sanar una herida",push:"{n}, hoy eligen UNA herida del pasado. Quien la causó dice: 'Me arrepiento de...'",as:"Día 10 — La herida que nunca cerró bien",cu:"Hola {n},\n\nHoy eligen UNA herida del pasado que nunca cerró del todo.\n\nQuien la causó dice: 'Me arrepiento de...' y escucha cómo el otro lo vivió. Sin defenderse.\n\nLas heridas no procesadas se convierten en la distancia que no saben explicar. 🩹\n\n💑 Juntos de Nuevo"},
+  {t:"Día 11 — La sorpresa",push:"Organiza una sorpresa pequeña para tu pareja, {n}. Lo que importa es la iniciativa.",as:"Día 11 — Una sorpresa pequeña cambia todo",cu:"Hola {n},\n\nHoy alguien organiza una sorpresa pequeña: una nota escondida, una cena improvisada, un paseo nocturno.\n\nNo tiene que ser costoso. Tiene que ser intencional. 🌹\n\n💑 Juntos de Nuevo"},
+  {t:"Día 12 — El lenguaje del amor",push:"{n}: ¿Cómo sabes que eres amado/a? Hoy descubren si hablan el mismo idioma.",as:"Día 12 — ¿Están hablando el mismo idioma del amor?",cu:"Hola {n},\n\nHoy cada uno responde: ¿Cómo sabes que eres amado/a?\n\nPalabras de afirmación, tiempo, actos de servicio, regalos o contacto físico.\n\nTest gratuito: 5lovelanguages.com 🔑\n\n💑 Juntos de Nuevo"},
+  {t:"Día 13 — Vulnerabilidad compartida",push:"Hoy comparten en voz alta lo que agradecen de su relación y lo que necesitan sanar.",as:"Día 13 — La vulnerabilidad que los acerca",cu:"Hola {n},\n\nHoy comparten en voz alta lo que agradecen de su relación y lo que necesitan sanar.\n\nLa vulnerabilidad compartida crea la intimidad más profunda. ✨\n\n💑 Juntos de Nuevo"},
+  {t:"Día 14 — ¡Dos semanas!",push:"¡Dos semanas, {n}! ¿Qué ha cambiado en ti? ¿Qué has notado en tu pareja?",as:"🎉 Día 14 — ¡Dos semanas completas!",cu:"Hola {n},\n\n¡DOS SEMANAS completas! Eso no es poco. Es mucho.\n\nHoy cada uno responde honestamente:\n• ¿Qué ha cambiado en mí?\n• ¿Qué me ha costado más?\n\nEl progreso no siempre se siente. 📊\n\n💑 Juntos de Nuevo"},
+  {t:"Semana 3 — El sueño compartido",push:"¡Semana 3, {n}! Hoy construyen juntos su visión a 5 años.",as:"Semana 3, Día 15 — ¿Dónde están ustedes en 5 años?",cu:"Hola {n},\n\n¡Bienvenido/a a la Semana 3: Intimidad!\n\nHoy construyen su visión compartida a 5 años: 'En 2030 nosotros...'\n\nLas parejas con narrativa compartida del futuro tienen un ancla para los momentos de tormenta. 🌅\n\n💑 Juntos de Nuevo"},
+  {t:"Día 16 — Conversaciones profundas",push:"Hoy tres preguntas, {n}: ¿Momento más feliz? ¿Qué parte no conozco? ¿De qué tienes miedo?",as:"Día 16 — Las 3 preguntas que cambian todo",cu:"Hola {n},\n\nHoy usan estas preguntas (15 min cada una):\n\n1. ¿Cuál fue el momento más feliz de tu vida?\n2. ¿Qué parte de ti sientes que yo todavía no conozco?\n3. ¿De qué tienes miedo que nunca me hayas dicho?\n\nApaguen todo. Sin prisas. 🌊\n\n💑 Juntos de Nuevo"},
+  {t:"Día 17 — Sus acuerdos nuevos",push:"Hoy, {n}: escriban 5 compromisos vivos para su relación. Fírmenlo.",as:"Día 17 — Los acuerdos que protegen el amor",cu:"Hola {n},\n\nHoy escriben juntos 5 acuerdos de convivencia. No reglas rígidas: compromisos vivos.\n\nEj: 'Nos decimos buenas noches aunque estemos enojados'. Fírmenlo. 📋\n\n💑 Juntos de Nuevo"},
+  {t:"Día 18 — Tocar y ser tocado",push:"Hoy, {n}: masaje de espalda 10 minutos en silencio. Presencia total. Luego cambien.",as:"Día 18 — El contacto que sana (sin agenda)",cu:"Hola {n},\n\nHoy: masaje de espalda de 10 minutos en silencio. Sin pretensión romántica.\n\nEl tacto activa el sistema nervioso parasimpático. Es necesidad biológica. 🤲\n\n💑 Juntos de Nuevo"},
+  {t:"Día 19 — El perdón profundo",push:"Día del perdón, {n}. Escribe lo que nunca pediste perdón. Léanselo. Rompan el papel.",as:"Día 19 — Perdonar no es olvidar. Es elegir.",cu:"Hola {n},\n\nHoy cada uno escribe:\n• Algo que nunca pedí perdón\n• Algo que no he logrado perdonar del todo\n\nSe lo leen en voz alta. Luego quemen o rompan el papel juntos.\n\nPerdonar es elegir que esa herida ya no dicte tu presente. 🕊️\n\n💑 Juntos de Nuevo"},
+  {t:"Día 20 — El acto secreto",push:"Hoy {n}: elige UNA cosa que tu pareja odia hacer en casa y hazla tú, sin mencionarlo.",as:"Día 20 — Servir sin llevar la cuenta",cu:"Hola {n},\n\nHoy eliges UNA cosa que tu pareja odia hacer en casa y la haces tú.\n\nSin mencionarlo. Sin esperar que lo noten. Solo como acto de amor puro. 🎁\n\n💑 Juntos de Nuevo"},
+  {t:"Día 21 — ¡Tres semanas! La noche especial",push:"¡Tres semanas, {n}! Esta noche recreen algo especial de su historia.",as:"🎉 Día 21 — ¡3 semanas! La noche más especial",cu:"Hola {n},\n\n¡TRES SEMANAS! Son diferentes de quienes eran hace 21 días.\n\nEsta noche recreen algo de su historia: una canción especial, un platillo favorito, un lugar significativo. 💍\n\n💑 Juntos de Nuevo"},
+  {t:"Semana 4 — Conócele de nuevo",push:"¡Semana 4, {n}! Háganle preguntas a tu pareja como si se acabaran de conocer.",as:"Semana 4, Día 22 — ¿Quién es tu pareja hoy?",cu:"Hola {n},\n\n¡Bienvenido/a a la Semana 4: Compromiso!\n\nHoy se hacen preguntas como si se acabaran de conocer:\n• ¿Cuál es tu película favorita ahora?\n• ¿Qué música escuchas?\n• ¿Cuál es tu mayor proyecto personal hoy?\n\nLas personas cambian cada 5-7 años. 🔄\n\n💑 Juntos de Nuevo"},
+  {t:"Día 23 — Carta al futuro",push:"Hoy {n}: escribe una carta a tu relación dentro de 10 años. Guárdenla en un sobre sellado.",as:"Día 23 — Una carta que abrirán en 10 años",cu:"Hola {n},\n\nHoy cada uno escribe una carta a la versión de su relación dentro de 10 años.\n\nDescríbanla como si ya fuera realidad. Guárdenla en un sobre sellado con la fecha. 📬\n\n💑 Juntos de Nuevo"},
+  {t:"Día 24 — El dinero",push:"Hoy {n}: el tema que más evitan. Las finanzas. Sin reproches, con curiosidad.",as:"Día 24 — La conversación de dinero que nunca tuvieron",cu:"Hola {n},\n\nHoy abordan el tema que más se evita: las finanzas.\n\nSin reproches. Con curiosidad:\n• ¿Qué relación tiene cada uno con el dinero?\n• ¿Qué miedos financieros tienen?\n• ¿Cuál es su meta común?\n\n💰\n\n💑 Juntos de Nuevo"},
+  {t:"Día 25 — Solo ustedes dos",push:"Hoy, {n}: planeen algo nuevo que ninguno haya hecho. La novedad compartida los enamora.",as:"Día 25 — Una aventura nueva para los dos",cu:"Hola {n},\n\nHoy planean algo nuevo sin hijos, trabajo ni familia.\n\nLa novedad compartida reactiva el sistema de recompensa del cerebro. Literalmente, se vuelven a enamorar. 👫\n\n💑 Juntos de Nuevo"},
+  {t:"Día 26 — Un retiro de pareja",push:"Hoy {n}: investiguen y agenden un retiro. El amor necesita espacios para renovarse.",as:"Día 26 — Agenda ya su próximo retiro de pareja",cu:"Hola {n},\n\nHoy investigan y reservan fecha para un retiro de pareja.\n\nOpciones:\n• Retrouvaille: retrouvaille.org\n• Encuentro Matrimonial Mundial: wwme.org\n• Equipos de Nuestra Señora: equipes-nd.org\n\n⛪\n\n💑 Juntos de Nuevo"},
+  {t:"Día 27 — 10 razones",push:"{n}: haz una lista de 10 cosas que amas de tu pareja HOY. Luego léansela.",as:"Día 27 — 10 cosas que amas de tu pareja hoy",cu:"Hola {n},\n\nHoy cada uno hace una lista: 10 cosas que amo de ti HOY.\n\nNo las compartan de inmediato. Escríbanlas primero. Luego léanselas lentamente, mirándose. 📝\n\n💑 Juntos de Nuevo"},
+  {t:"Día 28 — ¿Necesitan ayuda?",push:"Día 28, {n}. ¿Necesitan apoyo profesional? Si hay duda, la respuesta es sí.",as:"Día 28 — Pedir ayuda es un acto de valentía",cu:"Hola {n},\n\nHoy evalúan honestamente: ¿Necesitan apoyo profesional?\n\nSi la respuesta es sí, investiguen juntos un terapeuta de pareja y agenden UNA sesión.\n\nEn México: busca psicólogos certificados en EFT. Hacerlo es fortaleza, no fracaso. 🆘\n\n💑 Juntos de Nuevo"},
+  {t:"Día 29 — Se eligen de nuevo",push:"Mañana es el último día, {n}. Esta noche, dile por qué lo/la eliges.",as:"Día 29 — Mañana es el último día. Esta noche, elígele.",cu:"Hola {n},\n\nMañana es el Día 30. Esta noche, en privado, cada uno le dice al otro por qué elige seguir.\n\nNo frases genéricas. Razones reales, concretas, de hoy: 'Te elijo porque...'\n\nEl amor se renueva cada día. 💒\n\n💑 Juntos de Nuevo"},
+  {t:"🎉 ¡Día 30 — Lo lograron!",push:"¡LO LOGRARON, {n}! Hoy eligen 3 prácticas permanentes y las escriben como su Código de Pareja.",as:"🎉 DÍA 30 — ¡Lo lograron, {n}! ❤️",cu:"Hola {n},\n\n¡LO LOGRARON! 30 días de elecciones valientes.\n\nHoy:\n• ¿Qué rituales quieren conservar?\n• ¿Cuáles fueron sus momentos más importantes?\n• Elijan 3 prácticas permanentes y escríbanlas como su 'Código de Pareja'.\n\n30 días no arreglan una relación. Pero sí pueden ser el punto en que decidieron que valía la pena arreglarla. Ese punto lo es todo.\n\nCelebren hoy. No porque terminaron: sino porque empezaron. 🌄\n\nCon cariño — Juntos de Nuevo 💑"},
+];
+const MDA={
+  1:[{i:"▶️",lb:"TED · Brené Brown",t:"El poder de la vulnerabilidad",d:"La conferencia más vista sobre conexión humana. Subtítulos en español.",url:"https://www.youtube.com/watch?v=iCvmsMzlF7o",tag:"20 min"},{i:"▶️",lb:"Gottman Institute",t:"Canal oficial de YouTube",d:"Videos cortos basados en décadas de investigación. Busca: 'Four Horsemen'.",url:"https://www.youtube.com/@GottmanInstitute",tag:"Canal"},{i:"📰",lb:"Gottman · Blog",t:"Los Cuatro Jinetes del matrimonio",d:"Los 4 patrones de comunicación que predicen la ruptura.",url:"https://www.gottman.com/blog/the-four-horsemen-recognizing-criticism-contempt-defensiveness-and-stonewalling/",tag:"Artículo"},{i:"🔧",lb:"Herramienta",t:"Relationship Checkup",d:"Evaluación online para identificar fortalezas y áreas de crecimiento.",url:"https://www.gottman.com/couples/",tag:"Test gratuito"}],
+  2:[{i:"▶️",lb:"Gary Chapman",t:"Los 5 Lenguajes del Amor",d:"Conferencia en español con millones de vistas.",url:"https://www.youtube.com/results?search_query=gary+chapman+5+lenguajes+del+amor+en+español",tag:"YouTube"},{i:"🔧",lb:"5lovelanguages.com",t:"Test oficial de los 5 Lenguajes",d:"Cada uno lo hace por separado y comparan. Gratuito.",url:"https://5lovelanguages.com/quizzes/love-language",tag:"Test · 10 min"},{i:"▶️",lb:"Gottman · YouTube",t:"Cómo reconstruir la confianza",d:"Videos sobre reparación después de la distancia emocional.",url:"https://www.youtube.com/results?search_query=gottman+trust+rebuild+relationship",tag:"YouTube"},{i:"📖",lb:"Libro · EFT",t:"Abrázame Fuerte — Sue Johnson",d:"El libro de referencia de la Terapia Focalizada en Emociones.",url:"https://www.holdmetight.net/",tag:"Libro"}],
+  3:[{i:"▶️",lb:"Sue Johnson",t:"El amor como vínculo de apego",d:"La creadora de la EFT explica cómo sanar los vínculos de pareja.",url:"https://www.youtube.com/results?search_query=sue+johnson+emotionally+focused+therapy",tag:"YouTube"},{i:"▶️",lb:"YouTube · Testimonios",t:"Retrouvaille — Historias reales",d:"Parejas que superaron crisis matrimoniales severas.",url:"https://www.youtube.com/results?search_query=retrouvaille+testimonio+matrimonio",tag:"YouTube"},{i:"📰",lb:"UC Berkeley",t:"El perdón: Ciencia y práctica",d:"Recursos basados en evidencia sobre el perdón en parejas.",url:"https://greatergood.berkeley.edu/topic/forgiveness/definition",tag:"Artículo"},{i:"🌐",lb:"Retrouvaille Oficial",t:"Para parejas en crisis",d:"Sitio oficial del programa de fin de semana más exitoso.",url:"https://retrouvaille.org",tag:"Sitio oficial"}],
+  4:[{i:"🌐",lb:"Encuentro Matrimonial",t:"wwme.org — Retiros para parejas",d:"Busca retiros en México y Latinoamérica.",url:"https://wwme.org",tag:"Sitio oficial"},{i:"🌐",lb:"Equipos Nuestra Señora",t:"Espiritualidad conyugal continua",d:"Movimiento internacional con grupos en toda México.",url:"https://www.equipes-nd.org/es/",tag:"Sitio oficial"},{i:"▶️",lb:"Robert Waldinger · TED",t:"La ciencia del amor duradero",d:"Estudio de 80 años (Harvard) revela qué mantiene el amor vivo.",url:"https://www.youtube.com/watch?v=8KkKuTCFvzI",tag:"TED · 13 min"},{i:"📖",lb:"Libro · Referencia",t:"Los 7 Principios del Matrimonio",d:"La guía más respaldada por investigación para un matrimonio estable.",url:"https://www.gottman.com/product/the-seven-principles-for-making-marriage-work/",tag:"Libro"}],
+};
+const PGS=[{e:"🕊️",n:"Retrouvaille",s:"Para parejas en crisis",d:"Programa de fin de semana para parejas con dificultades serias. Más de un millón de parejas ayudadas.",url:"retrouvaille.org"},{e:"🌍",n:"Encuentro Matrimonial Mundial",s:"Para renovar el amor conyugal",d:"Retiro de fin de semana para profundizar la relación. Presente en más de 80 países.",url:"wwme.org"},{e:"✨",n:"Equipos de Nuestra Señora",s:"Crecimiento continuo en pareja",d:"Grupos de matrimonios que se reúnen mensualmente para crecer en espiritualidad conyugal.",url:"equipes-nd.org"},{e:"🏡",n:"Movimiento Familiar Cristiano",s:"Red parroquial de familias",d:"Grupos pequeños en parroquias locales con encuentros y acompañamiento para matrimonios.",url:"mfcmex.org"}];
+
+// STATE
+let me=null,AW=1,AD=null,DONE=new Set(),CTAB='days',NI=null;
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+function saveMe(){ls('jdn_me',JSON.stringify(me));}
+function loadMe(){try{const r=ls('jdn_me');return r?JSON.parse(r):null;}catch(e){return null;}}
+function saveDone(){ls('jdn_done',JSON.stringify([...DONE]));}
+function loadDone(){try{const r=ls('jdn_done');return r?new Set(JSON.parse(r)):new Set();}catch(e){return new Set();}}
+function nk(d){return 'jdn_note_'+d;}
+function getDN(s){if(!s)return 1;const a=new Date(s),b=new Date();a.setHours(0,0,0,0);b.setHours(0,0,0,0);return Math.max(1,Math.min(30,Math.floor((b-a)/86400000)+1));}
+function fd(iso){if(!iso)return '';const[y,m,d]=iso.split('-');const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return `${parseInt(d)} ${mo[parseInt(m)-1]} ${y}`;}
+function pm(t,n){return(t||'').replace(/\{n\}/g,n||'').replace(/\{nombre\}/g,n||'').replace(/\{pareja\}/g,'tu pareja');}
+function cw(t){return t.trim()===''?0:t.trim().split(/\s+/).length;}
+function h2r(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)].join(',');}
+
+// SCREENS
+function showScr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const el=document.getElementById(id);if(el){el.classList.add('active');window.scrollTo(0,0);}}
+
+// REGISTER
+function doReg(){
+  const n=document.getElementById('i-nom').value.trim();
+  const e=document.getElementById('i-email').value.trim();
+  const t=document.getElementById('i-tel').value.trim();
+  const h=document.getElementById('i-hora').value;
+  const err=document.getElementById('reg-err');
+  if(!n){err.textContent='Por favor ingresa tu nombre o apodo.';err.style.display='block';return;}
+  if(!e||!e.includes('@')){err.textContent='Por favor ingresa un correo electrónico válido.';err.style.display='block';return;}
+  err.style.display='none';
+  me={nombre:n,email:e,telefono:t,notifHora:h||'08:00',fechaInicio:null};
+  const today=new Date().toISOString().split('T')[0];
+  const fi=document.getElementById('i-fecha');fi.value=today;fi.min=today;updFin();
+  showScr('s-date');
+}
+
+// DATE
+function updFin(){
+  const f=document.getElementById('i-fecha').value;
+  if(!f){document.getElementById('fecha-fin').textContent='—';return;}
+  const e=new Date(f);e.setDate(e.getDate()+29);
+  document.getElementById('fecha-fin').textContent=fd(e.toISOString().split('T')[0]);
+}
+function doDate(){
+  const f=document.getElementById('i-fecha').value;
+  if(!f){alert('Por favor selecciona una fecha.');return;}
+  me.fechaInicio=f;
+  document.getElementById('n-hora').textContent=me.notifHora;
+  document.getElementById('ne-email').textContent='📧 '+me.email;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  document.getElementById('ne-asunto').textContent=pm(msg.as,me.nombre);
+  document.getElementById('pp-t').textContent='"'+pm(msg.t,me.nombre)+'"';
+  document.getElementById('pp-b').textContent=pm(msg.push,me.nombre);
+  updPS();showScr('s-notif');
+}
+
+// NOTIFICATIONS
+function hasN(){try{return typeof Notification!=='undefined';}catch(e){return false;}}
+function getP(){try{return hasN()?Notification.permission:'no-support';}catch(e){return 'no-support';}}
+function updPS(){
+  const p=getP();const bx=document.getElementById('ps-box');const ic=document.getElementById('ps-ico');const ti=document.getElementById('ps-title');const su=document.getElementById('ps-sub');const bt=document.getElementById('ps-btn');
+  if(p==='granted'){bx.style.cssText='display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--sageL);border-radius:12px;border:1px solid rgba(91,173,143,.3);margin-bottom:12px';ic.textContent='✅';ti.style.color='var(--sage)';ti.textContent='Notificaciones activas';su.textContent='Recibirás tu mensaje cada día a la hora configurada.';bt.textContent='▶️ Enviar notificación de prueba';bt.style.background='linear-gradient(135deg,var(--sage),#3A9A72)';document.getElementById('nd-btn').textContent='¡Todo listo — ir al plan! 🎉';}
+  else if(p==='no-support'||p==='denied'){bx.style.background='#F5F5F5';bx.style.borderColor='#ddd';ic.textContent='ℹ️';ti.style.color='var(--ink2)';ti.textContent=p==='denied'?'Notificaciones bloqueadas':'No disponible en este navegador';su.textContent='Usa el tab 📧 Email para tus mensajes. En iPhone usa Safari.';bt.style.display='none';}
+  const mpb=document.getElementById('mc-push');if(mpb)mpb.style.display=p==='granted'?'inline-block':'none';
+}
+function switchNT(t){
+  document.getElementById('np-push').style.display=t==='push'?'block':'none';
+  document.getElementById('np-email').style.display=t==='email'?'block':'none';
+  document.getElementById('nt-push').className='tab-btn'+(t==='push'?' on':'');
+  document.getElementById('nt-email').className='tab-btn'+(t==='email'?' on':'');
+  if(t==='push')document.getElementById('nt-push').style.cssText='background:var(--coral);color:#fff;border:none';else document.getElementById('nt-push').style.cssText='';
+  if(t==='email')document.getElementById('nt-email').style.cssText='background:var(--coral);color:#fff;border:none';else document.getElementById('nt-email').style.cssText='';
+}
+async function doPush(){
+  if(!hasN()){updPS();return;}
+  if(getP()==='granted'){tPush();return;}
+  try{await Notification.requestPermission();}catch(e){}
+  updPS();if(getP()==='granted')tPush();
+}
+function tPush(){
+  if(!hasN()||getP()!=='granted'||!me)return;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  try{new Notification('💑 '+pm(msg.t,me.nombre),{body:pm(msg.push,me.nombre),tag:'jdn'});}catch(e){}
+}
+function doEmailPrev(){
+  if(!me)return;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  window.open('mailto:'+me.email+'?subject='+encodeURIComponent(pm(msg.as,me.nombre))+'&body='+encodeURIComponent(pm(msg.cu,me.nombre)),'_blank');
+  document.getElementById('nd-btn').textContent='¡Todo listo — ir al plan! 🎉';
+}
+function doNotifDone(){saveMe();DONE=loadDone();launchApp();}
+
+// APP
+function launchApp(){updHdr();buildWkTabs();renderWk(AW);buildMsgCard();startNI();showScr('s-app');}
+function updHdr(){
+  const dia=getDN(me.fechaInicio);const pct=Math.round((DONE.size/30)*100);
+  document.getElementById('h-nom').textContent=me.nombre;
+  document.getElementById('h-dia').textContent=Math.min(dia,30);
+  document.getElementById('h-pct').textContent=pct+'% completado';
+  document.getElementById('h-prog').style.width=pct+'%';
+  document.getElementById('h-ini').textContent='Inicio: '+fd(me.fechaInicio);
+}
+function buildMsgCard(){
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  document.getElementById('mc-lbl').textContent='Tu mensaje de hoy · Día '+Math.min(dia,30);
+  document.getElementById('mc-tit').textContent=pm(msg.t,me.nombre);
+  document.getElementById('mc-body').textContent=pm(msg.push,me.nombre);
+  document.getElementById('mc-email').onclick=()=>{
+    window.open('mailto:'+me.email+'?subject='+encodeURIComponent(pm(msg.as,me.nombre))+'&body='+encodeURIComponent(pm(msg.cu,me.nombre)),'_blank');
+  };
+  updPS();
+}
+function goToday(){
+  const dia=getDN(me.fechaInicio);const dy=DYS.find(d=>d.d===dia);if(!dy)return;
+  if(AW!==dy.w){AW=dy.w;renderWk(AW);}switchTab('days');
+  setTimeout(()=>{const el=document.getElementById('dc-'+dia);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});openDay(dia);}},100);
+}
+function buildWkTabs(){
+  const c=document.getElementById('wk-tabs');c.innerHTML='';
+  [1,2,3,4].forEach(w=>{
+    const wk=WKS[w];const wd=DYS.filter(d=>d.w===w&&DONE.has(d.d)).length;
+    const b=document.createElement('button');b.className='tab-btn'+(AW===w?' on':'');b.id='wt-'+w;
+    b.innerHTML=`<div style="font-size:17px;margin-bottom:2px">${wk.e}</div><div style="font-weight:700;font-size:10px">Semana ${w}</div><div style="font-size:10px;opacity:.85">${wk.l}</div><div style="font-size:10px;margin-top:3px;opacity:${wd===7?1:.5}">${wd}/7 ✓</div>`;
+    if(AW===w)b.style.cssText=`background:${wk.c};color:#fff;border:none;box-shadow:0 5px 18px ${wk.c}55`;
+    b.onclick=()=>{AW=w;AD=null;renderWk(w);switchTab('days');buildWkTabs();};
+    c.appendChild(b);
   });
-  function updateCtr(el){ document.getElementById('chatCtr').textContent=el.value.length+' / 300'; el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,85)+'px'; }
-  function setSugg(btn){ const i=document.getElementById('chatInput'); i.value=btn.textContent; updateCtr(i); i.focus(); }
-  function now(){ return new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}); }
-  function addMsg(txt,type,name){
-    const box=document.getElementById('chatMsgs');
-    const d=document.createElement('div'); d.className='msg '+type;
-    if(name) d.innerHTML='<div class="msg-n">'+name+'</div>';
-    d.innerHTML+='<div class="msg-bbl">'+txt+'</div><div class="msg-t">'+now()+'</div>';
-    box.appendChild(d); box.scrollTop=99999; return d;
-  }
-  function showTyping(){ const box=document.getElementById('chatMsgs'); const d=document.createElement('div'); d.className='msg cesar'; d.id='tyInd'; d.innerHTML='<div class="msg-bbl" style="padding:12px 16px;"><div class="typing-wrap"><div class="ty-dot"></div><div class="ty-dot"></div><div class="ty-dot"></div></div></div>'; box.appendChild(d); box.scrollTop=99999; }
-  function rmTyping(){ const t=document.getElementById('tyInd'); if(t) t.remove(); }
-  function sendMsg(){
-    const n=document.getElementById('chatName').value.trim();
-    const txt=document.getElementById('chatInput').value.trim();
-    if(!n){ document.getElementById('chatName').style.borderColor='rgba(196,154,60,0.8)'; document.getElementById('chatName').focus(); return; }
-    if(!txt){ document.getElementById('chatInput').style.borderColor='rgba(196,154,60,0.8)'; document.getElementById('chatInput').focus(); return; }
-    addMsg(txt,'user',n);
-    document.getElementById('chatInput').value=''; document.getElementById('chatInput').style.height='auto'; document.getElementById('chatCtr').textContent='0 / 300';
-    document.getElementById('chatName').style.borderColor=''; document.getElementById('chatInput').style.borderColor='';
-    setTimeout(()=>{
-      showTyping();
-      setTimeout(()=>{
-        rmTyping();
-        const rs=['Gracias '+n+', recibí tu mensaje y lo revisaré personalmente. Te doy mi respuesta en <strong>menos de 48 horas</strong>. Tu participación es valiosa. ⚖️','Muchas gracias por escribirme, '+n+'. Treinta años de servicio me enseñaron que escuchar es gobernar. Te respondo en <strong>menos de 48 hrs</strong>.','Recibido, '+n+'. Me comprometo a leer tu mensaje y responderte directamente en <strong>menos de 48 horas</strong>. Juntos haremos una Chihuahua más segura y justa. 🙏'];
-        const m=addMsg('','cesar','César Jáuregui');
-        m.querySelector('.msg-bbl').innerHTML=rs[Math.floor(Math.random()*rs.length)];
-        document.getElementById('chatMsgs').scrollTop=99999;
-      },1800);
-    },500);
-  }
-  document.addEventListener('DOMContentLoaded',()=>{ const i=document.getElementById('chatInput'); if(i) i.addEventListener('keydown',(e)=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }); });
+}
+function renderWk(w){
+  const wk=WKS[w];const bn=document.getElementById('wk-banner');
+  bn.style.cssText=`background:linear-gradient(135deg,${wk.li},#fff);border-color:${wk.c}28`;
+  bn.innerHTML=`<div style="font-size:10px;font-weight:700;letter-spacing:2px;color:${wk.c};text-transform:uppercase;margin-bottom:4px">Semana ${w} de 4</div><h2 class="fr" style="font-size:20px;color:var(--ink);margin-bottom:4px">${wk.e} ${wk.l}</h2><p style="font-size:13px;color:var(--ink2);line-height:1.6">${wk.tl}</p>`;
+  buildDays(w);buildMda(w);
+}
+function buildDays(w){
+  const wk=WKS[w];const c=document.getElementById('p-days');c.innerHTML='';
+  const dia=getDN(me.fechaInicio);
+  DYS.filter(d=>d.w===w).forEach(d=>{
+    const iD=DONE.has(d.d),isO=AD===d.d,isT=d.d===dia;
+    const note=ls(nk(d.d))||'';const hN=note.trim().length>0;
+    const card=document.createElement('div');
+    card.className='day-card'+(isO?' open':'')+(iD?' done':'')+(isT?' today':'');
+    card.id='dc-'+d.d;card.style.setProperty('--wc',wk.c);
+    card.innerHTML=`<div class="day-hdr" onclick="togDay(${d.d})">
+      <div class="day-icon" style="background:${iD?'rgba(91,173,143,.2)':'rgba('+h2r(wk.c)+',.12)'};border-color:${iD?'rgba(91,173,143,.4)':wk.c+'40'}">${iD?'✅':d.i}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wk.c};text-transform:uppercase">Día ${d.d}</span>
+          ${isT?`<span style="font-size:9px;font-weight:700;color:#fff;background:${wk.c};border-radius:50px;padding:1px 7px">HOY</span>`:''}
+          ${hN?'<span style="font-size:9px;color:#9A7800;background:#FFFDE0;border:1px solid #F0DCA0;border-radius:50px;padding:1px 6px">✏️ nota</span>':''}
+        </div>
+        <div class="fr" style="font-size:15px;color:${iD?'var(--sage)':'var(--ink)'};font-weight:600">${d.t}</div>
+      </div>
+      <span class="arrow">⌄</span>
+    </div>
+    <div class="day-body">${bDB(d,wk)}</div>`;
+    c.appendChild(card);
+  });
+}
+function bDB(d,wk){
+  const msg=MGS[d.d-1];const note=(ls(nk(d.d))||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const wc=cw(ls(nk(d.d))||'');const iD=DONE.has(d.d);
+  return `
+    <div class="dsec" style="background:${wk.c}12;margin-top:12px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wk.c};text-transform:uppercase;margin-bottom:6px">💬 Mensaje de hoy para ti</div>
+      <p style="font-size:13px;color:var(--ink);line-height:1.7;font-style:italic">"${pm(msg.push,me.nombre)}"</p>
+    </div>
+    <div class="dsec" style="background:${wk.c}0D">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wk.c};text-transform:uppercase;margin-bottom:7px">🎯 Acción del día</div>
+      <p style="font-size:14px;color:var(--ink);line-height:1.75">${d.a}</p>
+    </div>
+    <div style="border-left:3px solid ${wk.c};padding-left:14px;margin-bottom:10px">
+      <p class="fr" style="font-size:14px;font-style:italic;color:var(--ink2);line-height:1.75">"${d.r}"</p>
+    </div>
+    <div class="notes-box${wc>200?' over':''}" id="nb-${d.d}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#9A7800;text-transform:uppercase">✏️ Mis notas del día</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span id="wc-${d.d}" style="font-size:11px;color:${wc>200?'var(--coral)':'#B09020'};font-weight:${wc>200?700:400}">${wc}/200</span>
+          <button id="nb-btn-${d.d}" onclick="svNote(${d.d})" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:50px;background:#F5A623;color:#fff;border:none">Guardar</button>
+        </div>
+      </div>
+      <textarea id="nt-${d.d}" class="nta${wc>200?' over':''}" rows="4" oninput="updNC(${d.d})" placeholder="Escribe tus reflexiones, lo que sentiste o lo que observaste hoy...">${note}</textarea>
+      <p id="nw-${d.d}" style="font-size:11px;color:var(--coral);margin-top:5px;font-weight:600;display:${wc>200?'block':'none'}">⚠️ Límite de 200 palabras superado.</p>
+    </div>
+    <div class="dsec" style="background:var(--soft2)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:5px">💡 Nota del terapeuta</div>
+      <p style="font-size:13px;color:var(--ink2);line-height:1.65">${d.p}</p>
+    </div>
+    <button onclick="togDone(${d.d})" style="width:100%;padding:12px;border-radius:12px;font-size:13px;font-weight:700;border:none;cursor:pointer;background:${iD?'rgba(91,173,143,.15)':wk.c};color:${iD?'var(--sage)':'#fff'};box-shadow:${iD?'none':'0 4px 16px '+wk.c+'50'};${iD?'border:1.5px solid rgba(91,173,143,.45)':''}">
+      ${iD?'✓ Completado — toca para desmarcar':'Marcar como completado ✓'}
+    </button>`;
+}
+function updNC(d){
+  const ta=document.getElementById('nt-'+d);if(!ta)return;
+  const w=cw(ta.value);const ov=w>200;
+  document.getElementById('wc-'+d).textContent=w+'/200';
+  document.getElementById('wc-'+d).style.color=ov?'var(--coral)':'#B09020';
+  document.getElementById('wc-'+d).style.fontWeight=ov?700:400;
+  document.getElementById('nw-'+d).style.display=ov?'block':'none';
+  const nb=document.getElementById('nb-'+d);const nta=document.getElementById('nt-'+d);
+  if(nb)nb.className='notes-box'+(ov?' over':'');
+  if(nta)nta.className='nta'+(ov?' over':'');
+}
+function svNote(d){
+  const ta=document.getElementById('nt-'+d);if(!ta)return;
+  if(cw(ta.value)>200){alert('Por favor reduce tu texto a máximo 200 palabras.');return;}
+  ls(nk(d),ta.value);
+  const btn=document.getElementById('nb-btn-'+d);
+  if(btn){btn.textContent='✓ Guardado';btn.style.background='var(--sage)';setTimeout(()=>{btn.textContent='Guardar';btn.style.background='#F5A623';},2000);}
+  buildDays(AW);openDay(d);
+}
+function togDay(d){AD=AD===d?null:d;buildDays(AW);if(AD)setTimeout(()=>{const el=document.getElementById('dc-'+d);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},50);}
+function openDay(d){AD=d;buildDays(AW);}
+function togDone(d){
+  if(DONE.has(d))DONE.delete(d);else DONE.add(d);
+  saveDone();updHdr();buildWkTabs();buildDays(AW);
+  if(DONE.size===30)setTimeout(()=>{document.getElementById('cel-txt').textContent='30 días de elecciones valientes, '+me.nombre+'. ¡Lo lograste!';document.getElementById('modal-cel').classList.add('show');},400);
+}
+function switchTab(t){
+  CTAB=t;['days','media','progs'].forEach(x=>{
+    document.getElementById('p-'+x).style.display=t===x?'block':'none';
+    const b=document.getElementById('st-'+x);if(b){b.className='tab-btn'+(t===x?' on':'');b.style.cssText=t===x?'background:var(--coral);color:#fff;border:none':'';}
+  });
+  if(t==='media')buildMda(AW);if(t==='progs')buildPgs();
+}
+function buildMda(w){
+  const wk=WKS[w];const c=document.getElementById('p-media');c.innerHTML='';
+  const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--ink3);margin-bottom:12px';p.textContent='Recursos para la Semana '+w+': '+wk.l;c.appendChild(p);
+  (MDA[w]||[]).forEach(m=>{
+    const a=document.createElement('a');a.href=m.url;a.target='_blank';a.rel='noopener noreferrer';a.className='rcard';
+    a.innerHTML=`<div style="display:flex;gap:12px;align-items:flex-start"><div style="width:42px;height:42px;border-radius:12px;background:${wk.c}14;border:1.5px solid ${wk.c}30;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0">${m.i}</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:6px;margin-bottom:3px"><div><div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:${wk.c};text-transform:uppercase">${m.lb}</div><div class="fr" style="font-size:14px;color:var(--ink);font-weight:600;margin-top:2px">${m.t}</div></div><span style="font-size:10px;color:var(--ink3);background:var(--soft2);border-radius:6px;padding:3px 8px;flex-shrink:0;white-space:nowrap;align-self:flex-start">${m.tag}</span></div><p style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:5px">${m.d}</p><span style="font-size:11px;color:${wk.c};font-weight:600">${m.url.replace('https://','').replace('http://','').split('/')[0]} →</span></div></div>`;
+    c.appendChild(a);
+  });
+}
+function buildPgs(){
+  const c=document.getElementById('p-progs');if(c.innerHTML!=='')return;
+  const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--ink3);margin-bottom:12px';p.textContent='Programas de acompañamiento recomendados';c.appendChild(p);
+  PGS.forEach(pr=>{
+    const d=document.createElement('div');d.className='card';d.style.cssText='padding:15px 16px;margin-bottom:10px';
+    d.innerHTML=`<div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:26px;flex-shrink:0">${pr.e}</span><div><div class="fr" style="font-size:15px;color:var(--ink);font-weight:600">${pr.n}</div><div style="font-size:11px;color:var(--coral);font-weight:600;margin-bottom:6px">${pr.s}</div><p style="font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:6px">${pr.d}</p><div style="font-size:11px;color:var(--sage);font-weight:600">🔗 ${pr.url}</div></div></div>`;
+    c.appendChild(d);
+  });
+}
+// Profile
+function goProfile(){
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  document.getElementById('pr-nom').textContent=me.nombre;
+  document.getElementById('pr-email').textContent='📧 '+me.email;
+  document.getElementById('pr-tel').textContent=me.telefono?'📱 '+me.telefono:'';
+  document.getElementById('pr-ini').textContent=fd(me.fechaInicio);
+  document.getElementById('pr-dia').textContent='Día '+Math.min(dia,30)+' de 30';
+  document.getElementById('pr-hora').textContent=me.notifHora;
+  document.getElementById('pr-push').textContent=getP()==='granted'?'Activo':'Inactivo';
+  document.getElementById('pr-easunto').textContent=pm(msg.as,me.nombre);
+  document.getElementById('pr-ecuerpo').textContent=pm(msg.cu,me.nombre).substring(0,240)+'...';
+  showScr('s-profile');
+}
+function prEmail(){
+  if(!me)return;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  window.open('mailto:'+me.email+'?subject='+encodeURIComponent(pm(msg.as,me.nombre))+'&body='+encodeURIComponent(pm(msg.cu,me.nombre)),'_blank');
+}
+function doReset(){try{localStorage.clear();}catch(e){}me=null;DONE=new Set();AD=null;AW=1;if(NI)clearInterval(NI);showScr('s-register');}
+function startNI(){
+  if(!hasN())return;if(NI)clearInterval(NI);
+  NI=setInterval(()=>{try{if(getP()!=='granted'||!me)return;const now=new Date();const[hh,mm]=me.notifHora.split(':').map(Number);if(now.getHours()===hh&&now.getMinutes()===mm){const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];try{new Notification('💑 '+pm(msg.t,me.nombre),{body:pm(msg.push,me.nombre),tag:'jdn'});}catch(e){}}}catch(e){}},60000);
+}
+// BOOT
+(function(){me=loadMe();if(me){DONE=loadDone();launchApp();}else{showScr('s-register');}})();
 </script>
 </body>
 </html>
