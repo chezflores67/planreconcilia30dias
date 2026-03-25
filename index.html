@@ -1,1300 +1,591 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <meta name="theme-color" content="#E8567A"/>
-  <meta name="description" content="Juntos de Nuevo — Plan de reconciliación 30 días. App personalizada con mensajes diarios."/>
-  <title>Juntos de Nuevo 💑 — Plan 30 Días</title>
-
-  <!-- PWA manifest inline -->
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="apple-touch-icon" href="icon-192.png"/>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-
-  <!-- React 18 + Babel (CDN, no build step) -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <style>
-    
-  *{box-sizing:border-box;margin:0;padding:0}
-  .fr{font-family:'Fraunces',Georgia,serif}
-  .jk{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
-  .btn{cursor:pointer;transition:all .18s;border:none;outline:none}
-  .btn:active{transform:scale(.97)}
-  .card{transition:transform .2s,box-shadow .2s}
-  .card:hover{transform:translateY(-2px)}
-  .fade{animation:fu .4s ease}
-  @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  .pulse{animation:pl 2s ease-in-out infinite}
-  @keyframes pl{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-  input,textarea,select{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px}
-  ::-webkit-scrollbar{width:4px}
-  ::-webkit-scrollbar-thumb{background:#F5C6D2;border-radius:4px}
-
-    html,body{height:100%;background:#FFF6EE}
-    #root{min-height:100vh}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="theme-color" content="#E8567A"/>
+<title>Juntos de Nuevo 💑 — Plan 30 Días</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--coral:#E8567A;--coralL:#FFF0F3;--gold:#F5A623;--goldL:#FFFAEE;--sage:#5BAD8F;--sageL:#F0FAF5;--violet:#9B72CF;--violetL:#F5F0FF;--cream:#FFF6EE;--white:#fff;--ink:#2D1B1B;--ink2:#5C3D3D;--ink3:#8B6060;--soft:#F2E4E4;--soft2:#FBF5F0}
+html,body{height:100%;background:var(--cream);font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink)}
+.fr{font-family:'Fraunces',Georgia,serif}
+button{cursor:pointer;font-family:inherit;outline:none;transition:all .18s}
+button:active{transform:scale(.97)}
+input,textarea{font-family:inherit}
+.screen{display:none;min-height:100vh;animation:fu .35s ease}
+.screen.active{display:block}
+#s-loading.active{display:flex}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pl 2s ease-in-out infinite}
+@keyframes pl{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#F5C6D2;border-radius:4px}
+.btn-p{background:linear-gradient(135deg,var(--coral),#F07090);color:#fff;border:none;padding:14px 24px;border-radius:50px;font-weight:700;font-size:15px;width:100%;box-shadow:0 5px 20px rgba(232,86,122,.4)}
+.btn-g{background:var(--soft2);color:var(--ink2);border:none;padding:11px 24px;border-radius:50px;font-weight:600;font-size:13px;width:100%}
+.btn-sm{padding:6px 14px;border-radius:50px;font-weight:700;font-size:12px;border:none}
+.card{background:var(--white);border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);border:1.5px solid var(--soft)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.field input,.field textarea{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #E8D8D8;font-size:15px;color:var(--ink);background:#FFFAF8;transition:border-color .2s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--coral);background:#fff}
+.prog-track{height:10px;background:var(--soft);border-radius:8px;overflow:hidden}
+.prog-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--coral),var(--gold),var(--sage));transition:width .6s ease}
+.day-card{background:var(--white);border-radius:14px;border:1.5px solid var(--soft);overflow:hidden;margin-bottom:9px;transition:border-color .2s}
+.day-card.today{border-top:3px solid var(--wc,var(--coral))}
+.day-card.done{border-color:rgba(91,173,143,.5)}
+.day-card.open{border-color:var(--wc,var(--coral))}
+.day-hdr{display:flex;align-items:center;padding:13px 14px;gap:12px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.day-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;border:2px solid rgba(0,0,0,.1)}
+.day-body{display:none;padding:2px 14px 15px;border-top:1px solid var(--soft)}
+.day-card.open .day-body{display:block}
+.arrow{font-size:20px;color:var(--ink3);transition:transform .2s;margin-left:auto;flex-shrink:0}
+.day-card.open .arrow{transform:rotate(180deg)}
+.dsec{border-radius:12px;padding:13px 14px;margin-bottom:10px}
+.tab-bar{display:grid;gap:6px;margin-bottom:14px}
+.t2{grid-template-columns:1fr 1fr}.t3{grid-template-columns:1fr 1fr 1fr}.t4{grid-template-columns:repeat(4,1fr)}
+.tab-btn{padding:9px 4px;border-radius:12px;font-weight:700;font-size:11px;border:1.5px solid var(--soft);background:var(--white);color:var(--ink2);text-align:center}
+.tab-btn.on{border:none;color:#fff}
+.wbanner{border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1.5px solid rgba(0,0,0,.08)}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(45,27,27,.75);z-index:999;align-items:center;justify-content:center;padding:20px}
+.modal-ov.show{display:flex}
+.modal-box{background:var(--white);border-radius:20px;padding:32px 24px;max-width:380px;width:100%;text-align:center;animation:fu .3s ease}
+.notes-box{background:#FFFDF5;border-radius:12px;padding:13px 14px;margin-bottom:12px;border:1.5px solid #F0DCA0}
+.notes-box.over{border-color:var(--coral)}
+.nta{width:100%;resize:vertical;border:1px solid #F0DCA0;border-radius:10px;padding:10px 12px;font-size:13px;color:var(--ink);background:#FFFEF5;line-height:1.65;outline:none;min-height:80px;max-height:280px;font-family:inherit}
+.nta.over{border-color:rgba(232,86,122,.5);background:#FFF5F7}
+.rcard{display:block;background:var(--white);border-radius:14px;padding:14px 15px;border:1.5px solid rgba(0,0,0,.07);text-decoration:none;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.app-hdr{padding:20px 14px 18px;position:relative;overflow:hidden;background:linear-gradient(140deg,var(--coralL),var(--goldL),var(--sageL));border-bottom:2px solid rgba(232,86,122,.15)}
+.inner{max-width:660px;margin:0 auto;padding:0 14px 72px}
+</style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+<div id="s-loading" class="screen active" style="align-items:center;justify-content:center;min-height:100vh;display:flex">
+  <div style="text-align:center"><div class="pulse" style="font-size:52px;margin-bottom:14px">💑</div><p class="fr" style="font-size:20px;color:var(--coral);font-style:italic">Cargando tu plan...</p></div>
+</div>
 
-
-// ═══════════════════════════════════════════════════════════════════════
-// COLORES Y TEMA
-// ═══════════════════════════════════════════════════════════════════════
-const C = {
-  coral:"#E8567A", coralD:"#C73D61", coralL:"#FFF0F3",
-  gold:"#F5A623",  goldL:"#FFFAEE",
-  sage:"#5BAD8F",  sageL:"#F0FAF5",
-  violet:"#9B72CF",violetL:"#F5F0FF",
-  cream:"#FFF6EE", white:"#FFFFFF",
-  ink:"#2D1B1B",   ink2:"#5C3D3D", ink3:"#8B6060",
-  soft:"#F2E4E4",  soft2:"#FBF5F0",
-};
-
-// ═══════════════════════════════════════════════════════════════════════
-// 30 MENSAJES MOTIVADORES DIARIOS (personalizados por nombre)
-// ═══════════════════════════════════════════════════════════════════════
-const mensajes = [
-  { dia:1,  emoji:"💑", titulo:"¡Comienza tu Día 1!",
-    push:"Hoy das el primer paso, {nombre}. Esta noche: 5 minutos sin teléfono, solo mírense a los ojos. {pareja} también lo está esperando.",
-    email_asunto:"Día 1 — Tu primer gesto, {nombre} 💑",
-    email_cuerpo:"Hola {nombre},\n\nHoy es el Día 1 de tu plan «Juntos de Nuevo».\n\nActividad: Siéntense frente a frente 5 minutos sin teléfono. Solo mírense. Al terminar, digan una sola palabra de lo que sintieron.\n\nRecuerda: el amor no se fue. Se cubrió de costumbre. Hoy empieza a descubrirse.\n\n💑 Juntos de Nuevo"},
-  { dia:2,  emoji:"💬", titulo:"Día 2 — Pregunta de verdad",
-    push:"Hoy, {nombre}: pregúntale a {pareja} '¿Cómo estás tú... de verdad?' y escucha sin dar consejos. Solo recibe.",
-    email_asunto:"Día 2 — La pregunta más importante que puedes hacer hoy",
-    email_cuerpo:"Hola {nombre},\n\nHoy: pregunta genuinamente. No el '¿cómo estás?' de rutina. El de verdad.\n\nEscucha sin interrumpir. Sin defender. Sin aconsejar. Solo recibe lo que {pareja} comparte.\n\nEscuchar es el primer acto de amor que olvidamos. 💬\n\n💑 Juntos de Nuevo"},
-  { dia:3,  emoji:"✍️", titulo:"Día 3 — Tu carta",
-    push:"Día 3, {nombre}. Escribe a mano 3 momentos en que elegiste la distancia. No para culparte: para nombrarlo. Lo que se nombra se puede cambiar.",
-    email_asunto:"Día 3 — La carta que puede cambiarlo todo, {nombre}",
-    email_cuerpo:"Hola {nombre},\n\nHoy escribes una carta (a mano si puedes). Solo confiesa lo tuyo: 3 momentos en que sí elegiste alejarte.\n\nNo es para culparte. Es para nombrarlo.\n\n'La reconciliación empieza cuando alguien tiene el valor de decir: yo también me alejé.'\n\n💑 Juntos de Nuevo"},
-  { dia:4,  emoji:"📸", titulo:"Día 4 — El archivo del amor",
-    push:"Hoy, {nombre}: busquen juntos 3 fotos de cuando eran felices. Cuenten la historia detrás de cada una. Esa versión de ustedes sigue ahí.",
-    email_asunto:"Día 4 — Hay fotos esperando ser redescubiertas",
-    email_cuerpo:"Hola {nombre},\n\nHoy buscan juntos 3 fotos de cuando eran felices.\n\nCuenten la historia detrás de cada una. ¿Quiénes eran en ese momento? ¿Qué tenían que hoy quieren recuperar?\n\nEsa versión de ustedes no murió. Solo está esperando ser convocada. 📸\n\n💑 Juntos de Nuevo"},
-  { dia:5,  emoji:"🚪", titulo:"Día 5 — El abrazo del umbral",
-    push:"Ritual nuevo, {nombre}: un abrazo de 6 segundos cada vez que uno llega a casa. Sin excepción. 6 segundos activan la oxitocina. Practíquenlo hoy.",
-    email_asunto:"Día 5 — 6 segundos que cambian la química del amor",
-    email_cuerpo:"Hola {nombre},\n\nHoy establecen su ritual del umbral: un abrazo de mínimo 6 segundos cada vez que uno llega.\n\nLa ciencia lo confirma: 6 segundos es el tiempo mínimo para liberar oxitocina, la hormona del vínculo.\n\nUn ritual pequeño que construye algo enorme. 🚪\n\n💑 Juntos de Nuevo"},
-  { dia:6,  emoji:"💧", titulo:"Día 6 — Nombrar lo que duele",
-    push:"{nombre}, hoy cada uno completa: 'Me duele que... pero entiendo que...' Un solo tema. Con amor. Lo que duele y no se dice se convierte en distancia.",
-    email_asunto:"Día 6 — Decir lo que duele no es atacar, {nombre}",
-    email_cuerpo:"Hola {nombre},\n\nHoy usan esta frase: 'Me duele que... pero entiendo que...'\n\nUn solo tema. Sin desvíos. Primero 'yo siento', nunca 'tú hiciste'.\n\nDecir lo que duele con amor no es atacar. Es construir el puente que faltaba. 💧\n\n💑 Juntos de Nuevo"},
-  { dia:7,  emoji:"🌙", titulo:"Día 7 — Sin pantallas esta noche",
-    push:"Noche sin pantallas, {nombre}. Sin teléfono, sin tele, sin tablet después de las 8 PM. Solo ustedes dos. Descubran cómo se pasa el tiempo cuando se tienen.",
-    email_asunto:"Día 7 — Una semana. Esta noche, solo ustedes.",
-    email_cuerpo:"Hola {nombre},\n\n¡Una semana! Ya son diferentes de como empezaron.\n\nHoy: sin televisión, teléfono ni tablet después de las 8 PM. Cocinen, jueguen, platiquen.\n\nSi el silencio se siente incómodo, es buena señal: hay algo importante esperando ser dicho. 🌙\n\n💑 Juntos de Nuevo"},
-  { dia:8,  emoji:"🗺️", titulo:"Día 8 — El mapa de tu pareja",
-    push:"Semana 2, {nombre}. Hoy: ¿Sabes cuál es el mayor sueño de {pareja} hoy? ¿Su mayor miedo? La intimidad es conocer lo que nadie más sabe.",
-    email_asunto:"Semana 2, Día 8 — ¿Cuánto conoces a {pareja} hoy?",
-    email_cuerpo:"Hola {nombre},\n\n¡Bienvenido/a a la Semana 2: Reconexión!\n\nHoy responden por escrito: ¿Cuál es el mayor sueño de tu pareja ahora? ¿Su mayor miedo? ¿Lo que más le pesa?\n\nLuego compárenlo. La intimidad real es saber qué le quita el sueño a quien duerme a tu lado. 🗺️\n\n💑 Juntos de Nuevo"},
-  { dia:9,  emoji:"🙏", titulo:"Día 9 — La deuda de gratitud",
-    push:"Hoy, {nombre}: menciona 5 cosas específicas por las que agradeces a {pareja}. No 'eres bueno'. Sé específico/a. La gratitud específica es el oxígeno del amor.",
-    email_asunto:"Día 9 — La gratitud que {pareja} todavía no sabe que sientes",
-    email_cuerpo:"Hola {nombre},\n\nHoy: 5 cosas específicas por las que agradeces a {pareja}.\n\nNo 'eres bueno/a'. Sé específico/a: 'el martes que llegaste cansado/a y aún así me abrazaste'.\n\nLa investigación de Gottman muestra que la gratitud diaria es el predictor más fuerte de satisfacción matrimonial. 🙏\n\n💑 Juntos de Nuevo"},
-  { dia:10, emoji:"🩹", titulo:"Día 10 — Sanar una herida",
-    push:"{nombre}, hoy eligen UNA herida del pasado que nunca cerró bien. Quien la causó dice: 'Me arrepiento de...' y escucha sin defenderse.",
-    email_asunto:"Día 10 — La herida que nunca cerró bien",
-    email_cuerpo:"Hola {nombre},\n\nHoy eligen UNA herida del pasado que nunca cerró del todo.\n\nQuien la causó dice: 'Me arrepiento de...' y escucha cómo el otro lo vivió. Sin defenderse. Solo recibir.\n\nLas heridas no procesadas no desaparecen: se convierten en la distancia que no saben explicar. 🩹\n\n💑 Juntos de Nuevo"},
-  { dia:11, emoji:"🌹", titulo:"Día 11 — La sorpresa",
-    push:"Hoy uno de los dos organiza una sorpresa pequeña para {pareja}. Una nota, una cena en el piso, un paseo. Lo que importa es la iniciativa. ¿Serás tú, {nombre}?",
-    email_asunto:"Día 11 — Una sorpresa pequeña cambia todo",
-    email_cuerpo:"Hola {nombre},\n\nHoy alguien organiza una sorpresa pequeña: una nota escondida, una cena improvisada, un paseo nocturno.\n\nNo tiene que ser costoso. Tiene que ser intencional.\n\n'La iniciativa amorosa dice: pensé en ti cuando no tenías por qué estar en mi mente.' 🌹\n\n💑 Juntos de Nuevo"},
-  { dia:12, emoji:"🔑", titulo:"Día 12 — El lenguaje del amor",
-    push:"{nombre}: ¿Cómo sabes que eres amado/a? Palabras, tiempo, actos, regalos o contacto físico. Hoy descubren si han estado amándose en el lenguaje equivocado.",
-    email_asunto:"Día 12 — ¿Están hablando el mismo idioma del amor?",
-    email_cuerpo:"Hola {nombre},\n\nHoy cada uno responde: ¿Cómo sabes que eres amado/a?\n\n¿Palabras de afirmación? ¿Tiempo de calidad? ¿Actos de servicio? ¿Regalos? ¿Contacto físico?\n\nMuchas parejas se aman profundamente y se sienten solas porque hablan idiomas diferentes del amor. 🔑\n\nTest gratuito: 5lovelanguages.com\n\n💑 Juntos de Nuevo"},
-  { dia:13, emoji:"✨", titulo:"Día 13 — Vulnerabilidad compartida",
-    push:"Día 13, {nombre}. Hoy comparten en voz alta frente al otro lo que agradecen de su relación y lo que necesitan sanar. La vulnerabilidad compartida crea intimidad real.",
-    email_asunto:"Día 13 — La vulnerabilidad que los acerca",
-    email_cuerpo:"Hola {nombre},\n\nHoy comparten en voz alta — frente al otro — lo que agradecen de su relación y lo que necesitan sanar.\n\nSi tienen fe, pueden hacerlo en oración. Si no, como un propósito compartido.\n\nLa vulnerabilidad compartida crea la intimidad más profunda. ✨\n\n💑 Juntos de Nuevo"},
-  { dia:14, emoji:"📊", titulo:"Día 14 — Revisión de mitad",
-    push:"¡Dos semanas, {nombre}! Hoy cada uno responde honestamente: ¿Qué ha cambiado en mí? ¿Qué he notado en {pareja}? El progreso no siempre se siente, pero existe.",
-    email_asunto:"🎉 Día 14 — ¡Dos semanas! Revisión honesta con {pareja}",
-    email_cuerpo:"Hola {nombre},\n\n¡DOS SEMANAS completas! Eso no es poco. Es mucho.\n\nHoy cada uno responde honestamente:\n• ¿Qué ha cambiado en mí?\n• ¿Qué he notado en {pareja}?\n• ¿Qué me ha costado más trabajo?\n\nEl progreso no siempre se siente. A veces solo se ve cuando te detienes a mirarlo. 📊\n\n💑 Juntos de Nuevo"},
-  { dia:15, emoji:"🌅", titulo:"Semana 3 — El sueño compartido",
-    push:"¡Semana 3 de Intimidad, {nombre}! Hoy construyen juntos su visión a 5 años: ¿Dónde quieren estar? ¿Qué tipo de relación quieren ser? Escríbanlo como si ya fuera realidad.",
-    email_asunto:"Semana 3, Día 15 — ¿Dónde están ustedes en 5 años?",
-    email_cuerpo:"Hola {nombre},\n\n¡Bienvenido/a a la Semana 3: Intimidad!\n\nHoy construyen su visión compartida a 5 años. Escríbanla como si ya fuera realidad: 'En 2030 nosotros...'\n\nLas parejas que tienen una narrativa compartida del futuro tienen un ancla para los momentos de tormenta. 🌅\n\n💑 Juntos de Nuevo"},
-  { dia:16, emoji:"🌊", titulo:"Día 16 — Conversaciones profundas",
-    push:"Hoy tres preguntas para {pareja}, {nombre}: ¿Cuál fue tu momento más feliz? ¿Qué parte de ti no conozco? ¿De qué tienes miedo y nunca me lo has dicho? La profundidad se convoca.",
-    email_asunto:"Día 16 — Las 3 preguntas que cambian todo",
-    email_cuerpo:"Hola {nombre},\n\nHoy usan estas preguntas (una cada 15 minutos):\n\n1. ¿Cuál fue el momento más feliz de tu vida?\n2. ¿Qué parte de ti sientes que yo todavía no conozco?\n3. ¿De qué tienes miedo que nunca me hayas dicho?\n\nApaguen todo. Sin prisas. La profundidad no llega por accidente. 🌊\n\n💑 Juntos de Nuevo"},
-  { dia:17, emoji:"📋", titulo:"Día 17 — Sus acuerdos nuevos",
-    push:"Hoy {nombre} y {pareja} escriben 5 compromisos vivos para su relación. No reglas: acuerdos. Ejemplo: 'Nos decimos buenas noches aunque estemos enojados'. Fírmenlo.",
-    email_asunto:"Día 17 — Los acuerdos que protegen el amor",
-    email_cuerpo:"Hola {nombre},\n\nHoy escriben juntos 5 acuerdos de convivencia. No reglas rígidas: compromisos vivos.\n\nEjemplo: 'Nos decimos buenas noches aunque estemos enojados'.\n\nFírmenlo. Guárdenlo. Léanlo en voz alta cada primer domingo del mes. Los matrimonios sanos tienen rituales que protegen el amor en los días difíciles. 📋\n\n💑 Juntos de Nuevo"},
-  { dia:18, emoji:"🤲", titulo:"Día 18 — Tocar y ser tocado",
-    push:"Hoy, {nombre}: masaje de espalda de 10 minutos en silencio. El que recibe solo cierra los ojos. El que da, presencia total. Luego cambien. El tacto es necesidad biológica.",
-    email_asunto:"Día 18 — El contacto que sana (sin agenda)",
-    email_cuerpo:"Hola {nombre},\n\nHoy: masaje de espalda de 10 minutos en silencio. Sin pretensión romántica.\n\nEl que recibe: ojos cerrados, solo acepta.\nEl que da: presencia total, sin prisa.\nLuego cambien.\n\nEl tacto activa el sistema nervioso parasimpático: calma y conexión. No es lujo, es necesidad biológica. 🤲\n\n💑 Juntos de Nuevo"},
-  { dia:19, emoji:"🕊️", titulo:"Día 19 — El perdón profundo",
-    push:"Día del perdón, {nombre}. Cada uno escribe lo que nunca pidió perdón y lo que no ha logrado perdonar del todo. Se lo leen. Luego rompen o queman el papel juntos.",
-    email_asunto:"Día 19 — Perdonar no es olvidar. Es elegir.",
-    email_cuerpo:"Hola {nombre},\n\nHoy cada uno escribe en un papel:\n• Algo que nunca pedí perdón\n• Algo que no he logrado perdonar del todo\n\nSe lo leen en voz alta. Luego quemen o rompan el papel juntos.\n\nPerdonar no es olvidar. Es elegir que esa herida ya no dicte tu presente. 🕊️\n\n💑 Juntos de Nuevo"},
-  { dia:20, emoji:"🎁", titulo:"Día 20 — El acto secreto",
-    push:"Hoy {nombre}: elige UNA cosa que {pareja} odia hacer en casa y hazla tú, sin mencionarlo, sin esperar reconocimiento. Amor maduro en acción.",
-    email_asunto:"Día 20 — Servir sin llevar la cuenta",
-    email_cuerpo:"Hola {nombre},\n\nHoy eliges UNA cosa que {pareja} odia hacer en casa y la haces tú.\n\nSin mencionarlo. Sin esperar que lo noten. Solo como acto de amor puro.\n\nServir al otro sin llevar la cuenta es el amor maduro que los recién enamorados no conocen pero los que perduran atesoran. 🎁\n\n💑 Juntos de Nuevo"},
-  { dia:21, emoji:"💍", titulo:"Día 21 — La noche especial",
-    push:"¡Tres semanas, {nombre}! Esta noche recreen algo especial de su historia juntos. Una canción, un platillo, un lugar. No la perfección: la intención. {pareja} lo va a recordar.",
-    email_asunto:"🎉 Día 21 — ¡3 semanas! La noche más especial",
-    email_cuerpo:"Hola {nombre},\n\n¡TRES SEMANAS! Eso es enorme. Son diferentes de quienes eran hace 21 días.\n\nEsta noche recreen algo de su historia: una canción especial, un platillo favorito, un lugar significativo.\n\nNo buscan la perfección. Solo la intención de decir: esta historia vale la pena vivirla. 💍\n\n💑 Juntos de Nuevo"},
-  { dia:22, emoji:"🔄", titulo:"Semana 4 — Conócelo/a de nuevo",
-    push:"¡Semana 4 del Compromiso, {nombre}! Hoy háganle a {pareja} preguntas como si se acabaran de conocer. La persona que amas ha cambiado. Enamórate de la versión actual.",
-    email_asunto:"Semana 4, Día 22 — ¿Quién es {pareja} hoy?",
-    email_cuerpo:"Hola {nombre},\n\n¡Bienvenido/a a la Semana 4: Compromiso!\n\nHoy se hacen preguntas como si se acabaran de conocer:\n• ¿Cuál es tu película favorita ahora?\n• ¿Qué música escuchas últimamente?\n• ¿Cuál es tu mayor proyecto personal hoy?\n\nLas personas cambian cada 5-7 años. El amor que no se actualiza envejece mal. 🔄\n\n💑 Juntos de Nuevo"},
-  { dia:23, emoji:"📬", titulo:"Día 23 — Carta al futuro",
-    push:"Hoy {nombre}: cada uno escribe una carta a su relación dentro de 10 años. Descríbanla como quieren que sea. Guárdenla en un sobre sellado con la fecha.",
-    email_asunto:"Día 23 — Una carta que abrirán en 10 años",
-    email_cuerpo:"Hola {nombre},\n\nHoy cada uno escribe una carta a la versión de su relación dentro de 10 años.\n\nDescríbanla como si ya fuera realidad. Guárdenla juntos en un sobre sellado con la fecha.\n\nLa intención sostenida en el tiempo se convierte en destino. Lo que escribes hoy, lo estás eligiendo. 📬\n\n💑 Juntos de Nuevo"},
-  { dia:24, emoji:"💰", titulo:"Día 24 — El dinero",
-    push:"Hoy {nombre}: el tema que más evitan. Las finanzas. Sin reproches: ¿Qué relación tiene cada uno con el dinero? ¿Qué miedos financieros tienen? ¿Cuál es su meta común?",
-    email_asunto:"Día 24 — La conversación de dinero que nunca tuvieron",
-    email_cuerpo:"Hola {nombre},\n\nHoy abordan el tema que más se evita: las finanzas.\n\nSin reproches. Con curiosidad:\n• ¿Qué relación tiene cada uno con el dinero?\n• ¿Qué miedos financieros tienen?\n• ¿Cuál es su meta económica común?\n\nNo resuelvan todo hoy. Solo abran el tema con honestidad. Eso ya es enorme. 💰\n\n💑 Juntos de Nuevo"},
-  { dia:25, emoji:"👫", titulo:"Día 25 — Solo ustedes dos",
-    push:"Hoy, {nombre}: planeen algo solo para los dos, sin hijos, sin trabajo, sin familia. Una actividad nueva que ninguno haya hecho. La novedad compartida los enamora de nuevo.",
-    email_asunto:"Día 25 — Una aventura nueva para los dos",
-    email_cuerpo:"Hola {nombre},\n\nHoy planean algo que no involucre hijos, trabajo ni familia.\n\nUna actividad nueva que ninguno haya hecho antes. No tiene que ser cara. Solo diferente y juntos.\n\nLa novedad compartida reactiva el sistema de recompensa del cerebro. Literalmente, se vuelven a enamorar. 👫\n\n💑 Juntos de Nuevo"},
-  { dia:26, emoji:"⛪", titulo:"Día 26 — Un retiro juntos",
-    push:"Hoy {nombre}: investiguen y agenden un retiro de pareja. Retrouvaille, Encuentro Matrimonial Mundial, Equipos de Nuestra Señora. El amor necesita espacios para renovarse.",
-    email_asunto:"Día 26 — Agenda ya su próximo retiro de pareja",
-    email_cuerpo:"Hola {nombre},\n\nHoy investigan y reservan fecha para un retiro de pareja.\n\nOpciones:\n• Retrouvaille (para crisis): retrouvaille.org\n• Encuentro Matrimonial Mundial: wwme.org\n• Equipos de Nuestra Señora: equipes-nd.org\n\nEl amor no se mantiene solo. Necesita comunidad y espacios para renovarse. ⛪\n\n💑 Juntos de Nuevo"},
-  { dia:27, emoji:"📝", titulo:"Día 27 — 10 razones",
-    push:"{nombre}: haz una lista de 10 cosas que amas de {pareja} HOY. No antes. Hoy. Escríbelas primero. Luego léanselas lentamente, mirándose a los ojos.",
-    email_asunto:"Día 27 — 10 cosas que amas de {pareja} hoy",
-    email_cuerpo:"Hola {nombre},\n\nHoy cada uno hace una lista: 10 cosas que amo de ti HOY. No antes. Hoy.\n\nNo las compartan de inmediato. Escríbanlas primero. Luego léanselas lentamente, mirándose.\n\nGuarden estas listas. Léanlas en los días difíciles que inevitablemente vendrán. 📝\n\n💑 Juntos de Nuevo"},
-  { dia:28, emoji:"🆘", titulo:"Día 28 — ¿Necesitan ayuda?",
-    push:"Día 28, {nombre}. Pregunta honesta: ¿Necesitan apoyo profesional? Si hay duda, la respuesta es sí. Busquen un terapeuta de pareja juntos. Es fortaleza, no fracaso.",
-    email_asunto:"Día 28 — Pedir ayuda es un acto de valentía",
-    email_cuerpo:"Hola {nombre},\n\nHoy evalúan honestamente: ¿Necesitan apoyo profesional?\n\nSi la respuesta es sí — o hay duda — investiguen juntos un terapeuta de pareja y agenden UNA sesión.\n\nLas parejas que buscan ayuda a tiempo tienen 70% más probabilidades de superar su crisis. Hacerlo es fortaleza, no fracaso. 🆘\n\nEn México: busca psicólogos certificados en EFT (Terapia Focalizada en Emociones).\n\n💑 Juntos de Nuevo"},
-  { dia:29, emoji:"💒", titulo:"Día 29 — Se eligen de nuevo",
-    push:"Mañana es el último día, {nombre}. Esta noche, en privado, cada uno le dice al otro por qué elige seguir. 'Te elijo porque...' Razones reales. De hoy.",
-    email_asunto:"Día 29 — Mañana es el último día. Esta noche, elígele.",
-    email_cuerpo:"Hola {nombre},\n\nMañana es el Día 30. Esta noche, en privado, cada uno le dice al otro por qué elige seguir.\n\nNo frases genéricas. Razones reales, concretas, de hoy: 'Te elijo porque...'\n\nEl amor no es un contrato que se firmó una vez. Es una elección que se renueva cada día. 💒\n\n💑 Juntos de Nuevo"},
-  { dia:30, emoji:"🌄", titulo:"🎉 ¡Día 30 — Lo lograron!",
-    push:"¡LO LOGRARON, {nombre}! Hoy revisan el plan con {pareja}, eligen 3 prácticas permanentes y las escriben como su Código de Pareja. Este es el primer día del resto. ❤️",
-    email_asunto:"🎉 DÍA 30 — ¡Lo lograron, {nombre} y {pareja}! ❤️",
-    email_cuerpo:"Hola {nombre},\n\n¡LO LOGRARON! 30 días de elecciones valientes.\n\nHoy revisan juntos el plan completo:\n• ¿Qué rituales quieren conservar?\n• ¿Cuáles fueron sus momentos más importantes?\n• Elijan 3 prácticas permanentes y escríbanlas como su 'Código de Pareja'.\n\n30 días no arreglan una relación. Pero sí pueden ser el punto en que decidieron que valía la pena arreglarla. Ese punto lo es todo.\n\nCelebren hoy. No porque terminaron: sino porque empezaron. Eso es lo más difícil. 🌄\n\nCon cariño — Juntos de Nuevo 💑"},
-];
-
-// ═══════════════════════════════════════════════════════════════════════
-// DATOS DEL PLAN (preservados)
-// ═══════════════════════════════════════════════════════════════════════
-const weekMeta={
-  1:{label:"Reconocimiento",color:C.coral, light:C.coralL, emoji:"👁️",tagline:"Ver con honestidad para poder avanzar"},
-  2:{label:"Reconexión",    color:C.gold,  light:C.goldL,  emoji:"🤝",tagline:"Conocerse otra vez, más profundo que antes"},
-  3:{label:"Intimidad",     color:C.violet,light:C.violetL,emoji:"🌸",tagline:"El perdón real y el contacto que sana"},
-  4:{label:"Compromiso",    color:C.sage,  light:C.sageL,  emoji:"🌿",tagline:"Construir la versión del amor que eligieron"},
-};
-
-const days=[
-  {day:1,week:1,title:"El Primer Gesto",icon:"👁️",task:"Esta noche, sin teléfono, siéntense frente a frente 5 minutos. Ninguno habla. Solo mírense a los ojos. Al terminar, cada uno dice una sola palabra de lo que sintió.",reflection:"El amor no se fue. Se cubrió de costumbre. Hoy empiezas a descubrirlo.",tip:"Apaga notificaciones desde las 9 PM. Coloca el teléfono en otra habitación."},
-  {day:2,week:1,title:"La Pregunta Real",icon:"💬",task:"Pregunta genuinamente: '¿Cómo estás tú... de verdad?' Escucha sin responder, sin aconsejar. Solo recibe.",reflection:"Escuchar es el primer acto de amor que olvidamos y el primero que debemos recuperar.",tip:"No interrumpas. No defiendas. Solo escucha con los ojos, el cuerpo y el corazón."},
-  {day:3,week:1,title:"La Carta Silenciosa",icon:"✍️",task:"Escribe una carta a mano donde reconoces 3 momentos en los que elegiste la distancia. No acuses. Solo confiesa lo tuyo.",reflection:"La reconciliación empieza cuando alguien tiene el valor de decir: yo también me alejé.",tip:"No es para culparte. Es para nombrarlo. Lo que se nombra puede ser cambiado."},
-  {day:4,week:1,title:"El Archivo del Amor",icon:"📸",task:"Busquen juntos 3 fotos de cuando eran felices. Cuenten la historia detrás de cada una.",reflection:"Esa versión de ustedes no murió. Solo está esperando ser convocada de nuevo.",tip:"No compares ese entonces con el hoy con amargura. Úsalo como brújula, no como herida."},
-  {day:5,week:1,title:"El Pacto del Umbral",icon:"🚪",task:"Establezcan UN ritual de llegada: un abrazo de al menos 6 segundos cada vez que uno llega. Sin excepción.",reflection:"Los rituales pequeños construyen la arquitectura del amor cotidiano.",tip:"6 segundos es el tiempo mínimo para que el cuerpo libere oxitocina, la hormona del vínculo."},
-  {day:6,week:1,title:"Nombrar lo que Duele",icon:"💧",task:"Cada uno completa: 'Me duele que... pero entiendo que...' Hablen de UN solo tema hoy.",reflection:"Decir lo que duele con amor no es atacar. Es construir el puente que faltaba.",tip:"Usa siempre 'yo siento' antes que 'tú hiciste'. Esto no es técnica, es respeto."},
-  {day:7,week:1,title:"Noche sin Pantallas",icon:"🌙",task:"Una noche completa sin televisión, teléfono ni tablet después de las 8 PM. Cocinen, jueguen, platiquen.",reflection:"La pantalla no los separó. Pero llenarla de ustedes los volverá a unir.",tip:"Si el silencio se siente incómodo, es buena señal: hay algo importante esperando ser dicho."},
-  {day:8,week:2,title:"El Mapa de tu Pareja",icon:"🗺️",task:"Cada uno responde: ¿Cuál es el mayor sueño de tu pareja? ¿Su mayor miedo? ¿Lo que más le pesa? Compárenlo.",reflection:"La intimidad es saber qué le quita el sueño a la persona que duerme a tu lado.",tip:"Concepto Gottman: 'Mapa del amor'. Las parejas que se conocen profundamente resisten las crisis."},
-  {day:9,week:2,title:"La Deuda de Gratitud",icon:"🙏",task:"Cada uno menciona 5 cosas específicas por las que está agradecido. No 'eres bueno', sino el ejemplo concreto.",reflection:"La gratitud específica es reconocimiento. El reconocimiento es oxígeno para el amor.",tip:"La gratitud diaria es el predictor más fuerte de satisfacción matrimonial."},
-  {day:10,week:2,title:"Sanar una Herida Vieja",icon:"🩹",task:"Elijan UNA herida del pasado. Quien la causó dice 'me arrepiento de...' y escucha sin defenderse.",reflection:"Las heridas no procesadas se convierten en la distancia que no saben explicar.",tip:"Si es una herida muy profunda, consideren apoyo profesional. No todo puede resolverse solos."},
-  {day:11,week:2,title:"La Cita Inesperada",icon:"🌹",task:"Uno de los dos organiza una sorpresa pequeña: cena en el piso, paseo nocturno, nota escondida.",reflection:"La iniciativa amorosa dice: 'Pensé en ti cuando no tenías por qué estar en mi mente.'",tip:"El romanticismo no muere. Solo deja de ser prioridad. Hoy vuelve a serlo."},
-  {day:12,week:2,title:"El Lenguaje del Amor",icon:"🔑",task:"¿Cómo sabes que eres amado/a? Comparen sus respuestas. ¿Han estado amando al otro en el lenguaje equivocado?",reflection:"Muchas parejas se aman profundamente y se sienten solas porque hablan idiomas distintos.",tip:"Basado en Gary Chapman. Test gratuito: 5lovelanguages.com."},
-  {day:13,week:2,title:"Vulnerabilidad Compartida",icon:"✨",task:"Compartan en voz alta lo que agradecen de su relación y lo que necesitan sanar. Si tienen fe, háganlo en oración.",reflection:"La vulnerabilidad compartida crea intimidad que pocas conversaciones logran.",tip:"Programa recomendado: Retrouvaille — para parejas en crisis. retrouvaille.org"},
-  {day:14,week:2,title:"Revisión de Mitad",icon:"📊",task:"¿Qué ha cambiado en mí? ¿Qué he notado en mi pareja? ¿Qué me ha costado más? Compártanlo sin juzgar.",reflection:"El progreso no siempre se siente. A veces solo se ve cuando te detienes a mirarlo.",tip:"No se comparen con otras parejas. Su proceso es único."},
-  {day:15,week:3,title:"El Sueño Compartido",icon:"🌅",task:"Construyan juntos una visión a 5 años. Escríbanla como si ya fuera realidad: 'En 2030 nosotros...'",reflection:"Las parejas con narrativa compartida del futuro tienen un ancla para los momentos de tormenta.",tip:"Equipos de Nuestra Señora — movimiento de espiritualidad conyugal con retiros y encuentros."},
-  {day:16,week:3,title:"Conversaciones Profundas",icon:"🌊",task:"Tres preguntas (15 min c/u): ¿Momento más feliz de tu vida? ¿Qué parte tuya no conozco? ¿De qué tienes miedo?",reflection:"La profundidad no llega por accidente. Se convoca con las preguntas correctas.",tip:"Apaguen todo. Sin prisas."},
-  {day:17,week:3,title:"Acuerdos Nuevos",icon:"📋",task:"Escriban 5 compromisos vivos. Ej: 'Nos decimos buenas noches aunque estemos enojados'. Fírmenlo.",reflection:"Los matrimonios sanos tienen acuerdos que protegen el amor en los días difíciles.",tip:"Guárdenlo y léanlo en voz alta cada primer domingo del mes."},
-  {day:18,week:3,title:"Tocar y Ser Tocado",icon:"🤲",task:"Masaje de espalda 10 min en silencio. El que recibe solo acepta. El que da: presencia total. Luego cambien.",reflection:"El contacto físico sin agenda sexual es uno de los vínculos más sanadores del matrimonio.",tip:"El tacto activa el sistema nervioso parasimpático. Es necesidad biológica."},
-  {day:19,week:3,title:"Perdón Profundo",icon:"🕊️",task:"Cada uno escribe: lo que nunca pidió perdón + lo que no ha perdonado del todo. Léanselo. Rompan el papel juntos.",reflection:"Perdonar no es olvidar. Es elegir que esa herida ya no dicte tu presente.",tip:"El ritual de destruir el papel es simbólico pero poderoso. El cuerpo necesita gestos."},
-  {day:20,week:3,title:"El Día de Servicio",icon:"🎁",task:"Elige UNA cosa que tu pareja odia hacer y hazla hoy, sin mencionarlo, sin esperar reconocimiento.",reflection:"Servir sin llevar la cuenta es el amor maduro que los veteranos atesoran.",tip:"Movimiento Familiar Cristiano (MFC) — grupos de crecimiento matrimonial en parroquias locales."},
-  {day:21,week:3,title:"La Noche Especial",icon:"💍",task:"Recreen algo de su historia especial. Una canción, un platillo, un lugar. No la perfección: la intención.",reflection:"No se trata de volver al pasado. Se trata de recordarle al presente que ese amor existe.",tip:"Fin de semana 3. El trabajo más difícil ya está hecho."},
-  {day:22,week:4,title:"Conocerse de Nuevo",icon:"🔄",task:"Preguntas como si se acabaran de conocer: ¿Película favorita hoy? ¿Música? ¿Mayor proyecto personal?",reflection:"Muchas parejas están enamoradas de quien fue su pareja, no de quien es hoy.",tip:"Las personas cambian cada 5-7 años. El amor que no se actualiza envejece mal."},
-  {day:23,week:4,title:"Carta al Futuro",icon:"📬",task:"Cada uno escribe una carta a su relación dentro de 10 años. Guárdenla en un sobre sellado con la fecha.",reflection:"La intención sostenida en el tiempo se convierte en destino.",tip:"Conviértanla en un ritual anual: ábrela y escriban una nueva."},
-  {day:24,week:4,title:"Hablar del Dinero",icon:"💰",task:"Sin reproches: ¿Qué relación tiene cada uno con el dinero? ¿Miedos financieros? ¿Meta económica común?",reflection:"El dinero es el segundo tema que más destruye relaciones y el primero que menos se habla con amor.",tip:"No resuelvan todo hoy. Solo abran el tema con honestidad. Eso ya es enorme."},
-  {day:25,week:4,title:"Solo Ustedes Dos",icon:"👫",task:"Planeen algo sin hijos, trabajo ni familia. Una actividad nueva que ninguno haya hecho. Solo diferente y juntos.",reflection:"La novedad compartida reactiva el sistema de recompensa del cerebro. Se enamoran de nuevo.",tip:"Investigación de Aron: parejas que hacen actividades nuevas juntas reportan mayor satisfacción."},
-  {day:26,week:4,title:"Un Retiro de Pareja",icon:"⛪",task:"Investiguen y agenden un retiro: Retrouvaille (crisis), Encuentro Matrimonial Mundial, Equipos de Nuestra Señora.",reflection:"El amor no se mantiene solo. Necesita comunidad y espacios para renovarse.",tip:"Retrouvaille: retrouvaille.org | Encuentro Matrimonial: wwme.org"},
-  {day:27,week:4,title:"El Inventario del Amor",icon:"📝",task:"Lista: 10 cosas que amo de ti HOY. Escríbanlas. Luego léanselas lentamente, mirándose.",reflection:"El amor que no se dice en voz alta se convierte en amor que el otro no puede sentir.",tip:"Guarden estas listas. Léanlas en los días difíciles que inevitablemente vendrán."},
-  {day:28,week:4,title:"Pedir Ayuda",icon:"🆘",task:"Evalúen: ¿Necesitan apoyo profesional? Si hay duda, investiguen juntos un terapeuta EFT y agenden UNA sesión.",reflection:"Las parejas que buscan ayuda a tiempo tienen 70% más probabilidades de superar su crisis.",tip:"En México: busca psicólogos con certificación en EFT (Terapia Focalizada en Emociones)."},
-  {day:29,week:4,title:"Renovación de Votos",icon:"💒",task:"En privado, cada uno dice por qué elige seguir. 'Te elijo porque...' Razones reales. De hoy.",reflection:"El amor no es un contrato que se firmó una vez. Es una elección que se renueva cada día.",tip:"Si desean hacerlo con dimensión sacramental, contácten a su parroquia."},
-  {day:30,week:4,title:"El Primer Día del Resto",icon:"🌄",task:"Revisen el plan completo. ¿Qué rituales conservan? Elijan 3 prácticas permanentes. Escríbanlas como su 'Código de Pareja'.",reflection:"30 días no arreglan una relación. Pero sí pueden ser el punto en que decidieron que valía la pena arreglarla.",tip:"Celebren hoy. No porque terminaron: sino porque empezaron. Eso es lo más difícil."},
-];
-
-const programs=[
-  {name:"Retrouvaille",sub:"Para parejas en crisis",desc:"Programa de fin de semana específicamente para parejas con dificultades serias. Más de un millón de parejas ayudadas.",url:"retrouvaille.org",emoji:"🕊️"},
-  {name:"Encuentro Matrimonial Mundial",sub:"Para renovar el amor",desc:"Retiro de fin de semana para profundizar la relación y renovar el compromiso. Presente en más de 80 países.",url:"wwme.org",emoji:"🌍"},
-  {name:"Equipos de Nuestra Señora",sub:"Crecimiento continuo",desc:"Movimiento de espiritualidad conyugal donde grupos de parejas se reúnen mensualmente para crecer.",url:"equipes-nd.org",emoji:"✨"},
-  {name:"Movimiento Familiar Cristiano",sub:"Red parroquial",desc:"Grupos pequeños en parroquias locales con encuentros y acompañamiento para parejas en todas las etapas.",url:"mfcmex.org",emoji:"🏡"},
-];
-
-const weekMedia={
-  1:{items:[
-    {icon:"▶️",label:"TED · Brené Brown",title:"El poder de la vulnerabilidad",desc:"La conferencia más vista sobre conexión humana. Subtítulos en español.",url:"https://www.youtube.com/watch?v=iCvmsMzlF7o",tag:"20 min"},
-    {icon:"▶️",label:"Gottman Institute",title:"Canal oficial de YouTube",desc:"Videos cortos basados en décadas de investigación. Busca: 'Four Horsemen'.",url:"https://www.youtube.com/@GottmanInstitute",tag:"Canal"},
-    {icon:"📰",label:"Gottman · Blog",title:"Los Cuatro Jinetes del matrimonio",desc:"Los 4 patrones de comunicación que predicen la ruptura.",url:"https://www.gottman.com/blog/the-four-horsemen-recognizing-criticism-contempt-defensiveness-and-stonewalling/",tag:"Artículo"},
-    {icon:"🔧",label:"Herramienta",title:"Relationship Checkup — Gottman",desc:"Evaluación online para identificar fortalezas y áreas de crecimiento.",url:"https://www.gottman.com/couples/",tag:"Test gratuito"},
-  ]},
-  2:{items:[
-    {icon:"▶️",label:"Gary Chapman",title:"Los 5 Lenguajes del Amor",desc:"La conferencia más vista de Gary Chapman. Millones de vistas.",url:"https://www.youtube.com/results?search_query=gary+chapman+5+lenguajes+del+amor+en+español",tag:"YouTube"},
-    {icon:"🔧",label:"5lovelanguages.com",title:"Test oficial de los 5 Lenguajes",desc:"Cada uno lo hace por separado y comparan. Gratuito.",url:"https://5lovelanguages.com/quizzes/love-language",tag:"Test · 10 min"},
-    {icon:"▶️",label:"Gottman · YouTube",title:"Cómo reconstruir la confianza",desc:"Videos sobre reparación después de la distancia emocional.",url:"https://www.youtube.com/results?search_query=gottman+trust+rebuild+relationship",tag:"YouTube"},
-    {icon:"📖",label:"Libro · EFT",title:"Abrázame Fuerte — Sue Johnson",desc:"El libro de referencia de la Terapia Focalizada en Emociones.",url:"https://www.holdmetight.net/",tag:"Libro"},
-  ]},
-  3:{items:[
-    {icon:"▶️",label:"Sue Johnson",title:"El amor como vínculo de apego",desc:"La creadora de la EFT explica cómo sanar los vínculos de pareja.",url:"https://www.youtube.com/results?search_query=sue+johnson+emotionally+focused+therapy",tag:"YouTube"},
-    {icon:"▶️",label:"YouTube · Testimonios",title:"Retrouvaille — Historias reales",desc:"Parejas que superaron crisis matrimoniales severas.",url:"https://www.youtube.com/results?search_query=retrouvaille+testimonio+matrimonio",tag:"YouTube"},
-    {icon:"📰",label:"UC Berkeley",title:"El perdón: Ciencia y práctica",desc:"Recursos basados en evidencia sobre el perdón en parejas.",url:"https://greatergood.berkeley.edu/topic/forgiveness/definition",tag:"Artículo"},
-    {icon:"🌐",label:"Retrouvaille Oficial",title:"Para parejas en crisis",desc:"Sitio oficial del programa de fin de semana más exitoso.",url:"https://retrouvaille.org",tag:"Sitio oficial"},
-  ]},
-  4:{items:[
-    {icon:"🌐",label:"Encuentro Matrimonial",title:"wwme.org — Retiros para parejas",desc:"Busca retiros en México y Latinoamérica.",url:"https://wwme.org",tag:"Sitio oficial"},
-    {icon:"🌐",label:"Equipos Nuestra Señora",title:"Espiritualidad conyugal continua",desc:"Movimiento internacional con grupos en toda México.",url:"https://www.equipes-nd.org/es/",tag:"Sitio oficial"},
-    {icon:"▶️",label:"Robert Waldinger · TED",title:"La ciencia del amor duradero",desc:"Estudio de 80 años (Harvard) revela qué mantiene el amor vivo.",url:"https://www.youtube.com/watch?v=8KkKuTCFvzI",tag:"TED · 13 min"},
-    {icon:"📖",label:"Libro · Referencia",title:"Los 7 Principios del Matrimonio",desc:"La guía más respaldada por investigación para un matrimonio estable.",url:"https://www.gottman.com/product/the-seven-principles-for-making-marriage-work/",tag:"Libro"},
-  ]},
-};
-
-// ═══════════════════════════════════════════════════════════════════════
-// UTILIDADES
-// ═══════════════════════════════════════════════════════════════════════
-const genCode=()=>Math.random().toString(36).substring(2,8).toUpperCase();
-
-const getDayNum=(fechaInicio)=>{
-  if(!fechaInicio) return 1;
-  const start=new Date(fechaInicio);
-  const now=new Date();
-  start.setHours(0,0,0,0); now.setHours(0,0,0,0);
-  const diff=Math.floor((now-start)/(1000*60*60*24))+1;
-  return Math.max(1,Math.min(30,diff));
-};
-
-const parseMensaje=(template,nombre,pareja)=>
-  template.replace(/\{nombre\}/g,nombre||"").replace(/\{pareja\}/g,pareja||"tu pareja");
-
-const formatFecha=(iso)=>{
-  if(!iso) return "";
-  const [y,m,d]=iso.split("-");
-  const meses=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
-  return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
-};
-
-// ═══════════════════════════════════════════════════════════════════════
-// STORAGE HELPERS
-// ═══════════════════════════════════════════════════════════════════════
-const SK_ME="jdn_me_v2";
-const SK_COUPLE=(code)=>`jdn_couple_${code}`;
-const SK_DONE=(code)=>`jdn_done_${code}`;
-
-function saveMe(profile){
-  try{ localStorage.setItem(SK_ME,JSON.stringify(profile)); }catch(e){}
-}
-function loadMe(){
-  try{ const r=localStorage.getItem(SK_ME); return r?JSON.parse(r):null; }catch(e){return null;}
-}
-function saveCoupleData(code,data){
-  try{ localStorage.setItem(SK_COUPLE(code),JSON.stringify(data)); }catch(e){}
-}
-function loadCoupleData(code){
-  try{ const r=localStorage.getItem(SK_COUPLE(code)); return r?JSON.parse(r):null; }catch(e){return null;}
-}
-function saveDone(code,done){
-  try{ localStorage.setItem(SK_DONE(code),JSON.stringify([...done])); }catch(e){}
-}
-function loadDone(code){
-  try{ const r=localStorage.getItem(SK_DONE(code)); return r?new Set(JSON.parse(r)):new Set(); }catch(e){return new Set();}
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// NOTIFICACIONES — con guards completos para sandbox
-// ═══════════════════════════════════════════════════════════════════════
-const hasNotifAPI=()=>{
-  try{ return typeof window!=="undefined"&&typeof Notification!=="undefined"&&"requestPermission" in Notification; }
-  catch(e){ return false; }
-};
-
-function getNotifPerm(){
-  try{ return hasNotifAPI()?Notification.permission:"no-support"; }
-  catch(e){ return "no-support"; }
-}
-
-async function requestNotifPermission(){
-  if(!hasNotifAPI()) return "no-support";
-  try{
-    if(Notification.permission==="granted") return "granted";
-    const result=await Notification.requestPermission();
-    return result;
-  }catch(e){ return "denied"; }
-}
-
-function showPushNotif(title,body){
-  if(!hasNotifAPI()) return;
-  try{
-    if(Notification.permission!=="granted") return;
-    new Notification(`💑 ${title}`,{body,tag:"jdn-daily"});
-  }catch(e){}
-}
-
-function scheduleTestNotif(titulo,push,nombre,pareja){
-  const t=parseMensaje(titulo,nombre,pareja);
-  const b=parseMensaje(push,nombre,pareja);
-  setTimeout(()=>showPushNotif(t,b),2000);
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// SVG ILLUSTRATIONS
-// ═══════════════════════════════════════════════════════════════════════
-const HeartSVG=({size=24,color=C.coral})=>(
-  <svg viewBox="0 0 28 26" fill="none" style={{width:size,height:size*26/28,display:"inline-block",flexShrink:0}}>
-    <path d="M14 23S2 15 2 8a6 6 0 0 1 12-1.2A6 6 0 0 1 26 8c0 7-12 15-12 15z" fill={color} opacity=".9"/>
-  </svg>
-);
-
-const CoupleSVG=({c1=C.coral,c2=C.gold})=>(
-  <svg viewBox="0 0 160 100" fill="none" style={{width:"100%",maxWidth:180,display:"block",margin:"0 auto"}}>
-    <ellipse cx="52" cy="88" rx="28" ry="9" fill={c2} opacity=".18"/>
-    <ellipse cx="108" cy="88" rx="28" ry="9" fill={c1} opacity=".18"/>
-    <circle cx="47" cy="26" r="16" fill="#FDDDD7"/>
-    <rect x="33" y="42" width="28" height="38" rx="14" fill={c1}/>
-    <circle cx="113" cy="26" r="16" fill="#FAE0B8"/>
-    <rect x="99" y="42" width="28" height="38" rx="14" fill={c2}/>
-    <path d="M80 56 C73 44 60 48 60 60 C60 70 80 82 80 82 C80 82 100 70 100 60 C100 48 87 44 80 56Z" fill={c1} opacity=".85"/>
-    <circle cx="80" cy="56" r="3.5" fill="#fff" opacity=".45"/>
-  </svg>
-);
-
-
-// ═══════════════════════════════════════════════════════════════════════
-// INPUT COMPONENT
-// ═══════════════════════════════════════════════════════════════════════
-const Input=({label,note,icon,...props})=>(
-  <div style={{marginBottom:16}}>
-    <label className="jk" style={{display:"block",fontSize:11,fontWeight:700,color:C.ink2,letterSpacing:.5,textTransform:"uppercase",marginBottom:6}}>
-      {icon&&<span style={{marginRight:4}}>{icon}</span>}{label}
-      {note&&<span style={{fontWeight:400,textTransform:"none",color:C.ink3,letterSpacing:0,marginLeft:4}}>{note}</span>}
-    </label>
-    <input className="jk" style={{width:"100%",padding:"13px 14px",borderRadius:12,border:`1.5px solid #E8D8D8`,
-      fontSize:15,color:C.ink,background:"#FFFAF8",transition:"border-color .2s"}}
-      onFocus={e=>e.target.style.borderColor=C.coral}
-      onBlur={e=>e.target.style.borderColor="#E8D8D8"}
-      {...props}/>
+<div id="s-register" class="screen" style="min-height:100vh;background:var(--cream);padding:28px 20px">
+  <div style="max-width:420px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:24px">
+      <svg viewBox="0 0 160 100" fill="none" style="width:min(180px,55vw);margin:0 auto 16px">
+        <ellipse cx="52" cy="88" rx="28" ry="9" fill="#F5A623" opacity=".18"/>
+        <ellipse cx="108" cy="88" rx="28" ry="9" fill="#E8567A" opacity=".18"/>
+        <circle cx="47" cy="26" r="16" fill="#FDDDD7"/>
+        <rect x="33" y="42" width="28" height="38" rx="14" fill="#E8567A"/>
+        <circle cx="113" cy="26" r="16" fill="#FAE0B8"/>
+        <rect x="99" y="42" width="28" height="38" rx="14" fill="#F5A623"/>
+        <path d="M80 56C73 44 60 48 60 60C60 70 80 82 80 82C80 82 100 70 100 60C100 48 87 44 80 56Z" fill="#E8567A" opacity=".85"/>
+        <circle cx="80" cy="56" r="3.5" fill="#fff" opacity=".45"/>
+      </svg>
+      <h1 class="fr" style="font-size:clamp(26px,6vw,36px);color:var(--coral);margin-bottom:6px">Juntos de Nuevo</h1>
+      <p class="fr" style="font-size:16px;font-style:italic;color:var(--ink2);margin-bottom:4px">30 días para volver a encontrarse</p>
+      <p style="font-size:12px;color:var(--ink3)">Tu plan personal de reconciliación comienza aquí.</p>
+    </div>
+    <div class="card" style="padding:24px 20px">
+      <h2 class="fr" style="font-size:20px;color:var(--ink);margin-bottom:4px">Tu perfil personal</h2>
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:20px">Sin apellido — solo como quieres que te llamen.</p>
+      <div class="field"><label>😊 Tu nombre o apodo</label><input id="i-nom" type="text" placeholder="Ej: Mari, Toño, Luz..." maxlength="30"/></div>
+      <div class="field"><label>📧 Correo electrónico</label><input id="i-email" type="email" placeholder="tucorreo@email.com"/></div>
+      <div class="field"><label>📱 WhatsApp / Celular <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3)">(opcional)</span></label><input id="i-tel" type="tel" placeholder="614 123 4567"/></div>
+      <div class="field"><label>⏰ Hora del recordatorio diario</label><input id="i-hora" type="time" value="08:00"/></div>
+      <p id="reg-err" style="font-size:13px;color:var(--coral);font-weight:600;margin-bottom:12px;display:none"></p>
+      <button class="btn-p" onclick="doReg()">Continuar →</button>
+    </div>
+    <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic;text-align:center;margin-top:16px">Lic. Agustín Flores C. · 2026</p>
   </div>
-);
+</div>
 
-const Btn=({children,variant="primary",color=C.coral,onClick,style:st={},...props})=>{
-  const styles={
-    primary:{background:`linear-gradient(135deg,${color},${color}CC)`,color:"#fff",
-      boxShadow:`0 5px 20px ${color}45`,border:"none"},
-    secondary:{background:"transparent",color:color,border:`2px solid ${color}`},
-    ghost:{background:C.soft2,color:C.ink2,border:"none"},
-  };
-  return(
-    <button className="btn jk" onClick={onClick}
-      style={{padding:"13px 24px",borderRadius:50,fontWeight:700,fontSize:15,cursor:"pointer",
-        display:"flex",alignItems:"center",justifyContent:"center",gap:8,...styles[variant],...st}}
-      {...props}>
-      {children}
-    </button>
-  );
+<div id="s-date" class="screen" style="min-height:100vh;background:var(--cream);padding:28px 20px">
+  <div style="max-width:420px;margin:0 auto;text-align:center">
+    <div style="font-size:44px;margin-bottom:12px">📅</div>
+    <h2 class="fr" style="font-size:26px;color:var(--coral);margin-bottom:8px">¿Cuándo empiezan?</h2>
+    <p style="font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:24px">Puedes elegir hoy o una fecha futura.</p>
+    <div class="card" style="padding:24px 20px;margin-bottom:20px;text-align:left">
+      <label style="display:block;font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">📅 Fecha de inicio</label>
+      <input id="i-fecha" type="date" oninput="updFin()" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid rgba(232,86,122,.4);font-size:16px;color:var(--ink);background:var(--coralL);text-align:center"/>
+      <div style="background:var(--sageL);border-radius:12px;padding:12px 14px;margin-top:14px;border:1px solid rgba(91,173,143,.35)">
+        <p style="font-size:13px;color:var(--ink2)">📆 Tu plan termina el: <strong id="fecha-fin">—</strong></p>
+      </div>
+    </div>
+    <button class="btn-p" onclick="doDate()">¡Empezar el plan! 🚀</button>
+  </div>
+</div>
+
+<div id="s-notif" class="screen" style="min-height:100vh;background:var(--cream);padding:28px 20px">
+  <div style="max-width:440px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:44px;margin-bottom:10px">🔔</div>
+      <h2 class="fr" style="font-size:24px;color:var(--coral);margin-bottom:6px">Mensajes diarios</h2>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.65">Tu mensaje motivador cada día a las <strong id="n-hora">08:00</strong>.</p>
+    </div>
+    <div class="tab-bar t2" style="margin-bottom:16px">
+      <button class="tab-btn on" id="nt-push" onclick="switchNT('push')" style="background:var(--coral)">📱 Push</button>
+      <button class="tab-btn" id="nt-email" onclick="switchNT('email')">📧 Email</button>
+    </div>
+    <div id="np-push" class="card" style="padding:20px;margin-bottom:16px">
+      <p style="font-size:11px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Estado actual</p>
+      <div id="ps-box" style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--coralL);border-radius:12px;border:1px solid rgba(232,86,122,.25);margin-bottom:12px">
+        <span id="ps-ico" style="font-size:20px;flex-shrink:0">🔕</span>
+        <div><p id="ps-title" style="font-size:13px;font-weight:700;color:var(--coral)">Notificaciones inactivas</p><p id="ps-sub" style="font-size:11px;color:var(--ink3);margin-top:3px">Toca el botón para activarlas.</p></div>
+      </div>
+      <button id="ps-btn" class="btn-p" style="font-size:14px;margin-bottom:12px" onclick="doPush()">🔔 Activar notificaciones push</button>
+      <div style="background:var(--soft2);border-radius:12px;padding:12px 14px">
+        <p style="font-size:11px;color:var(--ink3);line-height:1.65">💡 <strong>Tu mensaje de hoy:</strong><br/><em id="pp-t" style="color:var(--coral)"></em><br/><span id="pp-b" style="color:var(--ink2)"></span></p>
+      </div>
+    </div>
+    <div id="np-email" class="card" style="padding:20px;margin-bottom:16px;display:none">
+      <p style="font-size:11px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Tu correo</p>
+      <div style="background:var(--coralL);border-radius:12px;padding:11px 14px;border:1px solid rgba(232,86,122,.2);margin-bottom:14px"><p id="ne-email" style="font-size:13px;font-weight:700;color:var(--ink)">📧 —</p></div>
+      <div style="background:var(--goldL);border-radius:12px;padding:13px 14px;margin-bottom:14px;border:1px solid rgba(245,166,35,.35)">
+        <p style="font-size:11px;font-weight:700;color:#7A5500;margin-bottom:5px">Asunto del email de hoy:</p>
+        <p id="ne-asunto" style="font-size:13px;color:var(--ink);font-style:italic"></p>
+      </div>
+      <button class="btn-p" style="background:linear-gradient(135deg,var(--gold),#E09A10);color:var(--ink);font-size:14px;margin-bottom:12px" onclick="doEmailPrev()">📧 Abrir email de muestra</button>
+      <p style="font-size:11px;color:var(--ink3);line-height:1.65">💡 Para envío automático: <strong>EmailJS</strong> (emailjs.com · gratis 200/mes).</p>
+    </div>
+    <button class="btn-p" id="nd-btn" onclick="doNotifDone()">Ir al plan →</button>
+  </div>
+</div>
+
+<div id="s-app" class="screen">
+  <div class="app-hdr">
+    <div style="position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#F9A8D4,transparent 70%);opacity:.28;pointer-events:none"></div>
+    <div style="max-width:660px;margin:0 auto;position:relative">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div>
+          <p style="font-size:11px;font-weight:700;color:var(--coral);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px">💑 Juntos de Nuevo</p>
+          <h1 class="fr" style="font-size:clamp(18px,4vw,26px);font-weight:700;color:var(--ink);line-height:1.15">Hola, <span id="h-nom" style="color:var(--coral)"></span> 👋</h1>
+        </div>
+        <button onclick="goProfile()" style="width:42px;height:42px;border-radius:50%;background:#fff;border:2px solid rgba(232,86,122,.25);font-size:18px;flex-shrink:0;box-shadow:0 2px 10px rgba(232,86,122,.12)">👤</button>
+      </div>
+      <div style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--ink2);font-weight:600">Día <strong id="h-dia" style="color:var(--coral)">1</strong> de 30</span>
+          <span id="h-pct" style="font-size:12px;color:var(--coral);font-weight:700">0%</span>
+        </div>
+        <div class="prog-track"><div id="h-prog" class="prog-fill" style="width:0%"></div></div>
+        <p id="h-ini" style="font-size:11px;color:var(--ink3);margin-top:5px"></p>
+      </div>
+    </div>
+  </div>
+  <div class="inner">
+    <div id="msg-card" class="card" style="margin:18px 0;overflow:hidden">
+      <div style="height:4px;background:linear-gradient(90deg,var(--coral),var(--gold),var(--sage))"></div>
+      <div style="padding:16px 16px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div><span id="mc-lbl" style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--coral);text-transform:uppercase">Tu mensaje de hoy</span>
+          <h3 class="fr" id="mc-tit" style="font-size:17px;color:var(--ink);margin-top:3px"></h3></div>
+          <button onclick="document.getElementById('msg-card').style.display='none'" style="font-size:22px;color:var(--ink3);background:none;border:none;flex-shrink:0;line-height:1;margin-top:-4px">×</button>
+        </div>
+        <p id="mc-body" style="font-size:14px;color:var(--ink2);line-height:1.75;margin-bottom:12px"></p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-sm" id="mc-email" style="background:var(--goldL);color:#7A5500;border:1px solid rgba(245,166,35,.4)">📧 Ver email</button>
+          <button class="btn-sm" id="mc-push" style="background:var(--sageL);color:var(--sage);border:1px solid rgba(91,173,143,.4);display:none" onclick="tPush()">🔔 Push prueba</button>
+          <button class="btn-sm" id="mc-day" style="background:var(--coralL);color:var(--coral);border:1px solid rgba(232,86,122,.4)" onclick="goToday()">👁️ Ver actividad</button>
+        </div>
+      </div>
+    </div>
+    <div class="tab-bar t4" id="wk-tabs"></div>
+    <div id="wk-banner" class="wbanner"></div>
+    <div class="tab-bar t3">
+      <button class="tab-btn on" id="st-days" onclick="switchTab('days')" style="background:var(--coral)">📅 Días</button>
+      <button class="tab-btn" id="st-media" onclick="switchTab('media')">🎬 Multimedia</button>
+      <button class="tab-btn" id="st-progs" onclick="switchTab('progs')">🤝 Programas</button>
+    </div>
+    <div id="p-days"></div>
+    <div id="p-media" style="display:none"></div>
+    <div id="p-progs" style="display:none"></div>
+    <div style="margin-top:28px;border-radius:20px;background:linear-gradient(135deg,var(--coralL),var(--goldL),var(--sageL));padding:22px 18px;border:1.5px solid rgba(232,86,122,.18);text-align:center">
+      <div style="margin-bottom:10px;font-size:18px">❤️ 🧡 💛 💚 💜</div>
+      <p class="fr" style="font-size:15px;font-style:italic;color:var(--ink);line-height:1.85;margin-bottom:10px">"Cada noche que eligen buscarse,<br/>la distancia pierde terreno.<br/><strong style="color:var(--coral)">¿Quién va a moverse primero?</strong>"</p>
+      <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic">Lic. Agustín Flores C. · 2026 · Derechos Reservados</p>
+    </div>
+  </div>
+</div>
+
+<div id="s-profile" class="screen" style="min-height:100vh;background:var(--cream);padding:20px 16px">
+  <div style="max-width:440px;margin:0 auto">
+    <button onclick="showScr('s-app')" style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--coral);font-weight:700;background:none;border:none;margin-bottom:20px;padding:4px 0">← Volver al plan</button>
+    <div class="card" style="padding:22px 18px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--gold));display:flex;align-items:center;justify-content:center;font-size:24px">😊</div>
+        <div><h2 class="fr" id="pr-nom" style="font-size:22px;color:var(--ink)"></h2><p id="pr-email" style="font-size:12px;color:var(--ink3)"></p><p id="pr-tel" style="font-size:12px;color:var(--ink3)"></p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">📅 Inicio</p><p id="pr-ini" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">📆 Día actual</p><p id="pr-dia" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">⏰ Recordatorio</p><p id="pr-hora" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+        <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">🔔 Push</p><p id="pr-push" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+      </div>
+    </div>
+    <div style="background:var(--goldL);border-radius:18px;padding:18px;border:1px solid rgba(245,166,35,.4);margin-bottom:14px">
+      <p style="font-size:11px;font-weight:700;color:#7A5500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">📧 Email de hoy — vista previa</p>
+      <p style="font-size:12px;color:var(--ink2);margin-bottom:4px"><strong>Asunto:</strong> <span id="pr-easunto"></span></p>
+      <p id="pr-ecuerpo" style="font-size:12px;color:var(--ink2);line-height:1.65;white-space:pre-line"></p>
+      <button onclick="prEmail()" style="margin-top:10px;font-size:12px;font-weight:700;color:#7A5500;background:rgba(245,166,35,.2);border:1px solid rgba(245,166,35,.5);border-radius:50px;padding:7px 16px">📧 Enviar a mi correo</button>
+    </div>
+    <button class="btn-g" style="color:var(--ink3)" onclick="if(confirm('¿Reiniciar el plan? Perderás todo el progreso.'))doReset()">🔄 Reiniciar perfil</button>
+  </div>
+</div>
+
+<div id="modal-cel" class="modal-ov">
+  <div class="modal-box">
+    <div style="font-size:52px;margin-bottom:12px">🎉</div>
+    <h2 class="fr" style="font-size:26px;color:var(--sage);margin-bottom:8px">¡Lo lograron!</h2>
+    <p id="cel-txt" style="font-size:15px;color:var(--ink2);line-height:1.75;margin-bottom:16px"></p>
+    <p class="fr" style="font-size:13px;font-style:italic;color:var(--ink3);margin-bottom:20px">"Este es solo el primer día del resto."</p>
+    <button class="btn-p" style="background:linear-gradient(135deg,var(--sage),#3A9A72)" onclick="document.getElementById('modal-cel').classList.remove('show')">🌿 Celebrar y continuar</button>
+  </div>
+</div>
+
+<script>
+const WKS={
+  1:{l:"Reconocimiento",c:"#E8567A",li:"#FFF0F3",e:"👁️",tl:"Ver con honestidad para poder avanzar"},
+  2:{l:"Reconexión",    c:"#F5A623",li:"#FFFAEE",e:"🤝",tl:"Conocerse otra vez, más profundo que antes"},
+  3:{l:"Intimidad",     c:"#9B72CF",li:"#F5F0FF",e:"🌸",tl:"El perdón real y el contacto que sana"},
+  4:{l:"Compromiso",    c:"#5BAD8F",li:"#F0FAF5",e:"🌿",tl:"Construir la versión del amor que eligieron"},
 };
+const DYS=[
+  {d:1,w:1,t:"El Primer Gesto",i:"👁️",a:"Esta noche, sin teléfono, siéntense frente a frente 5 minutos. Ninguno habla. Solo mírense a los ojos. Al terminar, cada uno dice una sola palabra de lo que sintió.",r:"El amor no se fue. Se cubrió de costumbre. Hoy empiezas a descubrirlo.",p:"Apaga notificaciones desde las 9 PM. Coloca el teléfono en otra habitación."},
+  {d:2,w:1,t:"La Pregunta Real",i:"💬",a:"Pregunta genuinamente: '¿Cómo estás tú... de verdad?' Escucha sin responder, sin aconsejar. Solo recibe.",r:"Escuchar es el primer acto de amor que olvidamos y el primero que debemos recuperar.",p:"No interrumpas. No defiendas. Solo escucha con los ojos, el cuerpo y el corazón."},
+  {d:3,w:1,t:"La Carta Silenciosa",i:"✍️",a:"Escribe una carta a mano donde reconoces 3 momentos en los que elegiste la distancia. No acuses. Solo confiesa lo tuyo.",r:"La reconciliación empieza cuando alguien tiene el valor de decir: yo también me alejé.",p:"No es para culparte. Es para nombrarlo. Lo que se nombra puede ser cambiado."},
+  {d:4,w:1,t:"El Archivo del Amor",i:"📸",a:"Busquen juntos 3 fotos de cuando eran felices. Cuenten la historia detrás de cada una.",r:"Esa versión de ustedes no murió. Solo está esperando ser convocada de nuevo.",p:"No compares ese entonces con el hoy con amargura. Úsalo como brújula, no como herida."},
+  {d:5,w:1,t:"El Pacto del Umbral",i:"🚪",a:"Establezcan UN ritual de llegada: un abrazo de al menos 6 segundos cada vez que uno llega. Sin excepción.",r:"Los rituales pequeños construyen la arquitectura del amor cotidiano.",p:"6 segundos es el tiempo mínimo para que el cuerpo libere oxitocina, la hormona del vínculo."},
+  {d:6,w:1,t:"Nombrar lo que Duele",i:"💧",a:"Cada uno completa: 'Me duele que... pero entiendo que...' Hablen de UN solo tema hoy.",r:"Decir lo que duele con amor no es atacar. Es construir el puente que faltaba.",p:"Usa siempre 'yo siento' antes que 'tú hiciste'. Esto no es técnica, es respeto."},
+  {d:7,w:1,t:"Noche sin Pantallas",i:"🌙",a:"Una noche completa sin televisión, teléfono ni tablet después de las 8 PM. Cocinen, jueguen, platiquen.",r:"La pantalla no los separó. Pero llenarla de ustedes los volverá a unir.",p:"Si el silencio se siente incómodo, es buena señal: hay algo importante esperando ser dicho."},
+  {d:8,w:2,t:"El Mapa de tu Pareja",i:"🗺️",a:"Cada uno responde por escrito: ¿Cuál es el mayor sueño de tu pareja? ¿Su mayor miedo? ¿Lo que más le pesa? Compárenlo.",r:"La intimidad es saber qué le quita el sueño a la persona que duerme a tu lado.",p:"Concepto Gottman: 'Mapa del amor'. Las parejas que se conocen profundamente resisten las crisis."},
+  {d:9,w:2,t:"La Deuda de Gratitud",i:"🙏",a:"Cada uno menciona 5 cosas específicas por las que está agradecido. No 'eres bueno', sino el ejemplo concreto.",r:"La gratitud específica es reconocimiento. El reconocimiento es oxígeno para el amor.",p:"La gratitud diaria es el predictor más fuerte de satisfacción matrimonial."},
+  {d:10,w:2,t:"Sanar una Herida Vieja",i:"🩹",a:"Elijan UNA herida del pasado. Quien la causó dice 'me arrepiento de...' y escucha sin defenderse.",r:"Las heridas no procesadas se convierten en la distancia que no saben explicar.",p:"Si es una herida muy profunda, consideren apoyo profesional."},
+  {d:11,w:2,t:"La Cita Inesperada",i:"🌹",a:"Uno de los dos organiza una sorpresa pequeña: cena en el piso, paseo nocturno, nota escondida.",r:"La iniciativa amorosa dice: 'Pensé en ti cuando no tenías por qué estar en mi mente.'",p:"El romanticismo no muere. Solo deja de ser prioridad. Hoy vuelve a serlo."},
+  {d:12,w:2,t:"El Lenguaje del Amor",i:"🔑",a:"¿Cómo sabes que eres amado/a? Comparen sus respuestas. ¿Han estado amando al otro en el lenguaje equivocado?",r:"Muchas parejas se aman profundamente y se sienten solas porque hablan idiomas distintos.",p:"Basado en Gary Chapman. Test gratuito: 5lovelanguages.com."},
+  {d:13,w:2,t:"Vulnerabilidad Compartida",i:"✨",a:"Compartan en voz alta lo que agradecen de su relación y lo que necesitan sanar.",r:"La vulnerabilidad compartida crea intimidad que pocas conversaciones logran.",p:"Programa recomendado: Retrouvaille — para parejas en crisis. retrouvaille.org"},
+  {d:14,w:2,t:"Revisión de Mitad",i:"📊",a:"¿Qué ha cambiado en mí? ¿Qué he notado en mi pareja? ¿Qué me ha costado más? Compártanlo sin juzgar.",r:"El progreso no siempre se siente. A veces solo se ve cuando te detienes a mirarlo.",p:"No se comparen con otras parejas. Su proceso es único."},
+  {d:15,w:3,t:"El Sueño Compartido",i:"🌅",a:"Construyan juntos una visión a 5 años. Escríbanla como si ya fuera realidad: 'En 2030 nosotros...'",r:"Las parejas con narrativa compartida del futuro tienen un ancla para los momentos de tormenta.",p:"Equipos de Nuestra Señora — movimiento de espiritualidad conyugal con retiros y encuentros."},
+  {d:16,w:3,t:"Conversaciones Profundas",i:"🌊",a:"Tres preguntas (15 min c/u): ¿Momento más feliz de tu vida? ¿Qué parte tuya no conozco? ¿De qué tienes miedo?",r:"La profundidad no llega por accidente. Se convoca con las preguntas correctas.",p:"Apaguen todo. Sin prisas."},
+  {d:17,w:3,t:"Acuerdos Nuevos",i:"📋",a:"Escriban 5 compromisos vivos. Ej: 'Nos decimos buenas noches aunque estemos enojados'. Fírmenlo.",r:"Los matrimonios sanos tienen acuerdos que protegen el amor en los días difíciles.",p:"Guárdenlo y léanlo en voz alta cada primer domingo del mes."},
+  {d:18,w:3,t:"Tocar y Ser Tocado",i:"🤲",a:"Masaje de espalda 10 min en silencio. El que recibe solo acepta. El que da: presencia total. Luego cambien.",r:"El contacto físico sin agenda sexual es uno de los vínculos más sanadores del matrimonio.",p:"El tacto activa el sistema nervioso parasimpático. Es necesidad biológica."},
+  {d:19,w:3,t:"Perdón Profundo",i:"🕊️",a:"Cada uno escribe: lo que nunca pidió perdón + lo que no ha perdonado del todo. Léanselo. Rompan el papel juntos.",r:"Perdonar no es olvidar. Es elegir que esa herida ya no dicte tu presente.",p:"El ritual de destruir el papel es simbólico pero poderoso. El cuerpo necesita gestos."},
+  {d:20,w:3,t:"El Día de Servicio",i:"🎁",a:"Elige UNA cosa que tu pareja odia hacer y hazla hoy, sin mencionarlo, sin esperar reconocimiento.",r:"Servir sin llevar la cuenta es el amor maduro que los veteranos atesoran.",p:"Movimiento Familiar Cristiano (MFC) — grupos de crecimiento matrimonial en parroquias locales."},
+  {d:21,w:3,t:"La Noche Especial",i:"💍",a:"Recreen algo de su historia especial. Una canción, un platillo, un lugar. No la perfección: la intención.",r:"No se trata de volver al pasado. Se trata de recordarle al presente que ese amor existe.",p:"Fin de semana 3. El trabajo más difícil ya está hecho."},
+  {d:22,w:4,t:"Conocerse de Nuevo",i:"🔄",a:"Preguntas como si se acabaran de conocer: ¿Película favorita hoy? ¿Música? ¿Mayor proyecto personal?",r:"Muchas parejas están enamoradas de quien fue su pareja, no de quien es hoy.",p:"Las personas cambian cada 5-7 años. El amor que no se actualiza envejece mal."},
+  {d:23,w:4,t:"Carta al Futuro",i:"📬",a:"Cada uno escribe una carta a su relación dentro de 10 años. Guárdenla en un sobre sellado con la fecha.",r:"La intención sostenida en el tiempo se convierte en destino.",p:"Conviértanla en un ritual anual: ábrela y escriban una nueva."},
+  {d:24,w:4,t:"Hablar del Dinero",i:"💰",a:"Sin reproches: ¿Qué relación tiene cada uno con el dinero? ¿Miedos financieros? ¿Meta económica común?",r:"El dinero es el segundo tema que más destruye relaciones y el primero que menos se habla con amor.",p:"No resuelvan todo hoy. Solo abran el tema con honestidad. Eso ya es enorme."},
+  {d:25,w:4,t:"Solo Ustedes Dos",i:"👫",a:"Planeen algo sin hijos, trabajo ni familia. Una actividad nueva que ninguno haya hecho. Solo diferente y juntos.",r:"La novedad compartida reactiva el sistema de recompensa del cerebro. Se enamoran de nuevo.",p:"Investigación de Aron: parejas que hacen actividades nuevas juntas reportan mayor satisfacción."},
+  {d:26,w:4,t:"Un Retiro de Pareja",i:"⛪",a:"Investiguen y agenden un retiro: Retrouvaille (crisis), Encuentro Matrimonial Mundial, Equipos de Nuestra Señora.",r:"El amor no se mantiene solo. Necesita comunidad y espacios para renovarse.",p:"Retrouvaille: retrouvaille.org | Encuentro Matrimonial: wwme.org"},
+  {d:27,w:4,t:"El Inventario del Amor",i:"📝",a:"Lista: 10 cosas que amo de ti HOY. Escríbanlas. Luego léanselas lentamente, mirándose.",r:"El amor que no se dice en voz alta se convierte en amor que el otro no puede sentir.",p:"Guarden estas listas. Léanlas en los días difíciles que inevitablemente vendrán."},
+  {d:28,w:4,t:"Pedir Ayuda",i:"🆘",a:"Evalúen: ¿Necesitan apoyo profesional? Si hay duda, investiguen juntos un terapeuta EFT y agenden UNA sesión.",r:"Las parejas que buscan ayuda a tiempo tienen 70% más probabilidades de superar su crisis.",p:"En México: busca psicólogos con certificación en EFT (Terapia Focalizada en Emociones)."},
+  {d:29,w:4,t:"Renovación de Votos",i:"💒",a:"En privado, cada uno dice por qué elige seguir. 'Te elijo porque...' Razones reales. De hoy.",r:"El amor no es un contrato que se firmó una vez. Es una elección que se renueva cada día.",p:"Si desean hacerlo con dimensión sacramental, contácten a su parroquia."},
+  {d:30,w:4,t:"El Primer Día del Resto",i:"🌄",a:"Revisen el plan completo. ¿Qué rituales conservan? Elijan 3 prácticas permanentes y escríbanlas como su 'Código de Pareja'.",r:"30 días no arreglan una relación. Pero sí pueden ser el punto en que decidieron que valía la pena arreglarla.",p:"Celebren hoy. No porque terminaron: sino porque empezaron. Eso es lo más difícil."},
+];
+const MGS=[
+  {t:"¡Comienza tu Día 1!",push:"Hoy das el primer paso, {n}. Esta noche: 5 minutos sin teléfono, solo mírense a los ojos.",as:"Día 1 — Tu primer gesto, {n} 💑",cu:"Hola {n},\n\nHoy es el Día 1 de tu plan «Juntos de Nuevo».\n\nActividad: Siéntense frente a frente 5 minutos sin teléfono. Solo mírense. Al terminar, digan una sola palabra de lo que sintieron.\n\nEl amor no se fue. Se cubrió de costumbre. Hoy empieza a descubrirse.\n\n💑 Juntos de Nuevo"},
+  {t:"Día 2 — Pregunta de verdad",push:"Hoy, {n}: pregunta '¿Cómo estás tú... de verdad?' y escucha sin dar consejos.",as:"Día 2 — La pregunta más importante que puedes hacer hoy",cu:"Hola {n},\n\nHoy: pregunta genuinamente. No el '¿cómo estás?' de rutina. El de verdad.\n\nEscucha sin interrumpir. Sin defender. Solo recibe.\n\nEscuchar es el primer acto de amor que olvidamos. 💬\n\n💑 Juntos de Nuevo"},
+  {t:"Día 3 — Tu carta",push:"Escribe a mano 3 momentos en que elegiste la distancia. No para culparte: para nombrarlo.",as:"Día 3 — La carta que puede cambiarlo todo, {n}",cu:"Hola {n},\n\nHoy escribes una carta. Solo confiesa lo tuyo: 3 momentos en que sí elegiste alejarte.\n\nNo es para culparte. Es para nombrarlo. Lo que se nombra puede ser cambiado.\n\n💑 Juntos de Nuevo"},
+  {t:"Día 4 — El archivo del amor",push:"Busquen juntos 3 fotos de cuando eran felices. Esa versión de ustedes sigue ahí.",as:"Día 4 — Hay fotos esperando ser redescubiertas",cu:"Hola {n},\n\nHoy buscan juntos 3 fotos de cuando eran felices.\n\nCuenten la historia detrás de cada una. ¿Quiénes eran en ese momento?\n\nEsa versión de ustedes no murió. 📸\n\n💑 Juntos de Nuevo"},
+  {t:"Día 5 — El abrazo del umbral",push:"Ritual nuevo, {n}: un abrazo de 6 segundos cada vez que uno llega a casa.",as:"Día 5 — 6 segundos que cambian la química del amor",cu:"Hola {n},\n\nHoy establecen su ritual del umbral: un abrazo de mínimo 6 segundos cada vez que uno llega.\n\n6 segundos = oxitocina, la hormona del vínculo. Un ritual pequeño que construye algo enorme. 🚪\n\n💑 Juntos de Nuevo"},
+  {t:"Día 6 — Nombrar lo que duele",push:"{n}, hoy: 'Me duele que... pero entiendo que...' Un solo tema. Con amor.",as:"Día 6 — Decir lo que duele no es atacar, {n}",cu:"Hola {n},\n\nHoy usan esta frase: 'Me duele que... pero entiendo que...'\n\nPrimero 'yo siento', nunca 'tú hiciste'.\n\nDecir lo que duele con amor no es atacar. Es construir el puente que faltaba. 💧\n\n💑 Juntos de Nuevo"},
+  {t:"Día 7 — Sin pantallas",push:"Noche sin pantallas, {n}. Sin teléfono, sin tele después de las 8 PM.",as:"Día 7 — Una semana. Esta noche, solo ustedes.",cu:"Hola {n},\n\n¡Una semana! Ya son diferentes de como empezaron.\n\nHoy: sin dispositivos después de las 8 PM. Cocinen, jueguen, platiquen.\n\nSi el silencio se siente incómodo, es buena señal. 🌙\n\n💑 Juntos de Nuevo"},
+  {t:"Semana 2 — El mapa de tu pareja",push:"Semana 2, {n}. ¿Sabes cuál es el mayor sueño de tu pareja hoy?",as:"Semana 2, Día 8 — ¿Cuánto conoces a tu pareja hoy?",cu:"Hola {n},\n\n¡Bienvenido/a a la Semana 2: Reconexión!\n\nHoy responden por escrito: ¿Cuál es el mayor sueño de tu pareja? ¿Su mayor miedo?\n\nLa intimidad real es saber qué le quita el sueño a quien duerme a tu lado. 🗺️\n\n💑 Juntos de Nuevo"},
+  {t:"Día 9 — La deuda de gratitud",push:"Hoy, {n}: 5 cosas específicas por las que agradeces a tu pareja. Sé específico/a.",as:"Día 9 — La gratitud que tu pareja todavía no sabe que sientes",cu:"Hola {n},\n\nHoy: 5 cosas específicas por las que agradeces a tu pareja.\n\nNo 'eres bueno/a'. Sé específico/a: 'el martes que llegaste cansado/a y aún así me abrazaste'.\n\nLa gratitud diaria: predictor más fuerte de satisfacción matrimonial. 🙏\n\n💑 Juntos de Nuevo"},
+  {t:"Día 10 — Sanar una herida",push:"{n}, hoy eligen UNA herida del pasado. Quien la causó dice: 'Me arrepiento de...'",as:"Día 10 — La herida que nunca cerró bien",cu:"Hola {n},\n\nHoy eligen UNA herida del pasado que nunca cerró del todo.\n\nQuien la causó dice: 'Me arrepiento de...' y escucha cómo el otro lo vivió. Sin defenderse.\n\nLas heridas no procesadas se convierten en la distancia que no saben explicar. 🩹\n\n💑 Juntos de Nuevo"},
+  {t:"Día 11 — La sorpresa",push:"Organiza una sorpresa pequeña para tu pareja, {n}. Lo que importa es la iniciativa.",as:"Día 11 — Una sorpresa pequeña cambia todo",cu:"Hola {n},\n\nHoy alguien organiza una sorpresa pequeña: una nota escondida, una cena improvisada, un paseo nocturno.\n\nNo tiene que ser costoso. Tiene que ser intencional. 🌹\n\n💑 Juntos de Nuevo"},
+  {t:"Día 12 — El lenguaje del amor",push:"{n}: ¿Cómo sabes que eres amado/a? Hoy descubren si hablan el mismo idioma.",as:"Día 12 — ¿Están hablando el mismo idioma del amor?",cu:"Hola {n},\n\nHoy cada uno responde: ¿Cómo sabes que eres amado/a?\n\nPalabras de afirmación, tiempo, actos de servicio, regalos o contacto físico.\n\nTest gratuito: 5lovelanguages.com 🔑\n\n💑 Juntos de Nuevo"},
+  {t:"Día 13 — Vulnerabilidad compartida",push:"Hoy comparten en voz alta lo que agradecen de su relación y lo que necesitan sanar.",as:"Día 13 — La vulnerabilidad que los acerca",cu:"Hola {n},\n\nHoy comparten en voz alta lo que agradecen de su relación y lo que necesitan sanar.\n\nLa vulnerabilidad compartida crea la intimidad más profunda. ✨\n\n💑 Juntos de Nuevo"},
+  {t:"Día 14 — ¡Dos semanas!",push:"¡Dos semanas, {n}! ¿Qué ha cambiado en ti? ¿Qué has notado en tu pareja?",as:"🎉 Día 14 — ¡Dos semanas completas!",cu:"Hola {n},\n\n¡DOS SEMANAS completas! Eso no es poco. Es mucho.\n\nHoy cada uno responde honestamente:\n• ¿Qué ha cambiado en mí?\n• ¿Qué me ha costado más?\n\nEl progreso no siempre se siente. 📊\n\n💑 Juntos de Nuevo"},
+  {t:"Semana 3 — El sueño compartido",push:"¡Semana 3, {n}! Hoy construyen juntos su visión a 5 años.",as:"Semana 3, Día 15 — ¿Dónde están ustedes en 5 años?",cu:"Hola {n},\n\n¡Bienvenido/a a la Semana 3: Intimidad!\n\nHoy construyen su visión compartida a 5 años: 'En 2030 nosotros...'\n\nLas parejas con narrativa compartida del futuro tienen un ancla para los momentos de tormenta. 🌅\n\n💑 Juntos de Nuevo"},
+  {t:"Día 16 — Conversaciones profundas",push:"Hoy tres preguntas, {n}: ¿Momento más feliz? ¿Qué parte no conozco? ¿De qué tienes miedo?",as:"Día 16 — Las 3 preguntas que cambian todo",cu:"Hola {n},\n\nHoy usan estas preguntas (15 min cada una):\n\n1. ¿Cuál fue el momento más feliz de tu vida?\n2. ¿Qué parte de ti sientes que yo todavía no conozco?\n3. ¿De qué tienes miedo que nunca me hayas dicho?\n\nApaguen todo. Sin prisas. 🌊\n\n💑 Juntos de Nuevo"},
+  {t:"Día 17 — Sus acuerdos nuevos",push:"Hoy, {n}: escriban 5 compromisos vivos para su relación. Fírmenlo.",as:"Día 17 — Los acuerdos que protegen el amor",cu:"Hola {n},\n\nHoy escriben juntos 5 acuerdos de convivencia. No reglas rígidas: compromisos vivos.\n\nEj: 'Nos decimos buenas noches aunque estemos enojados'. Fírmenlo. 📋\n\n💑 Juntos de Nuevo"},
+  {t:"Día 18 — Tocar y ser tocado",push:"Hoy, {n}: masaje de espalda 10 minutos en silencio. Presencia total. Luego cambien.",as:"Día 18 — El contacto que sana (sin agenda)",cu:"Hola {n},\n\nHoy: masaje de espalda de 10 minutos en silencio. Sin pretensión romántica.\n\nEl tacto activa el sistema nervioso parasimpático. Es necesidad biológica. 🤲\n\n💑 Juntos de Nuevo"},
+  {t:"Día 19 — El perdón profundo",push:"Día del perdón, {n}. Escribe lo que nunca pediste perdón. Léanselo. Rompan el papel.",as:"Día 19 — Perdonar no es olvidar. Es elegir.",cu:"Hola {n},\n\nHoy cada uno escribe:\n• Algo que nunca pedí perdón\n• Algo que no he logrado perdonar del todo\n\nSe lo leen en voz alta. Luego quemen o rompan el papel juntos.\n\nPerdonar es elegir que esa herida ya no dicte tu presente. 🕊️\n\n💑 Juntos de Nuevo"},
+  {t:"Día 20 — El acto secreto",push:"Hoy {n}: elige UNA cosa que tu pareja odia hacer en casa y hazla tú, sin mencionarlo.",as:"Día 20 — Servir sin llevar la cuenta",cu:"Hola {n},\n\nHoy eliges UNA cosa que tu pareja odia hacer en casa y la haces tú.\n\nSin mencionarlo. Sin esperar que lo noten. Solo como acto de amor puro. 🎁\n\n💑 Juntos de Nuevo"},
+  {t:"Día 21 — ¡Tres semanas! La noche especial",push:"¡Tres semanas, {n}! Esta noche recreen algo especial de su historia.",as:"🎉 Día 21 — ¡3 semanas! La noche más especial",cu:"Hola {n},\n\n¡TRES SEMANAS! Son diferentes de quienes eran hace 21 días.\n\nEsta noche recreen algo de su historia: una canción especial, un platillo favorito, un lugar significativo. 💍\n\n💑 Juntos de Nuevo"},
+  {t:"Semana 4 — Conócele de nuevo",push:"¡Semana 4, {n}! Háganle preguntas a tu pareja como si se acabaran de conocer.",as:"Semana 4, Día 22 — ¿Quién es tu pareja hoy?",cu:"Hola {n},\n\n¡Bienvenido/a a la Semana 4: Compromiso!\n\nHoy se hacen preguntas como si se acabaran de conocer:\n• ¿Cuál es tu película favorita ahora?\n• ¿Qué música escuchas?\n• ¿Cuál es tu mayor proyecto personal hoy?\n\nLas personas cambian cada 5-7 años. 🔄\n\n💑 Juntos de Nuevo"},
+  {t:"Día 23 — Carta al futuro",push:"Hoy {n}: escribe una carta a tu relación dentro de 10 años. Guárdenla en un sobre sellado.",as:"Día 23 — Una carta que abrirán en 10 años",cu:"Hola {n},\n\nHoy cada uno escribe una carta a la versión de su relación dentro de 10 años.\n\nDescríbanla como si ya fuera realidad. Guárdenla en un sobre sellado con la fecha. 📬\n\n💑 Juntos de Nuevo"},
+  {t:"Día 24 — El dinero",push:"Hoy {n}: el tema que más evitan. Las finanzas. Sin reproches, con curiosidad.",as:"Día 24 — La conversación de dinero que nunca tuvieron",cu:"Hola {n},\n\nHoy abordan el tema que más se evita: las finanzas.\n\nSin reproches. Con curiosidad:\n• ¿Qué relación tiene cada uno con el dinero?\n• ¿Qué miedos financieros tienen?\n• ¿Cuál es su meta común?\n\n💰\n\n💑 Juntos de Nuevo"},
+  {t:"Día 25 — Solo ustedes dos",push:"Hoy, {n}: planeen algo nuevo que ninguno haya hecho. La novedad compartida los enamora.",as:"Día 25 — Una aventura nueva para los dos",cu:"Hola {n},\n\nHoy planean algo nuevo sin hijos, trabajo ni familia.\n\nLa novedad compartida reactiva el sistema de recompensa del cerebro. Literalmente, se vuelven a enamorar. 👫\n\n💑 Juntos de Nuevo"},
+  {t:"Día 26 — Un retiro de pareja",push:"Hoy {n}: investiguen y agenden un retiro. El amor necesita espacios para renovarse.",as:"Día 26 — Agenda ya su próximo retiro de pareja",cu:"Hola {n},\n\nHoy investigan y reservan fecha para un retiro de pareja.\n\nOpciones:\n• Retrouvaille: retrouvaille.org\n• Encuentro Matrimonial Mundial: wwme.org\n• Equipos de Nuestra Señora: equipes-nd.org\n\n⛪\n\n💑 Juntos de Nuevo"},
+  {t:"Día 27 — 10 razones",push:"{n}: haz una lista de 10 cosas que amas de tu pareja HOY. Luego léansela.",as:"Día 27 — 10 cosas que amas de tu pareja hoy",cu:"Hola {n},\n\nHoy cada uno hace una lista: 10 cosas que amo de ti HOY.\n\nNo las compartan de inmediato. Escríbanlas primero. Luego léanselas lentamente, mirándose. 📝\n\n💑 Juntos de Nuevo"},
+  {t:"Día 28 — ¿Necesitan ayuda?",push:"Día 28, {n}. ¿Necesitan apoyo profesional? Si hay duda, la respuesta es sí.",as:"Día 28 — Pedir ayuda es un acto de valentía",cu:"Hola {n},\n\nHoy evalúan honestamente: ¿Necesitan apoyo profesional?\n\nSi la respuesta es sí, investiguen juntos un terapeuta de pareja y agenden UNA sesión.\n\nEn México: busca psicólogos certificados en EFT. Hacerlo es fortaleza, no fracaso. 🆘\n\n💑 Juntos de Nuevo"},
+  {t:"Día 29 — Se eligen de nuevo",push:"Mañana es el último día, {n}. Esta noche, dile por qué lo/la eliges.",as:"Día 29 — Mañana es el último día. Esta noche, elígele.",cu:"Hola {n},\n\nMañana es el Día 30. Esta noche, en privado, cada uno le dice al otro por qué elige seguir.\n\nNo frases genéricas. Razones reales, concretas, de hoy: 'Te elijo porque...'\n\nEl amor se renueva cada día. 💒\n\n💑 Juntos de Nuevo"},
+  {t:"🎉 ¡Día 30 — Lo lograron!",push:"¡LO LOGRARON, {n}! Hoy eligen 3 prácticas permanentes y las escriben como su Código de Pareja.",as:"🎉 DÍA 30 — ¡Lo lograron, {n}! ❤️",cu:"Hola {n},\n\n¡LO LOGRARON! 30 días de elecciones valientes.\n\nHoy:\n• ¿Qué rituales quieren conservar?\n• ¿Cuáles fueron sus momentos más importantes?\n• Elijan 3 prácticas permanentes y escríbanlas como su 'Código de Pareja'.\n\n30 días no arreglan una relación. Pero sí pueden ser el punto en que decidieron que valía la pena arreglarla. Ese punto lo es todo.\n\nCelebren hoy. No porque terminaron: sino porque empezaron. 🌄\n\nCon cariño — Juntos de Nuevo 💑"},
+];
+const MDA={
+  1:[{i:"▶️",lb:"TED · Brené Brown",t:"El poder de la vulnerabilidad",d:"La conferencia más vista sobre conexión humana. Subtítulos en español.",url:"https://www.youtube.com/watch?v=iCvmsMzlF7o",tag:"20 min"},{i:"▶️",lb:"Gottman Institute",t:"Canal oficial de YouTube",d:"Videos cortos basados en décadas de investigación. Busca: 'Four Horsemen'.",url:"https://www.youtube.com/@GottmanInstitute",tag:"Canal"},{i:"📰",lb:"Gottman · Blog",t:"Los Cuatro Jinetes del matrimonio",d:"Los 4 patrones de comunicación que predicen la ruptura.",url:"https://www.gottman.com/blog/the-four-horsemen-recognizing-criticism-contempt-defensiveness-and-stonewalling/",tag:"Artículo"},{i:"🔧",lb:"Herramienta",t:"Relationship Checkup",d:"Evaluación online para identificar fortalezas y áreas de crecimiento.",url:"https://www.gottman.com/couples/",tag:"Test gratuito"}],
+  2:[{i:"▶️",lb:"Gary Chapman",t:"Los 5 Lenguajes del Amor",d:"Conferencia en español con millones de vistas.",url:"https://www.youtube.com/results?search_query=gary+chapman+5+lenguajes+del+amor+en+español",tag:"YouTube"},{i:"🔧",lb:"5lovelanguages.com",t:"Test oficial de los 5 Lenguajes",d:"Cada uno lo hace por separado y comparan. Gratuito.",url:"https://5lovelanguages.com/quizzes/love-language",tag:"Test · 10 min"},{i:"▶️",lb:"Gottman · YouTube",t:"Cómo reconstruir la confianza",d:"Videos sobre reparación después de la distancia emocional.",url:"https://www.youtube.com/results?search_query=gottman+trust+rebuild+relationship",tag:"YouTube"},{i:"📖",lb:"Libro · EFT",t:"Abrázame Fuerte — Sue Johnson",d:"El libro de referencia de la Terapia Focalizada en Emociones.",url:"https://www.holdmetight.net/",tag:"Libro"}],
+  3:[{i:"▶️",lb:"Sue Johnson",t:"El amor como vínculo de apego",d:"La creadora de la EFT explica cómo sanar los vínculos de pareja.",url:"https://www.youtube.com/results?search_query=sue+johnson+emotionally+focused+therapy",tag:"YouTube"},{i:"▶️",lb:"YouTube · Testimonios",t:"Retrouvaille — Historias reales",d:"Parejas que superaron crisis matrimoniales severas.",url:"https://www.youtube.com/results?search_query=retrouvaille+testimonio+matrimonio",tag:"YouTube"},{i:"📰",lb:"UC Berkeley",t:"El perdón: Ciencia y práctica",d:"Recursos basados en evidencia sobre el perdón en parejas.",url:"https://greatergood.berkeley.edu/topic/forgiveness/definition",tag:"Artículo"},{i:"🌐",lb:"Retrouvaille Oficial",t:"Para parejas en crisis",d:"Sitio oficial del programa de fin de semana más exitoso.",url:"https://retrouvaille.org",tag:"Sitio oficial"}],
+  4:[{i:"🌐",lb:"Encuentro Matrimonial",t:"wwme.org — Retiros para parejas",d:"Busca retiros en México y Latinoamérica.",url:"https://wwme.org",tag:"Sitio oficial"},{i:"🌐",lb:"Equipos Nuestra Señora",t:"Espiritualidad conyugal continua",d:"Movimiento internacional con grupos en toda México.",url:"https://www.equipes-nd.org/es/",tag:"Sitio oficial"},{i:"▶️",lb:"Robert Waldinger · TED",t:"La ciencia del amor duradero",d:"Estudio de 80 años (Harvard) revela qué mantiene el amor vivo.",url:"https://www.youtube.com/watch?v=8KkKuTCFvzI",tag:"TED · 13 min"},{i:"📖",lb:"Libro · Referencia",t:"Los 7 Principios del Matrimonio",d:"La guía más respaldada por investigación para un matrimonio estable.",url:"https://www.gottman.com/product/the-seven-principles-for-making-marriage-work/",tag:"Libro"}],
+};
+const PGS=[{e:"🕊️",n:"Retrouvaille",s:"Para parejas en crisis",d:"Programa de fin de semana para parejas con dificultades serias. Más de un millón de parejas ayudadas.",url:"retrouvaille.org"},{e:"🌍",n:"Encuentro Matrimonial Mundial",s:"Para renovar el amor conyugal",d:"Retiro de fin de semana para profundizar la relación. Presente en más de 80 países.",url:"wwme.org"},{e:"✨",n:"Equipos de Nuestra Señora",s:"Crecimiento continuo en pareja",d:"Grupos de matrimonios que se reúnen mensualmente para crecer en espiritualidad conyugal.",url:"equipes-nd.org"},{e:"🏡",n:"Movimiento Familiar Cristiano",s:"Red parroquial de familias",d:"Grupos pequeños en parroquias locales con encuentros y acompañamiento para matrimonios.",url:"mfcmex.org"}];
 
-// ═══════════════════════════════════════════════════════════════════════
-// SCREEN: WELCOME
-// ═══════════════════════════════════════════════════════════════════════
-// WelcomeScreen eliminado — flujo directo a registro
+// STATE
+let me=null,AW=1,AD=null,DONE=new Set(),CTAB='days',NI=null;
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+function saveMe(){ls('jdn_me',JSON.stringify(me));}
+function loadMe(){try{const r=ls('jdn_me');return r?JSON.parse(r):null;}catch(e){return null;}}
+function saveDone(){ls('jdn_done',JSON.stringify([...DONE]));}
+function loadDone(){try{const r=ls('jdn_done');return r?new Set(JSON.parse(r)):new Set();}catch(e){return new Set();}}
+function nk(d){return 'jdn_note_'+d;}
+function getDN(s){if(!s)return 1;const a=new Date(s),b=new Date();a.setHours(0,0,0,0);b.setHours(0,0,0,0);return Math.max(1,Math.min(30,Math.floor((b-a)/86400000)+1));}
+function fd(iso){if(!iso)return '';const[y,m,d]=iso.split('-');const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return `${parseInt(d)} ${mo[parseInt(m)-1]} ${y}`;}
+function pm(t,n){return(t||'').replace(/\{n\}/g,n||'').replace(/\{nombre\}/g,n||'').replace(/\{pareja\}/g,'tu pareja');}
+function cw(t){return t.trim()===''?0:t.trim().split(/\s+/).length;}
+function h2r(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)].join(',');}
 
-// ═══════════════════════════════════════════════════════════════════════
-// SCREEN: REGISTER
-// ═══════════════════════════════════════════════════════════════════════
-function RegisterScreen({onSave}){
-  const [nombre,setNombre]=useState("");
-  const [email,setEmail]=useState("");
-  const [telefono,setTelefono]=useState("");
-  const [notifHora,setNotifHora]=useState("08:00");
-  const [err,setErr]=useState("");
+// SCREENS
+function showScr(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');s.style.display='none';});var el=document.getElementById(id);if(el){el.classList.add('active');el.style.display=id==='s-loading'?'flex':'block';window.scrollTo(0,0);}}
 
-  const submit=()=>{
-    if(!nombre.trim()){setErr("Por favor ingresa tu nombre o apodo.");return;}
-    if(!email.trim()||!email.includes("@")){setErr("Por favor ingresa un correo electrónico válido.");return;}
-    setErr("");
-    onSave({nombre:nombre.trim(),email:email.trim(),telefono:telefono.trim(),notifHora});
+// REGISTER
+function doReg(){
+  const n=document.getElementById('i-nom').value.trim();
+  const e=document.getElementById('i-email').value.trim();
+  const t=document.getElementById('i-tel').value.trim();
+  const h=document.getElementById('i-hora').value;
+  const err=document.getElementById('reg-err');
+  if(!n){err.textContent='Por favor ingresa tu nombre o apodo.';err.style.display='block';return;}
+  if(!e||!e.includes('@')){err.textContent='Por favor ingresa un correo electrónico válido.';err.style.display='block';return;}
+  err.style.display='none';
+  me={nombre:n,email:e,telefono:t,notifHora:h||'08:00',fechaInicio:null};
+  const today=new Date().toISOString().split('T')[0];
+  const fi=document.getElementById('i-fecha');fi.value=today;fi.min=today;updFin();
+  showScr('s-date');
+}
+
+// DATE
+function updFin(){
+  const f=document.getElementById('i-fecha').value;
+  if(!f){document.getElementById('fecha-fin').textContent='—';return;}
+  const e=new Date(f);e.setDate(e.getDate()+29);
+  document.getElementById('fecha-fin').textContent=fd(e.toISOString().split('T')[0]);
+}
+function doDate(){
+  const f=document.getElementById('i-fecha').value;
+  if(!f){alert('Por favor selecciona una fecha.');return;}
+  me.fechaInicio=f;
+  document.getElementById('n-hora').textContent=me.notifHora;
+  document.getElementById('ne-email').textContent='📧 '+me.email;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  document.getElementById('ne-asunto').textContent=pm(msg.as,me.nombre);
+  document.getElementById('pp-t').textContent='"'+pm(msg.t,me.nombre)+'"';
+  document.getElementById('pp-b').textContent=pm(msg.push,me.nombre);
+  updPS();showScr('s-notif');
+}
+
+// NOTIFICATIONS
+function hasN(){try{return typeof Notification!=='undefined';}catch(e){return false;}}
+function getP(){try{return hasN()?Notification.permission:'no-support';}catch(e){return 'no-support';}}
+function updPS(){
+  const p=getP();const bx=document.getElementById('ps-box');const ic=document.getElementById('ps-ico');const ti=document.getElementById('ps-title');const su=document.getElementById('ps-sub');const bt=document.getElementById('ps-btn');
+  if(p==='granted'){bx.style.cssText='display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--sageL);border-radius:12px;border:1px solid rgba(91,173,143,.3);margin-bottom:12px';ic.textContent='✅';ti.style.color='var(--sage)';ti.textContent='Notificaciones activas';su.textContent='Recibirás tu mensaje cada día a la hora configurada.';bt.textContent='▶️ Enviar notificación de prueba';bt.style.background='linear-gradient(135deg,var(--sage),#3A9A72)';document.getElementById('nd-btn').textContent='¡Todo listo — ir al plan! 🎉';}
+  else if(p==='no-support'||p==='denied'){bx.style.background='#F5F5F5';bx.style.borderColor='#ddd';ic.textContent='ℹ️';ti.style.color='var(--ink2)';ti.textContent=p==='denied'?'Notificaciones bloqueadas':'No disponible en este navegador';su.textContent='Usa el tab 📧 Email para tus mensajes. En iPhone usa Safari.';bt.style.display='none';}
+  const mpb=document.getElementById('mc-push');if(mpb)mpb.style.display=p==='granted'?'inline-block':'none';
+}
+function switchNT(t){
+  document.getElementById('np-push').style.display=t==='push'?'block':'none';
+  document.getElementById('np-email').style.display=t==='email'?'block':'none';
+  document.getElementById('nt-push').className='tab-btn'+(t==='push'?' on':'');
+  document.getElementById('nt-email').className='tab-btn'+(t==='email'?' on':'');
+  if(t==='push')document.getElementById('nt-push').style.cssText='background:var(--coral);color:#fff;border:none';else document.getElementById('nt-push').style.cssText='';
+  if(t==='email')document.getElementById('nt-email').style.cssText='background:var(--coral);color:#fff;border:none';else document.getElementById('nt-email').style.cssText='';
+}
+async function doPush(){
+  if(!hasN()){updPS();return;}
+  if(getP()==='granted'){tPush();return;}
+  try{await Notification.requestPermission();}catch(e){}
+  updPS();if(getP()==='granted')tPush();
+}
+function tPush(){
+  if(!hasN()||getP()!=='granted'||!me)return;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  try{new Notification('💑 '+pm(msg.t,me.nombre),{body:pm(msg.push,me.nombre),tag:'jdn'});}catch(e){}
+}
+function doEmailPrev(){
+  if(!me)return;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  window.open('mailto:'+me.email+'?subject='+encodeURIComponent(pm(msg.as,me.nombre))+'&body='+encodeURIComponent(pm(msg.cu,me.nombre)),'_blank');
+  document.getElementById('nd-btn').textContent='¡Todo listo — ir al plan! 🎉';
+}
+function doNotifDone(){saveMe();DONE=loadDone();launchApp();}
+
+// APP
+function launchApp(){updHdr();buildWkTabs();renderWk(AW);buildMsgCard();startNI();showScr('s-app');}
+function updHdr(){
+  const dia=getDN(me.fechaInicio);const pct=Math.round((DONE.size/30)*100);
+  document.getElementById('h-nom').textContent=me.nombre;
+  document.getElementById('h-dia').textContent=Math.min(dia,30);
+  document.getElementById('h-pct').textContent=pct+'% completado';
+  document.getElementById('h-prog').style.width=pct+'%';
+  document.getElementById('h-ini').textContent='Inicio: '+fd(me.fechaInicio);
+}
+function buildMsgCard(){
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  document.getElementById('mc-lbl').textContent='Tu mensaje de hoy · Día '+Math.min(dia,30);
+  document.getElementById('mc-tit').textContent=pm(msg.t,me.nombre);
+  document.getElementById('mc-body').textContent=pm(msg.push,me.nombre);
+  document.getElementById('mc-email').onclick=()=>{
+    window.open('mailto:'+me.email+'?subject='+encodeURIComponent(pm(msg.as,me.nombre))+'&body='+encodeURIComponent(pm(msg.cu,me.nombre)),'_blank');
   };
-
-  return(
-    <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"28px 20px"}}>
-      <div style={{maxWidth:420,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:28}}>
-          <div style={{fontSize:36,marginBottom:10}}>👤</div>
-          <h2 className="fr" style={{fontSize:26,color:C.coral,marginBottom:6}}>Tu perfil personal</h2>
-          <p className="jk" style={{fontSize:14,color:C.ink2,lineHeight:1.65}}>
-            Solo necesitamos tu nombre (o apodo) y correo.<br/>
-            Tu plan personal de 30 días comienza aquí.
-          </p>
+  updPS();
+}
+function goToday(){
+  const dia=getDN(me.fechaInicio);const dy=DYS.find(d=>d.d===dia);if(!dy)return;
+  if(AW!==dy.w){AW=dy.w;renderWk(AW);}switchTab('days');
+  setTimeout(()=>{const el=document.getElementById('dc-'+dia);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});openDay(dia);}},100);
+}
+function buildWkTabs(){
+  const c=document.getElementById('wk-tabs');c.innerHTML='';
+  [1,2,3,4].forEach(w=>{
+    const wk=WKS[w];const wd=DYS.filter(d=>d.w===w&&DONE.has(d.d)).length;
+    const b=document.createElement('button');b.className='tab-btn'+(AW===w?' on':'');b.id='wt-'+w;
+    b.innerHTML=`<div style="font-size:17px;margin-bottom:2px">${wk.e}</div><div style="font-weight:700;font-size:10px">Semana ${w}</div><div style="font-size:10px;opacity:.85">${wk.l}</div><div style="font-size:10px;margin-top:3px;opacity:${wd===7?1:.5}">${wd}/7 ✓</div>`;
+    if(AW===w)b.style.cssText=`background:${wk.c};color:#fff;border:none;box-shadow:0 5px 18px ${wk.c}55`;
+    b.onclick=()=>{AW=w;AD=null;renderWk(w);switchTab('days');buildWkTabs();};
+    c.appendChild(b);
+  });
+}
+function renderWk(w){
+  const wk=WKS[w];const bn=document.getElementById('wk-banner');
+  bn.style.cssText=`background:linear-gradient(135deg,${wk.li},#fff);border-color:${wk.c}28`;
+  bn.innerHTML=`<div style="font-size:10px;font-weight:700;letter-spacing:2px;color:${wk.c};text-transform:uppercase;margin-bottom:4px">Semana ${w} de 4</div><h2 class="fr" style="font-size:20px;color:var(--ink);margin-bottom:4px">${wk.e} ${wk.l}</h2><p style="font-size:13px;color:var(--ink2);line-height:1.6">${wk.tl}</p>`;
+  buildDays(w);buildMda(w);
+}
+function buildDays(w){
+  const wk=WKS[w];const c=document.getElementById('p-days');c.innerHTML='';
+  const dia=getDN(me.fechaInicio);
+  DYS.filter(d=>d.w===w).forEach(d=>{
+    const iD=DONE.has(d.d),isO=AD===d.d,isT=d.d===dia;
+    const note=ls(nk(d.d))||'';const hN=note.trim().length>0;
+    const card=document.createElement('div');
+    card.className='day-card'+(isO?' open':'')+(iD?' done':'')+(isT?' today':'');
+    card.id='dc-'+d.d;card.style.setProperty('--wc',wk.c);
+    card.innerHTML=`<div class="day-hdr" onclick="togDay(${d.d})">
+      <div class="day-icon" style="background:${iD?'rgba(91,173,143,.2)':'rgba('+h2r(wk.c)+',.12)'};border-color:${iD?'rgba(91,173,143,.4)':wk.c+'40'}">${iD?'✅':d.i}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wk.c};text-transform:uppercase">Día ${d.d}</span>
+          ${isT?`<span style="font-size:9px;font-weight:700;color:#fff;background:${wk.c};border-radius:50px;padding:1px 7px">HOY</span>`:''}
+          ${hN?'<span style="font-size:9px;color:#9A7800;background:#FFFDE0;border:1px solid #F0DCA0;border-radius:50px;padding:1px 6px">✏️ nota</span>':''}
         </div>
-
-        <div style={{background:C.white,borderRadius:20,padding:"24px 20px",
-          boxShadow:`0 4px 24px ${C.coral}10`,border:`1px solid ${C.soft}`}}>
-
-          <Input label="Tu nombre o apodo" icon="😊" placeholder="Ej: Mari, Toño, Luz..."
-            value={nombre} onChange={e=>setNombre(e.target.value)} maxLength={30}/>
-          <p className="jk" style={{fontSize:11,color:C.ink3,marginTop:-10,marginBottom:14}}>
-            Sin apellido. Solo como quieres que te llamen en tus mensajes.
-          </p>
-
-          <Input label="Correo electrónico" icon="📧" type="email" placeholder="tucorreo@email.com"
-            value={email} onChange={e=>setEmail(e.target.value)}/>
-
-          <Input label="WhatsApp / Celular" note="(opcional)" icon="📱" type="tel"
-            placeholder="Ej: 614 123 4567" value={telefono} onChange={e=>setTelefono(e.target.value)}/>
-
-          <div style={{marginBottom:16}}>
-            <label className="jk" style={{display:"block",fontSize:11,fontWeight:700,color:C.ink2,
-              letterSpacing:.5,textTransform:"uppercase",marginBottom:6}}>
-              ⏰ Hora de tu recordatorio diario
-            </label>
-            <input type="time" value={notifHora} onChange={e=>setNotifHora(e.target.value)}
-              className="jk"
-              style={{width:"100%",padding:"13px 14px",borderRadius:12,border:`1.5px solid #E8D8D8`,
-                fontSize:15,color:C.ink,background:"#FFFAF8"}}/>
-            <p className="jk" style={{fontSize:11,color:C.ink3,marginTop:5}}>
-              Recibirás tu mensaje motivador del día a esta hora (push + email).
-            </p>
-          </div>
-
-          {err&&<p className="jk" style={{fontSize:13,color:C.coral,marginBottom:12,fontWeight:600}}>⚠️ {err}</p>}
-
-          <Btn onClick={submit} style={{width:"100%"}}>
-            Continuar →
-          </Btn>
-        </div>
+        <div class="fr" style="font-size:15px;color:${iD?'var(--sage)':'var(--ink)'};font-weight:600">${d.t}</div>
       </div>
+      <span class="arrow">⌄</span>
     </div>
-  );
+    <div class="day-body">${bDB(d,wk)}</div>`;
+    c.appendChild(card);
+  });
 }
-
-// ═══════════════════════════════════════════════════════════════════════
-// SCREEN: SHARE OR ENTER CODE
-// ═══════════════════════════════════════════════════════════════════════
-
-
-// ═══════════════════════════════════════════════════════════════════════
-// SCREEN: START DATE
-// ═══════════════════════════════════════════════════════════════════════
-function StartDateScreen({onSave,existingDate}){
-  const today=new Date().toISOString().split("T")[0];
-  const [fecha,setFecha]=useState(existingDate||today);
-
-  return(
-    <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"28px 20px"}}>
-      <div style={{maxWidth:420,margin:"0 auto",textAlign:"center"}}>
-        <div style={{fontSize:40,marginBottom:12}}>📅</div>
-        <h2 className="fr" style={{fontSize:26,color:C.coral,marginBottom:8}}>¿Cuándo empiezan?</h2>
-        <p className="jk" style={{fontSize:14,color:C.ink2,lineHeight:1.7,marginBottom:24}}>
-          La app calcula automáticamente en qué día del plan están basándose en esta fecha. También programa tus mensajes diarios.
-        </p>
-
-        <div style={{background:C.white,borderRadius:20,padding:"28px 20px",
-          boxShadow:`0 4px 24px ${C.coral}10`,marginBottom:20}}>
-          <label className="jk" style={{display:"block",fontSize:11,fontWeight:700,color:C.ink2,
-            letterSpacing:.5,textTransform:"uppercase",marginBottom:10,textAlign:"left"}}>
-            📅 Fecha de inicio del plan
-          </label>
-          <input type="date" value={fecha} min={today} onChange={e=>setFecha(e.target.value)}
-            className="jk"
-            style={{width:"100%",padding:"14px",borderRadius:12,border:`1.5px solid ${C.coral}40`,
-              fontSize:16,color:C.ink,background:C.coralL,textAlign:"center"}}/>
-          <p className="jk" style={{fontSize:13,color:C.ink3,marginTop:10,textAlign:"left",lineHeight:1.6}}>
-            Si seleccionas hoy, empiezas el Día 1 ahora mismo. Puedes elegir una fecha futura si quieren prepararse primero.
-          </p>
-
-          <div style={{background:C.sageL,borderRadius:12,padding:"14px",marginTop:16,
-            border:`1px solid ${C.sage}40`,textAlign:"left"}}>
-            <p className="jk" style={{fontSize:13,color:C.ink2,lineHeight:1.6}}>
-              📆 <strong>Tu plan termina el:</strong> {(()=>{
-                const end=new Date(fecha);
-                end.setDate(end.getDate()+29);
-                return formatFecha(end.toISOString().split("T")[0]);
-              })()}
-            </p>
-          </div>
-        </div>
-
-        <Btn onClick={()=>onSave(fecha)} style={{width:"100%"}}>
-          ¡Empezar el plan! 🚀
-        </Btn>
-      </div>
+function bDB(d,wk){
+  const msg=MGS[d.d-1];const note=(ls(nk(d.d))||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const wc=cw(ls(nk(d.d))||'');const iD=DONE.has(d.d);
+  return `
+    <div class="dsec" style="background:${wk.c}12;margin-top:12px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wk.c};text-transform:uppercase;margin-bottom:6px">💬 Mensaje de hoy para ti</div>
+      <p style="font-size:13px;color:var(--ink);line-height:1.7;font-style:italic">"${pm(msg.push,me.nombre)}"</p>
     </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// SCREEN: NOTIFICATIONS SETUP
-// ═══════════════════════════════════════════════════════════════════════
-function NotifScreen({profile,diaActual,onDone}){
-  const [pushStatus,setPushStatus]=useState(()=>{ try{ return getNotifPerm(); }catch(e){ return "no-support"; } });
-  const [notifSent,setNotifSent]=useState(false);
-  const [tab,setTab]=useState("push");
-  const msg=mensajes[(diaActual||1)-1];
-
-  const requestPush=async()=>{
-    if(!hasNotifAPI()){
-      setPushStatus("no-support");
-      return;
-    }
-    const r=await requestNotifPermission();
-    setPushStatus(r);
-    if(r==="granted"){
-      scheduleTestNotif(msg.titulo,msg.push,profile.nombre,"tu pareja");
-      setNotifSent(true);
-    }
-  };
-
-  const previewEmail=()=>{
-    const asunto=parseMensaje(msg.email_asunto,profile.nombre,"tu pareja");
-    const cuerpo=parseMensaje(msg.email_cuerpo,profile.nombre,"tu pareja");
-    const mailto=`mailto:${profile.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-    window.open(mailto,"_blank");
-    setNotifSent(true);
-  };
-
-  return(
-    <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"28px 20px"}}>
-      <div style={{maxWidth:440,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:24}}>
-          <div style={{fontSize:40,marginBottom:10}}>🔔</div>
-          <h2 className="fr" style={{fontSize:26,color:C.coral,marginBottom:6}}>Mensajes diarios</h2>
-          <p className="jk" style={{fontSize:14,color:C.ink2,lineHeight:1.65}}>
-            Configura cómo quieres recibir tu mensaje motivador cada día a las <strong>{profile.notifHora}</strong>.
-          </p>
-        </div>
-
-        {/* Tabs */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:16}}>
-          {[["push","📱 Push"],["email","📧 Email"]].map(([k,l])=>(
-            <button key={k} className="btn jk" onClick={()=>setTab(k)}
-              style={{padding:"10px",borderRadius:12,fontWeight:700,fontSize:13,
-                background:tab===k?C.coral:C.white,color:tab===k?"#fff":C.ink2,
-                boxShadow:tab===k?`0 3px 12px ${C.coral}40`:"0 1px 6px rgba(0,0,0,.06)",
-                border:tab===k?"none":`1.5px solid ${C.soft}`}}>
-              {l}
-            </button>
-          ))}
-        </div>
-
-        {/* PUSH TAB */}
-        {tab==="push"&&(
-          <div className="fade" style={{background:C.white,borderRadius:20,padding:"22px 20px",
-            boxShadow:`0 4px 24px ${C.coral}10`,marginBottom:16}}>
-
-            {/* Status badge */}
-            <div style={{marginBottom:14}}>
-              <p className="jk" style={{fontSize:12,fontWeight:700,color:C.ink2,textTransform:"uppercase",
-                letterSpacing:1,marginBottom:8}}>Estado actual</p>
-              <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",
-                background:pushStatus==="granted"?C.sageL:pushStatus==="no-support"?"#F5F5F5":C.coralL,
-                borderRadius:12,border:`1px solid ${pushStatus==="granted"?C.sage:pushStatus==="no-support"?"#ddd":C.coral}30`}}>
-                <span style={{fontSize:20}}>
-                  {pushStatus==="granted"?"✅":pushStatus==="no-support"?"ℹ️":"🔕"}
-                </span>
-                <div>
-                  <p className="jk" style={{fontSize:13,fontWeight:700,
-                    color:pushStatus==="granted"?C.sage:pushStatus==="no-support"?C.ink2:C.coral}}>
-                    {pushStatus==="granted"?"Notificaciones activas"
-                      :pushStatus==="no-support"?"No disponible en este navegador"
-                      :"Notificaciones inactivas"}
-                  </p>
-                  <p className="jk" style={{fontSize:11,color:C.ink3,lineHeight:1.5}}>
-                    {pushStatus==="granted"
-                      ?"Recibirás tu mensaje cada día a la hora configurada."
-                      :pushStatus==="no-support"
-                      ?"Usa el tab Email para recibir tus mensajes. En iPhone usa Safari para activar push."
-                      :"Toca el botón para activarlas. El navegador pedirá permiso."}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Action buttons */}
-            {pushStatus==="granted"?(
-              <Btn color={C.sage} onClick={()=>{scheduleTestNotif(msg.titulo,msg.push,profile.nombre,"tu pareja");setNotifSent(true);}}
-                style={{width:"100%",marginBottom:12}}>
-                ▶️ Enviar notificación de prueba ahora
-              </Btn>
-            ):pushStatus==="no-support"?(
-              <div style={{background:"#F5F5F5",borderRadius:12,padding:"12px 14px",marginBottom:12,
-                border:"1px solid #ddd",textAlign:"center"}}>
-                <p className="jk" style={{fontSize:13,color:C.ink2}}>
-                  Las notificaciones push requieren un navegador compatible.<br/>
-                  <strong>Usa el tab 📧 Email</strong> para recibir tus mensajes diarios.
-                </p>
-              </div>
-            ):(
-              <Btn onClick={requestPush} style={{width:"100%",marginBottom:12}}>
-                🔔 Activar notificaciones push
-              </Btn>
-            )}
-
-            <div style={{background:C.soft2,borderRadius:12,padding:"14px",border:`1px solid ${C.soft}`}}>
-              <p className="jk" style={{fontSize:11,color:C.ink3,lineHeight:1.65}}>
-                💡 <strong>Tu mensaje de hoy:</strong><br/>
-                <em style={{color:C.coral}}>"{parseMensaje(msg.titulo,profile.nombre,"tu pareja")}"</em><br/>
-                {parseMensaje(msg.push,profile.nombre,"tu pareja")}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* EMAIL TAB */}
-        {tab==="email"&&(
-          <div className="fade" style={{background:C.white,borderRadius:20,padding:"22px 20px",
-            boxShadow:`0 4px 24px ${C.coral}10`,marginBottom:16}}>
-            <div style={{marginBottom:14}}>
-              <p className="jk" style={{fontSize:12,fontWeight:700,color:C.ink2,textTransform:"uppercase",
-                letterSpacing:1,marginBottom:8}}>Tu correo</p>
-              <div style={{background:C.coralL,borderRadius:12,padding:"12px 14px",
-                border:`1px solid ${C.coral}25`}}>
-                <p className="jk" style={{fontSize:13,color:C.ink,fontWeight:600}}>📧 {profile.email}</p>
-              </div>
-            </div>
-
-            <div style={{background:C.goldL,borderRadius:12,padding:"14px",marginBottom:14,
-              border:`1px solid ${C.gold}40`}}>
-              <p className="jk" style={{fontSize:12,fontWeight:700,color:"#7A5500",marginBottom:6}}>
-                Asunto del email de hoy:
-              </p>
-              <p className="jk" style={{fontSize:13,color:C.ink,fontStyle:"italic"}}>
-                "{parseMensaje(msg.email_asunto,profile.nombre,"tu pareja")}"
-              </p>
-            </div>
-
-            <Btn color={C.gold} onClick={previewEmail} style={{width:"100%",marginBottom:12,color:C.ink}}>
-              📧 Abrir email de muestra
-            </Btn>
-
-            <div style={{background:C.soft2,borderRadius:12,padding:"14px",border:`1px solid ${C.soft}`}}>
-              <p className="jk" style={{fontSize:11,color:C.ink3,lineHeight:1.65}}>
-                💡 <strong>Integración automática:</strong> Para envío automático diario, conecta con <strong>EmailJS</strong> (gratuito hasta 200 emails/mes) o <strong>SendGrid</strong>. Ver documentación en emailjs.com.
-              </p>
-            </div>
-          </div>
-        )}
-
-        <Btn onClick={onDone} style={{width:"100%"}}>
-          {pushStatus==="granted"||notifSent?"¡Todo listo — ir al plan! 🎉":"Ir al plan →"}
-        </Btn>
-      </div>
+    <div class="dsec" style="background:${wk.c}0D">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:${wk.c};text-transform:uppercase;margin-bottom:7px">🎯 Acción del día</div>
+      <p style="font-size:14px;color:var(--ink);line-height:1.75">${d.a}</p>
     </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// COMPONENT: NOTAS EDITABLES POR DÍA
-// ═══════════════════════════════════════════════════════════════════════
-const MAX_WORDS = 200;
-
-function countWords(text){
-  return text.trim()==='' ? 0 : text.trim().split(/\s+/).length;
-}
-
-function DayNotes({dayNum}){
-  const key = `jdn_note_dia_${dayNum}`;
-  const [text,setText]=useState(()=>{ try{ return localStorage.getItem(key)||""; }catch(e){ return ""; } });
-  const [saved,setSaved]=useState(false);
-  const words = countWords(text);
-  const over = words > MAX_WORDS;
-
-  const handleChange=(e)=>{
-    setText(e.target.value);
-    setSaved(false);
-  };
-
-  const handleSave=()=>{
-    try{ localStorage.setItem(key,text); setSaved(true); setTimeout(()=>setSaved(false),2000); }catch(e){}
-  };
-
-  return(
-    <div style={{background:"#FFFDF5",borderRadius:12,padding:"13px 14px",marginBottom:12,
-      border:`1.5px solid ${over?"#E8567A":"#F5E6A0"}`}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-        <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
-          color:"#9A7800",textTransform:"uppercase"}}>
-          ✏️ Mis notas del día
-        </div>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <span className="jk" style={{fontSize:11,color:over?"#E8567A":"#9A7800",fontWeight:over?700:400}}>
-            {words}/{MAX_WORDS} palabras
-          </span>
-          <button onClick={handleSave} className="btn jk"
-            style={{fontSize:11,fontWeight:700,padding:"4px 12px",borderRadius:50,
-              background:saved?"#5BAD8F":"#F5A623",color:"#fff",
-              boxShadow:saved?"0 2px 8px #5BAD8F40":"0 2px 8px #F5A62340"}}>
-            {saved?"✓ Guardado":"Guardar"}
-          </button>
-        </div>
-      </div>
-      <textarea
-        value={text}
-        onChange={handleChange}
-        placeholder="Escribe aquí tus reflexiones, lo que sentiste, lo que observaste en ti o en tu pareja hoy..."
-        className="jk"
-        rows={4}
-        style={{width:"100%",resize:"vertical",border:`1px solid ${over?"#E8567A40":"#F5E6A0"}`,
-          borderRadius:10,padding:"10px 12px",fontSize:13,color:"#2D1B1B",
-          background:over?"#FFF5F7":"#FFFEF5",lineHeight:1.65,
-          fontFamily:"'Plus Jakarta Sans',system-ui,sans-serif",
-          outline:"none",minHeight:80,maxHeight:300}}
-      />
-      {over&&(
-        <p className="jk" style={{fontSize:11,color:"#E8567A",marginTop:5,fontWeight:600}}>
-          ⚠️ Has superado el límite de {MAX_WORDS} palabras. Por favor reduce tu texto.
-        </p>
-      )}
+    <div style="border-left:3px solid ${wk.c};padding-left:14px;margin-bottom:10px">
+      <p class="fr" style="font-size:14px;font-style:italic;color:var(--ink2);line-height:1.75">"${d.r}"</p>
     </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// MAIN APP
-// ═══════════════════════════════════════════════════════════════════════
-function MainApp({me,onReset}){
-  const [activeWeek,setActiveWeek]=useState(1);
-  const [activeDay,setActiveDay]=useState(null);
-  const [done,setDone]=useState(new Set());
-  const [tab,setTab]=useState("days");
-  const [showDayMsg,setShowDayMsg]=useState(true);
-  const [screen,setScreen]=useState("home"); // home | profile
-  const notifRef=useRef(null);
-
-  const pareja="tu pareja";
-  const fechaInicio=me.fechaInicio||new Date().toISOString().split("T")[0];
-  const diaActual=getDayNum(fechaInicio);
-  const msg=mensajes[Math.min(diaActual,30)-1];
-  const doneCode="local";
-
-  // Load done days
-  useEffect(()=>{
-    try{setDone(loadDone(doneCode));}catch(e){}
-  },[doneCode]);
-
-  // Auto-select current week
-  useEffect(()=>{
-    const w=days.find(d=>d.day===diaActual)?.week||1;
-    setActiveWeek(w);
-  },[diaActual]);
-
-  // Daily notification scheduler
-  useEffect(()=>{
-    if(!hasNotifAPI()) return;
-    try{ if(Notification.permission!=="granted") return; }catch(e){ return; }
-    const check=()=>{
-      try{
-        if(!hasNotifAPI()||Notification.permission!=="granted") return;
-        const now=new Date();
-        const [h,m]=me.notifHora.split(":").map(Number);
-        if(now.getHours()===h&&now.getMinutes()===m){
-          const d=getDayNum(fechaInicio);
-          const cm=mensajes[Math.min(d,30)-1];
-          showPushNotif(parseMensaje(cm.titulo,me.nombre,pareja),parseMensaje(cm.push,me.nombre,pareja));
-        }
-      }catch(e){}
-    };
-    notifRef.current=setInterval(check,60000);
-    return()=>clearInterval(notifRef.current);
-  },[me,fechaInicio,pareja]);
-
-  const toggle=(d)=>{
-    const n=new Set(done);
-    n.has(d)?n.delete(d):n.add(d);
-    setDone(n);
-    saveDone(doneCode,n);
-  };
-
-  const wm=weekMeta[activeWeek];
-  const weekDays=days.filter(d=>d.week===activeWeek);
-  const pct=Math.round((done.size/30)*100);
-  const todayDayData=days.find(d=>d.day===diaActual);
-
-  if(screen==="profile") return <ProfileScreen me={me} diaActual={diaActual}
-    fechaInicio={fechaInicio} onBack={()=>setScreen("home")} onReset={onReset}/>;
-
-  return(
-    <div style={{fontFamily:"sans-serif",background:C.cream,minHeight:"100vh",color:C.ink}}>
-
-      {/* HEADER */}
-      <div style={{background:`linear-gradient(140deg,${C.coralL},${C.goldL},${C.sageL})`,
-        borderBottom:`2px solid ${C.coral}20`,padding:"20px 16px 18px",position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",top:-40,right:-40,width:150,height:150,borderRadius:"50%",
-          background:`radial-gradient(circle,#F9A8D4,transparent 70%)`,opacity:.3,pointerEvents:"none"}}/>
-        <div style={{maxWidth:660,margin:"0 auto",position:"relative"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:10}}>
-            <div>
-              <p className="jk" style={{fontSize:11,fontWeight:700,color:C.coral,letterSpacing:1.5,
-                textTransform:"uppercase",marginBottom:3}}>💑 Juntos de Nuevo</p>
-              <h1 className="fr" style={{fontSize:"clamp(20px,5vw,28px)",fontWeight:700,color:C.ink,lineHeight:1.15}}>
-                Hola, <span style={{color:C.coral}}>{me.nombre}</span> 👋
-              </h1>
-
-            </div>
-            <button className="btn" onClick={()=>setScreen("profile")}
-              style={{width:42,height:42,borderRadius:"50%",background:C.white,
-                border:`2px solid ${C.coral}30`,fontSize:18,display:"flex",alignItems:"center",
-                justifyContent:"center",flexShrink:0,boxShadow:`0 2px 10px ${C.coral}15`}}>
-              👤
-            </button>
-          </div>
-
-          {/* Progress mini */}
-          <div style={{marginTop:14}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-              <span className="jk" style={{fontSize:12,color:C.ink2,fontWeight:600}}>
-                Día <strong style={{color:C.coral}}>{Math.min(diaActual,30)}</strong> de 30
-              </span>
-              <span className="jk" style={{fontSize:12,color:C.coral,fontWeight:700}}>{pct}% completado</span>
-            </div>
-            <div style={{height:8,background:"rgba(255,255,255,.6)",borderRadius:6,overflow:"hidden"}}>
-              <div style={{height:"100%",borderRadius:6,
-                background:`linear-gradient(90deg,${C.coral},${C.gold},${C.sage})`,
-                width:`${pct}%`,transition:"width .6s ease"}}/>
-            </div>
-            <p className="jk" style={{fontSize:11,color:C.ink3,marginTop:5}}>
-              Inicio: {formatFecha(fechaInicio)}
-            </p>
-          </div>
+    <div class="notes-box${wc>200?' over':''}" id="nb-${d.d}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#9A7800;text-transform:uppercase">✏️ Mis notas del día</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span id="wc-${d.d}" style="font-size:11px;color:${wc>200?'var(--coral)':'#B09020'};font-weight:${wc>200?700:400}">${wc}/200</span>
+          <button id="nb-btn-${d.d}" onclick="svNote(${d.d})" style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:50px;background:#F5A623;color:#fff;border:none">Guardar</button>
         </div>
       </div>
-
-      <div style={{maxWidth:660,margin:"0 auto",padding:"0 14px 70px"}}>
-
-        {/* DAILY MESSAGE CARD */}
-        {showDayMsg&&(
-          <div className="fade" style={{margin:"18px 0",background:C.white,borderRadius:20,
-            boxShadow:`0 5px 28px ${C.coral}12`,overflow:"hidden",border:`1px solid ${C.coral}20`}}>
-            <div style={{height:4,background:`linear-gradient(90deg,${C.coral},${C.gold},${C.sage})`}}/>
-            <div style={{padding:"18px 18px 16px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
-                <div>
-                  <span className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,color:C.coral,
-                    textTransform:"uppercase"}}>Tu mensaje de hoy · Día {Math.min(diaActual,30)}</span>
-                  <h3 className="fr" style={{fontSize:17,color:C.ink,marginTop:3}}>
-                    {parseMensaje(msg.titulo,me.nombre,pareja)}
-                  </h3>
-                </div>
-                <button className="btn" onClick={()=>setShowDayMsg(false)}
-                  style={{fontSize:18,color:C.ink3,background:"none",lineHeight:1,flexShrink:0,marginTop:-2}}>×</button>
-              </div>
-              <p className="jk" style={{fontSize:14,color:C.ink2,lineHeight:1.75,marginBottom:12}}>
-                {parseMensaje(msg.push,me.nombre,pareja)}
-              </p>
-              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                <button className="btn jk" onClick={()=>{
-                    const asunto=parseMensaje(msg.email_asunto,me.nombre,pareja);
-                    const cuerpo=parseMensaje(msg.email_cuerpo,me.nombre,pareja);
-                    window.open(`mailto:${me.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`,"_blank");
-                  }}
-                  style={{fontSize:12,fontWeight:600,color:C.gold,background:C.goldL,
-                    border:`1px solid ${C.gold}40`,borderRadius:50,padding:"6px 14px"}}>
-                  📧 Ver email
-                </button>
-                {hasNotifAPI()&&getNotifPerm()==="granted"&&(
-                  <button className="btn jk" onClick={()=>showPushNotif(
-                      parseMensaje(msg.titulo,me.nombre,pareja),
-                      parseMensaje(msg.push,me.nombre,pareja))}
-                    style={{fontSize:12,fontWeight:600,color:C.sage,background:C.sageL,
-                      border:`1px solid ${C.sage}40`,borderRadius:50,padding:"6px 14px"}}>
-                    🔔 Push de prueba
-                  </button>
-                )}
-                {todayDayData&&(
-                  <button className="btn jk" onClick={()=>{setActiveWeek(todayDayData.week);setActiveDay(diaActual);setTab("days");}}
-                    style={{fontSize:12,fontWeight:600,color:C.coral,background:C.coralL,
-                      border:`1px solid ${C.coral}40`,borderRadius:50,padding:"6px 14px"}}>
-                    👁️ Ver actividad
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* WEEK SELECTOR */}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:7,margin:"16px 0"}}>
-          {[1,2,3,4].map(w=>{
-            const wDone=days.filter(d=>d.week===w&&done.has(d.day)).length;
-            const a=activeWeek===w;
-            return(
-              <button key={w} className="btn jk" onClick={()=>{setActiveWeek(w);setActiveDay(null);setTab("days");}}
-                style={{padding:"10px 5px",borderRadius:14,background:a?weekMeta[w].color:C.white,
-                  color:a?"#fff":C.ink2,fontWeight:a?700:500,fontSize:11,
-                  boxShadow:a?`0 5px 18px ${weekMeta[w].color}55`:"0 1px 8px rgba(0,0,0,.07)",
-                  border:a?"none":`1.5px solid ${C.soft}`}}>
-                <div style={{fontSize:17,marginBottom:2}}>{weekMeta[w].emoji}</div>
-                <div style={{fontWeight:700,fontSize:10}}>Semana {w}</div>
-                <div style={{fontSize:10,opacity:.85,marginTop:1}}>{weekMeta[w].label}</div>
-                <div style={{fontSize:10,marginTop:3,opacity:wDone===7?1:.5}}>{wDone}/7 ✓</div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* WEEK BANNER */}
-        <div className="fade" style={{borderRadius:16,background:`linear-gradient(135deg,${wm.light},${C.white})`,
-          padding:"14px 16px",marginBottom:14,border:`1.5px solid ${wm.color}28`,
-          boxShadow:`0 3px 16px ${wm.color}15`}}>
-          <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:2,color:wm.color,
-            textTransform:"uppercase",marginBottom:3}}>Semana {activeWeek} de 4</div>
-          <h2 className="fr" style={{fontSize:20,color:C.ink,marginBottom:4}}>{wm.emoji} {wm.label}</h2>
-          <p className="jk" style={{fontSize:13,color:C.ink2,lineHeight:1.6}}>{wm.tagline}</p>
-        </div>
-
-        {/* SUB-TABS */}
-        <div style={{display:"flex",gap:6,marginBottom:14}}>
-          {[["days","📅 Días"],["media","🎬 Multimedia"],["programs","🤝 Programas"]].map(([k,lb])=>(
-            <button key={k} className="btn jk" onClick={()=>setTab(k)}
-              style={{flex:1,padding:"9px 4px",borderRadius:10,fontSize:11,fontWeight:600,
-                background:tab===k?C.coral:C.white,color:tab===k?"#fff":C.ink2,
-                boxShadow:tab===k?`0 4px 14px ${C.coral}40`:"0 1px 7px rgba(0,0,0,.07)",
-                border:tab===k?"none":`1.5px solid ${C.soft}`}}>
-              {lb}
-            </button>
-          ))}
-        </div>
-
-        {/* DAYS */}
-        {tab==="days"&&(
-          <div className="fade" style={{display:"grid",gap:9}}>
-            {weekDays.map(d=>{
-              const isDone=done.has(d.day),isOpen=activeDay===d.day;
-              const isToday=d.day===diaActual;
-              return(
-                <div key={d.day} className="card"
-                  style={{borderRadius:14,background:C.white,
-                    border:`1.5px solid ${isOpen?wm.color:isToday?wm.color+"60":isDone?C.sage+"60":C.soft}`,
-                    boxShadow:`0 2px 14px ${isOpen?wm.color+"22":"rgba(0,0,0,.05)"}`,overflow:"hidden"}}>
-                  {isToday&&<div style={{height:3,background:`linear-gradient(90deg,${wm.color},${C.gold})`}}/>}
-                  <div className="btn" onClick={()=>setActiveDay(isOpen?null:d.day)}
-                    style={{display:"flex",alignItems:"center",padding:"13px 14px",gap:12,
-                      background:isDone?`${C.sage}0C`:isToday?`${wm.color}06`:"transparent"}}>
-                    <div style={{width:40,height:40,borderRadius:"50%",
-                      background:isDone?`${C.sage}20`:isToday?`${wm.color}20`:`${wm.color}10`,
-                      display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flexShrink:0,
-                      border:`2px solid ${isDone?C.sage:isToday?wm.color:wm.color}35`}}>
-                      {isDone?"✅":d.icon}
-                    </div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:2}}>
-                        <span className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
-                          color:wm.color,textTransform:"uppercase"}}>Día {d.day}</span>
-                        {isToday&&<span className="jk" style={{fontSize:9,fontWeight:700,color:"#fff",
-                          background:wm.color,borderRadius:50,padding:"1px 7px",letterSpacing:.5}}>HOY</span>}
-                      </div>
-                      <div className="fr" style={{fontSize:15,color:isDone?C.sage:C.ink,fontWeight:600}}>
-                        {d.title}
-                      </div>
-                    </div>
-                    <div style={{fontSize:20,color:C.ink3,transform:isOpen?"rotate(180deg)":"none",
-                      transition:"transform .2s"}}>⌄</div>
-                  </div>
-                  {isOpen&&(
-                    <div className="fade" style={{padding:"2px 14px 15px",borderTop:`1px solid ${C.soft}`}}>
-                      {/* Mensaje personalizado del día */}
-                      <div style={{background:`${wm.color}08`,borderRadius:12,padding:"12px 14px",
-                        margin:"11px 0 10px",border:`1px solid ${wm.color}20`}}>
-                        <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
-                          color:wm.color,textTransform:"uppercase",marginBottom:5}}>💬 Mensaje de hoy para ti</div>
-                        <p className="jk" style={{fontSize:13,color:C.ink,lineHeight:1.7,fontStyle:"italic"}}>
-                          "{parseMensaje(mensajes[d.day-1].push,me.nombre,pareja)}"
-                        </p>
-                      </div>
-                      {/* Tarea */}
-                      <div style={{background:`${wm.color}0D`,borderRadius:12,padding:"13px 14px",marginBottom:10}}>
-                        <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
-                          color:wm.color,textTransform:"uppercase",marginBottom:7}}>🎯 Acción del día</div>
-                        <p className="jk" style={{fontSize:14,color:C.ink,lineHeight:1.75}}>{d.task}</p>
-                      </div>
-                      <div style={{borderLeft:`3px solid ${wm.color}`,paddingLeft:14,marginBottom:10}}>
-                        <p className="fr" style={{fontSize:14,fontStyle:"italic",color:C.ink2,lineHeight:1.75}}>
-                          "{d.reflection}"
-                        </p>
-                      </div>
-                      <DayNotes dayNum={d.day}/>
-                      <div style={{background:C.soft2,borderRadius:12,padding:"11px 14px",marginBottom:12}}>
-                        <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.5,
-                          color:C.gold,textTransform:"uppercase",marginBottom:5}}>💡 Nota del terapeuta</div>
-                        <p className="jk" style={{fontSize:13,color:C.ink2,lineHeight:1.65}}>{d.tip}</p>
-                      </div>
-                      <button onClick={()=>toggle(d.day)} className="btn jk"
-                        style={{width:"100%",padding:"12px",borderRadius:12,fontSize:13,fontWeight:700,
-                          background:isDone?`${C.sage}18`:wm.color,color:isDone?C.sage:"#fff",
-                          boxShadow:isDone?"none":`0 4px 16px ${wm.color}50`,
-                          border:isDone?`1.5px solid ${C.sage}50`:"none"}}>
-                        {isDone?"✓ Completado — toca para desmarcar":"Marcar como completado ✓"}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* MEDIA */}
-        {tab==="media"&&(
-          <div className="fade" style={{display:"grid",gap:10}}>
-            <p className="jk" style={{fontSize:12,color:C.ink3,marginBottom:4}}>
-              Recursos para la <strong>Semana {activeWeek}: {wm.label}</strong>
-            </p>
-            {weekMedia[activeWeek].items.map((m,i)=>(
-              <a key={i} href={m.url} target="_blank" rel="noopener noreferrer"
-                style={{display:"block",background:C.white,borderRadius:14,padding:"14px 15px",
-                  border:`1.5px solid ${wm.color}20`,textDecoration:"none",
-                  boxShadow:`0 2px 12px ${wm.color}10`,transition:"box-shadow .2s"}}
-                onMouseEnter={e=>e.currentTarget.style.boxShadow=`0 6px 24px ${wm.color}30`}
-                onMouseLeave={e=>e.currentTarget.style.boxShadow=`0 2px 12px ${wm.color}10`}>
-                <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                  <div style={{width:42,height:42,borderRadius:12,background:`${wm.color}14`,
-                    border:`1.5px solid ${wm.color}30`,display:"flex",alignItems:"center",
-                    justifyContent:"center",fontSize:19,flexShrink:0}}>{m.icon}</div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{display:"flex",justifyContent:"space-between",gap:6,marginBottom:3}}>
-                      <div>
-                        <div className="jk" style={{fontSize:10,fontWeight:700,letterSpacing:1.2,
-                          color:wm.color,textTransform:"uppercase"}}>{m.label}</div>
-                        <div className="fr" style={{fontSize:14,color:C.ink,fontWeight:600,marginTop:2}}>{m.title}</div>
-                      </div>
-                      <span className="jk" style={{fontSize:10,color:C.ink3,background:C.soft2,
-                        borderRadius:6,padding:"3px 8px",flexShrink:0,whiteSpace:"nowrap"}}>{m.tag}</span>
-                    </div>
-                    <p className="jk" style={{fontSize:13,color:C.ink2,lineHeight:1.6,marginBottom:5}}>{m.desc}</p>
-                    <span className="jk" style={{fontSize:11,color:wm.color,fontWeight:600}}>
-                      {m.url.replace("https://","").replace("http://","").split("/")[0]} →
-                    </span>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
-
-        {/* PROGRAMS */}
-        {tab==="programs"&&(
-          <div className="fade" style={{display:"grid",gap:10}}>
-            <p className="jk" style={{fontSize:12,color:C.ink3,marginBottom:4}}>
-              Programas de acompañamiento recomendados
-            </p>
-            {programs.map((p,i)=>(
-              <div key={i} className="card" style={{background:C.white,borderRadius:14,padding:"15px 16px",
-                border:`1.5px solid ${C.soft}`,boxShadow:"0 2px 12px rgba(0,0,0,.05)"}}>
-                <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                  <span style={{fontSize:26,flexShrink:0}}>{p.emoji}</span>
-                  <div>
-                    <div className="fr" style={{fontSize:15,color:C.ink,fontWeight:600}}>{p.name}</div>
-                    <div className="jk" style={{fontSize:11,color:C.coral,fontWeight:600,marginBottom:6}}>{p.sub}</div>
-                    <p className="jk" style={{fontSize:13,color:C.ink2,lineHeight:1.65,marginBottom:6}}>{p.desc}</p>
-                    <div className="jk" style={{fontSize:11,color:C.sage,fontWeight:600}}>🔗 {p.url}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* FOOTER */}
-        <div style={{marginTop:28,borderRadius:20,
-          background:`linear-gradient(135deg,${C.coralL},${C.goldL},${C.sageL})`,
-          padding:"22px 18px",border:`1.5px solid ${C.coral}20`,textAlign:"center"}}>
-          <div style={{display:"flex",justifyContent:"center",gap:3,marginBottom:8}}>
-            {["❤️","🧡","💛","💚","💜"].map((h,i)=><span key={i} style={{fontSize:16}}>{h}</span>)}
-          </div>
-          <p className="fr" style={{fontSize:14,fontStyle:"italic",color:C.ink,lineHeight:1.85,marginBottom:10}}>
-            "Todavía están a tiempo.<br/>
-            <strong style={{color:C.coral}}>¿Quién va a moverse primero?</strong>"
-          </p>
-          <p className="fr" style={{fontSize:11,color:C.coral,fontStyle:"italic"}}>
-            Lic. Agustín Flores C. · 2026 · Derechos Reservados
-          </p>
-        </div>
-
-      </div>
-
-      {/* CELEBRATION DAY 30 */}
-      {done.size===30&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(45,27,27,.75)",zIndex:999,
-          display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-          <div className="fade" style={{background:C.white,borderRadius:24,padding:"36px 28px",
-            maxWidth:380,width:"100%",textAlign:"center",boxShadow:`0 20px 60px ${C.coral}30`}}>
-            <div style={{fontSize:52,marginBottom:12}}>🎉</div>
-            <h2 className="fr" style={{fontSize:28,color:C.sage,marginBottom:8}}>¡Lo lograron!</h2>
-            <p className="jk" style={{fontSize:15,color:C.ink2,lineHeight:1.75,marginBottom:16}}>
-              30 días de elecciones valientes, {me.nombre}.<br/>
-
-            </p>
-            <p className="fr" style={{fontSize:13,fontStyle:"italic",color:C.ink3,marginBottom:20}}>
-              "Este es solo el primer día del resto."
-            </p>
-            <Btn color={C.sage} onClick={()=>setDone(new Set())} style={{width:"100%",marginBottom:8}}>
-              🌿 Celebrar y continuar
-            </Btn>
-          </div>
-        </div>
-      )}
+      <textarea id="nt-${d.d}" class="nta${wc>200?' over':''}" rows="4" oninput="updNC(${d.d})" placeholder="Escribe tus reflexiones, lo que sentiste o lo que observaste hoy...">${note}</textarea>
+      <p id="nw-${d.d}" style="font-size:11px;color:var(--coral);margin-top:5px;font-weight:600;display:${wc>200?'block':'none'}">⚠️ Límite de 200 palabras superado.</p>
     </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// PROFILE SCREEN
-// ═══════════════════════════════════════════════════════════════════════
-function ProfileScreen({me,diaActual,fechaInicio,onBack,onReset}){
-  const msg=mensajes[Math.min(diaActual,30)-1];
-  return(
-    <div className="fade" style={{minHeight:"100vh",background:C.cream,padding:"20px 16px"}}>
-      <div style={{maxWidth:440,margin:"0 auto"}}>
-        <button className="btn jk" onClick={onBack}
-          style={{display:"flex",alignItems:"center",gap:6,fontSize:13,color:C.coral,fontWeight:700,
-            background:"none",marginBottom:20,padding:"4px 0"}}>
-          ← Volver al plan
-        </button>
-
-        {/* Mi perfil */}
-        <div style={{background:C.white,borderRadius:20,padding:"22px 18px",
-          boxShadow:`0 4px 24px ${C.coral}10`,marginBottom:14,border:`1px solid ${C.soft}`}}>
-          <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}>
-            <div style={{width:52,height:52,borderRadius:"50%",
-              background:`linear-gradient(135deg,${C.coral},${C.gold})`,
-              display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,
-              boxShadow:`0 4px 14px ${C.coral}40`}}>
-              😊
-            </div>
-            <div>
-              <h2 className="fr" style={{fontSize:22,color:C.ink,marginBottom:2}}>{me.nombre}</h2>
-              <p className="jk" style={{fontSize:12,color:C.ink3}}>📧 {me.email}</p>
-              {me.telefono&&<p className="jk" style={{fontSize:12,color:C.ink3}}>📱 {me.telefono}</p>}
-            </div>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-            {[
-              {icon:"📅",label:"Inicio",val:formatFecha(fechaInicio)},
-              {icon:"📆",label:"Día actual",val:`Día ${Math.min(diaActual,30)} de 30`},
-              {icon:"⏰",label:"Recordatorio",val:me.notifHora},
-              {icon:"🔔",label:"Push",val:getNotifPerm()==="granted"?"Activo":"Inactivo"},
-            ].map((x,i)=>(
-              <div key={i} style={{background:C.soft2,borderRadius:10,padding:"10px 12px"}}>
-                <p className="jk" style={{fontSize:10,color:C.ink3,marginBottom:2}}>{x.icon} {x.label}</p>
-                <p className="jk" style={{fontSize:13,fontWeight:700,color:C.ink}}>{x.val}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Pareja */}
-
-
-        {/* Mensaje de hoy preview */}
-        <div style={{background:C.goldL,borderRadius:20,padding:"18px",
-          border:`1px solid ${C.gold}40`,marginBottom:14}}>
-          <p className="jk" style={{fontSize:11,fontWeight:700,color:"#7A5500",letterSpacing:1.5,
-            textTransform:"uppercase",marginBottom:8}}>📧 Email de hoy — Vista previa</p>
-          <p className="jk" style={{fontSize:12,color:C.ink2,marginBottom:4}}>
-            <strong>Asunto:</strong> {parseMensaje(msg.email_asunto,me.nombre,pareja)}
-          </p>
-          <p className="jk" style={{fontSize:12,color:C.ink2,lineHeight:1.65,whiteSpace:"pre-line"}}>
-            {parseMensaje(msg.email_cuerpo,me.nombre,pareja).substring(0,220)}...
-          </p>
-          <button className="btn jk" onClick={()=>{
-            const a=parseMensaje(msg.email_asunto,me.nombre,pareja);
-            const b=parseMensaje(msg.email_cuerpo,me.nombre,pareja);
-            window.open(`mailto:${me.email}?subject=${encodeURIComponent(a)}&body=${encodeURIComponent(b)}`,"_blank");
-          }} style={{marginTop:10,fontSize:12,fontWeight:700,color:"#7A5500",background:"rgba(245,166,35,.15)",
-            border:`1px solid ${C.gold}`,borderRadius:50,padding:"7px 16px"}}>
-            📧 Enviar a mi correo
-          </button>
-        </div>
-
-        <Btn variant="ghost" onClick={()=>{
-          if(window.confirm("¿Resetear el plan? Perderás tu progreso guardado.")) onReset();
-        }} style={{width:"100%",fontSize:13,color:C.ink3}}>
-          🔄 Reiniciar perfil
-        </Btn>
-      </div>
+    <div class="dsec" style="background:var(--soft2)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:5px">💡 Nota del terapeuta</div>
+      <p style="font-size:13px;color:var(--ink2);line-height:1.65">${d.p}</p>
     </div>
-  );
+    <button onclick="togDone(${d.d})" style="width:100%;padding:12px;border-radius:12px;font-size:13px;font-weight:700;border:none;cursor:pointer;background:${iD?'rgba(91,173,143,.15)':wk.c};color:${iD?'var(--sage)':'#fff'};box-shadow:${iD?'none':'0 4px 16px '+wk.c+'50'};${iD?'border:1.5px solid rgba(91,173,143,.45)':''}">
+      ${iD?'✓ Completado — toca para desmarcar':'Marcar como completado ✓'}
+    </button>`;
 }
-
-// ═══════════════════════════════════════════════════════════════════════
-// ROOT — ORQUESTADOR DE PANTALLAS
-// ═══════════════════════════════════════════════════════════════════════
-function App(){
-  const [screen,setScreen]=useState("loading");
-  const [me,setMe]=useState(null);
-  const [tempProfile,setTempProfile]=useState(null);
-
-  // ── Boot ──────────────────────────────────────────────────────────
-  useEffect(()=>{
-    const saved=loadMe();
-    if(saved){ setMe(saved); setScreen("app"); }
-    else { setScreen("register"); }
-  },[]);
-
-  // ── REGISTER → Fecha inicio ───────────────────────────────────────
-  const handleRegister=(profile)=>{
-    setTempProfile({...profile,fechaInicio:null});
-    setScreen("start-date");
-  };
-
-  // ── START DATE → Notificaciones ───────────────────────────────────
-  const handleStartDate=(fecha)=>{
-    setTempProfile(p=>({...p,fechaInicio:fecha}));
-    setScreen("notif-setup");
-  };
-
-  // ── NOTIF SETUP → App ─────────────────────────────────────────────
-  const handleNotifDone=()=>{
-    saveMe(tempProfile);
-    setMe(tempProfile);
-    setScreen("app");
-  };
-
-  // ── RESET ─────────────────────────────────────────────────────────
-  const handleReset=()=>{
-    try{ localStorage.removeItem(SK_ME); }catch(e){}
-    setMe(null); setTempProfile(null);
-    setScreen("register");
-  };
-
-  // ── RENDER ────────────────────────────────────────────────────────
-  if(screen==="loading") return(
-    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",
-      background:C.cream}}>
-      <div style={{textAlign:"center"}}>
-        <div className="pulse" style={{fontSize:48,marginBottom:12}}>💑</div>
-        <p className="fr" style={{fontSize:18,color:C.coral,fontStyle:"italic"}}>Cargando tu plan...</p>
-      </div>
-    </div>
-  );
-
-  if(screen==="register")   return <RegisterScreen onSave={handleRegister}/>;
-  if(screen==="start-date") return <StartDateScreen onSave={handleStartDate}
-    existingDate={tempProfile?.fechaInicio}/>;
-  if(screen==="notif-setup") return <NotifScreen profile={tempProfile}
-    diaActual={getDayNum(tempProfile?.fechaInicio)} onDone={handleNotifDone}/>;
-  if(screen==="app") return <MainApp me={me} onReset={handleReset}/>;
-
-  return null;
+function updNC(d){
+  const ta=document.getElementById('nt-'+d);if(!ta)return;
+  const w=cw(ta.value);const ov=w>200;
+  document.getElementById('wc-'+d).textContent=w+'/200';
+  document.getElementById('wc-'+d).style.color=ov?'var(--coral)':'#B09020';
+  document.getElementById('wc-'+d).style.fontWeight=ov?700:400;
+  document.getElementById('nw-'+d).style.display=ov?'block':'none';
+  const nb=document.getElementById('nb-'+d);const nta=document.getElementById('nt-'+d);
+  if(nb)nb.className='notes-box'+(ov?' over':'');
+  if(nta)nta.className='nta'+(ov?' over':'');
 }
-
-
-    // Mount
-    const rootEl = document.getElementById('root');
-    ReactDOM.createRoot(rootEl).render(<App/>);
-  </script>
+function svNote(d){
+  const ta=document.getElementById('nt-'+d);if(!ta)return;
+  if(cw(ta.value)>200){alert('Por favor reduce tu texto a máximo 200 palabras.');return;}
+  ls(nk(d),ta.value);
+  const btn=document.getElementById('nb-btn-'+d);
+  if(btn){btn.textContent='✓ Guardado';btn.style.background='var(--sage)';setTimeout(()=>{btn.textContent='Guardar';btn.style.background='#F5A623';},2000);}
+  buildDays(AW);openDay(d);
+}
+function togDay(d){AD=AD===d?null:d;buildDays(AW);if(AD)setTimeout(()=>{const el=document.getElementById('dc-'+d);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},50);}
+function openDay(d){AD=d;buildDays(AW);}
+function togDone(d){
+  if(DONE.has(d))DONE.delete(d);else DONE.add(d);
+  saveDone();updHdr();buildWkTabs();buildDays(AW);
+  if(DONE.size===30)setTimeout(()=>{document.getElementById('cel-txt').textContent='30 días de elecciones valientes, '+me.nombre+'. ¡Lo lograste!';document.getElementById('modal-cel').classList.add('show');},400);
+}
+function switchTab(t){
+  CTAB=t;['days','media','progs'].forEach(x=>{
+    document.getElementById('p-'+x).style.display=t===x?'block':'none';
+    const b=document.getElementById('st-'+x);if(b){b.className='tab-btn'+(t===x?' on':'');b.style.cssText=t===x?'background:var(--coral);color:#fff;border:none':'';}
+  });
+  if(t==='media')buildMda(AW);if(t==='progs')buildPgs();
+}
+function buildMda(w){
+  const wk=WKS[w];const c=document.getElementById('p-media');c.innerHTML='';
+  const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--ink3);margin-bottom:12px';p.textContent='Recursos para la Semana '+w+': '+wk.l;c.appendChild(p);
+  (MDA[w]||[]).forEach(m=>{
+    const a=document.createElement('a');a.href=m.url;a.target='_blank';a.rel='noopener noreferrer';a.className='rcard';
+    a.innerHTML=`<div style="display:flex;gap:12px;align-items:flex-start"><div style="width:42px;height:42px;border-radius:12px;background:${wk.c}14;border:1.5px solid ${wk.c}30;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0">${m.i}</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:6px;margin-bottom:3px"><div><div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:${wk.c};text-transform:uppercase">${m.lb}</div><div class="fr" style="font-size:14px;color:var(--ink);font-weight:600;margin-top:2px">${m.t}</div></div><span style="font-size:10px;color:var(--ink3);background:var(--soft2);border-radius:6px;padding:3px 8px;flex-shrink:0;white-space:nowrap;align-self:flex-start">${m.tag}</span></div><p style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:5px">${m.d}</p><span style="font-size:11px;color:${wk.c};font-weight:600">${m.url.replace('https://','').replace('http://','').split('/')[0]} →</span></div></div>`;
+    c.appendChild(a);
+  });
+}
+function buildPgs(){
+  const c=document.getElementById('p-progs');if(c.innerHTML!=='')return;
+  const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--ink3);margin-bottom:12px';p.textContent='Programas de acompañamiento recomendados';c.appendChild(p);
+  PGS.forEach(pr=>{
+    const d=document.createElement('div');d.className='card';d.style.cssText='padding:15px 16px;margin-bottom:10px';
+    d.innerHTML=`<div style="display:flex;gap:12px;align-items:flex-start"><span style="font-size:26px;flex-shrink:0">${pr.e}</span><div><div class="fr" style="font-size:15px;color:var(--ink);font-weight:600">${pr.n}</div><div style="font-size:11px;color:var(--coral);font-weight:600;margin-bottom:6px">${pr.s}</div><p style="font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:6px">${pr.d}</p><div style="font-size:11px;color:var(--sage);font-weight:600">🔗 ${pr.url}</div></div></div>`;
+    c.appendChild(d);
+  });
+}
+// Profile
+function goProfile(){
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  document.getElementById('pr-nom').textContent=me.nombre;
+  document.getElementById('pr-email').textContent='📧 '+me.email;
+  document.getElementById('pr-tel').textContent=me.telefono?'📱 '+me.telefono:'';
+  document.getElementById('pr-ini').textContent=fd(me.fechaInicio);
+  document.getElementById('pr-dia').textContent='Día '+Math.min(dia,30)+' de 30';
+  document.getElementById('pr-hora').textContent=me.notifHora;
+  document.getElementById('pr-push').textContent=getP()==='granted'?'Activo':'Inactivo';
+  document.getElementById('pr-easunto').textContent=pm(msg.as,me.nombre);
+  document.getElementById('pr-ecuerpo').textContent=pm(msg.cu,me.nombre).substring(0,240)+'...';
+  showScr('s-profile');
+}
+function prEmail(){
+  if(!me)return;
+  const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
+  window.open('mailto:'+me.email+'?subject='+encodeURIComponent(pm(msg.as,me.nombre))+'&body='+encodeURIComponent(pm(msg.cu,me.nombre)),'_blank');
+}
+function doReset(){try{localStorage.clear();}catch(e){}me=null;DONE=new Set();AD=null;AW=1;if(NI)clearInterval(NI);showScr('s-register');}
+function startNI(){
+  if(!hasN())return;if(NI)clearInterval(NI);
+  NI=setInterval(()=>{try{if(getP()!=='granted'||!me)return;const now=new Date();const[hh,mm]=me.notifHora.split(':').map(Number);if(now.getHours()===hh&&now.getMinutes()===mm){const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];try{new Notification('💑 '+pm(msg.t,me.nombre),{body:pm(msg.push,me.nombre),tag:'jdn'});}catch(e){}}}catch(e){}},60000);
+}
+// BOOT
+document.addEventListener('DOMContentLoaded',function(){me=loadMe();if(me){DONE=loadDone();launchApp();}else{showScr('s-register');}});
+</script>
 </body>
 </html>
