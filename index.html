@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
 <meta name="theme-color" content="#E8567A"/>
-<title>Juntos de Nuevo—Plan 30 Días</title>
+<title>Juntos de Nuevo 💑 — Plan 30 Días</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -197,7 +197,21 @@ input,textarea{font-family:inherit}
     <div id="p-days"></div>
     <div id="p-media" style="display:none"></div>
     <div id="p-progs" style="display:none"></div>
-    <div style="margin-top:28px;border-radius:20px;background:linear-gradient(135deg,var(--coralL),var(--goldL),var(--sageL));padding:22px 18px;border:1.5px solid rgba(232,86,122,.18);text-align:center">
+    <div style="text-align:center;margin-top:28px;margin-bottom:14px">
+  <button onclick="generarPDF()" id="pdf-btn"
+    style="background:linear-gradient(135deg,#E8567A,#F5A623);color:#fff;border:none;
+    padding:14px 28px;border-radius:50px;font-weight:700;font-size:15px;
+    box-shadow:0 5px 20px rgba(232,86,122,.4);cursor:pointer;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+    display:inline-flex;align-items:center;gap:10px;transition:all .2s">
+    <span style="font-size:20px">📄</span>
+    Descargar PDF del programa
+  </button>
+  <p style="font-size:11px;color:var(--ink3);margin-top:8px;font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+    Plan completo · 30 días · Recursos y programas
+  </p>
+</div>
+<div style="margin-top:0px;border-radius:20px;background:linear-gradient(135deg,var(--coralL),var(--goldL),var(--sageL));padding:22px 18px;border:1.5px solid rgba(232,86,122,.18);text-align:center">
       <div style="margin-bottom:10px;font-size:18px">❤️ 🧡 💛 💚 💜</div>
       <p class="fr" style="font-size:15px;font-style:italic;color:var(--ink);line-height:1.85;margin-bottom:10px">"Cada noche que eligen buscarse,<br/>la distancia pierde terreno.<br/><strong style="color:var(--coral)">¿Quién va a moverse primero?</strong>"</p>
       <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic">Lic. Agustín Flores C. · 2026 · Derechos Reservados</p>
@@ -327,7 +341,7 @@ function loadMe(){try{const r=ls('jdn_me');return r?JSON.parse(r):null;}catch(e)
 function saveDone(){ls('jdn_done',JSON.stringify([...DONE]));}
 function loadDone(){try{const r=ls('jdn_done');return r?new Set(JSON.parse(r)):new Set();}catch(e){return new Set();}}
 function nk(d){return 'jdn_note_'+d;}
-function getDN(s){if(!s)return 1;const a=new Date(s),b=new Date();a.setHours(0,0,0,0);b.setHours(0,0,0,0);return Math.max(1,Math.min(30,Math.floor((b-a)/86400000)+1));}
+function getDN(s){if(!s)return 1;var p=s.split('-');var a=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]),0,0,0,0);var b=new Date();b.setHours(0,0,0,0);return Math.max(1,Math.min(30,Math.floor((b-a)/86400000)+1));}
 function fd(iso){if(!iso)return '';const[y,m,d]=iso.split('-');const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return `${parseInt(d)} ${mo[parseInt(m)-1]} ${y}`;}
 function pm(t,n){return(t||'').replace(/\{n\}/g,n||'').replace(/\{nombre\}/g,n||'').replace(/\{pareja\}/g,'tu pareja');}
 function cw(t){return t.trim()===''?0:t.trim().split(/\s+/).length;}
@@ -585,6 +599,186 @@ function startNI(){
   NI=setInterval(()=>{try{if(getP()!=='granted'||!me)return;const now=new Date();const[hh,mm]=me.notifHora.split(':').map(Number);if(now.getHours()===hh&&now.getMinutes()===mm){const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];try{new Notification('💑 '+pm(msg.t,me.nombre),{body:pm(msg.push,me.nombre),tag:'jdn'});}catch(e){}}}catch(e){}},60000);
 }
 // BOOT
+
+
+// ════════════════════════════════════════════════════════════
+// PDF / PRINT GENERATOR — sin dependencias externas
+// ════════════════════════════════════════════════════════════
+function generarPDF(){
+  var btn=document.getElementById('pdf-btn');
+  btn.textContent='⏳ Preparando...';btn.disabled=true;
+
+  var WNAMES={1:"Reconocimiento",2:"Reconexión",3:"Intimidad",4:"Compromiso"};
+  var WEMOJI={1:"👁️",2:"🤝",3:"🌸",4:"🌿"};
+  var WTAG={1:"Ver con honestidad para poder avanzar",2:"Conocerse otra vez, más profundo que antes",3:"El perdón real y el contacto que sana",4:"Construir la versión del amor que eligieron"};
+  var WCSS={1:"#E8567A",2:"#F5A623",3:"#9B72CF",4:"#5BAD8F"};
+  var WLGHT={1:"#FFF0F3",2:"#FFFAEE",3:"#F5F0FF",4:"#F0FAF5"};
+  var PROGS=[
+    {e:"🕊️",n:"Retrouvaille",s:"Para parejas en crisis",d:"Programa de fin de semana para parejas con dificultades serias. Más de 1 millón de parejas ayudadas.",url:"retrouvaille.org"},
+    {e:"🌍",n:"Encuentro Matrimonial Mundial",s:"Para renovar el amor conyugal",d:"Retiro de fin de semana para profundizar la relación. Presente en más de 80 países.",url:"wwme.org"},
+    {e:"✨",n:"Equipos de Nuestra Señora",s:"Crecimiento continuo en pareja",d:"Grupos de matrimonios que se reúnen mensualmente para crecer en espiritualidad conyugal.",url:"equipes-nd.org/es/"},
+    {e:"🏡",n:"Movimiento Familiar Cristiano",s:"Red parroquial de familias",d:"Grupos pequeños en parroquias locales con encuentros y acompañamiento para matrimonios.",url:"mfcmex.org"},
+  ];
+
+  var html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"/>';
+  html += '<title>Juntos de Nuevo — Plan 30 Días</title>';
+  html += '<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>';
+  html += '<style>';
+  html += '*{box-sizing:border-box;margin:0;padding:0}';
+  html += 'body{font-family:"Plus Jakarta Sans",sans-serif;color:#2D1B1B;background:#fff;font-size:11pt}';
+  html += '.fr{font-family:"Fraunces",Georgia,serif}';
+  html += '@media print{';
+  html += '  @page{size:letter;margin:15mm 14mm}';
+  html += '  .page-break{page-break-before:always}';
+  html += '  .no-break{page-break-inside:avoid}';
+  html += '  body{font-size:10pt}';
+  html += '}';
+  html += '.cover{text-align:center;padding:40px 20px;background:linear-gradient(160deg,#FFF0F3,#FFFAEE,#F0FAF5);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}';
+  html += '.cover h1{font-family:"Fraunces",serif;font-size:38pt;color:#E8567A;margin-bottom:8px}';
+  html += '.cover h2{font-family:"Fraunces",serif;font-size:16pt;color:#5C3D3D;font-style:italic;margin-bottom:20px}';
+  html += '.wk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:480px;margin:20px auto}';
+  html += '.wk-box{border-radius:10px;padding:12px 8px;text-align:center;color:#fff}';
+  html += '.wk-box .num{font-weight:700;font-size:11pt}';
+  html += '.wk-box .name{font-size:8pt;opacity:.9}';
+  html += '.wk-box .days{font-size:7pt;opacity:.75;margin-top:3px}';
+  html += '.author{background:#fff;border:1.5px solid #E8567A;border-radius:12px;padding:14px 24px;margin:24px auto;display:inline-block}';
+  html += '.author p{color:#E8567A;font-weight:700;font-size:13pt;font-family:"Fraunces",serif}';
+  html += '.author small{color:#8B6060;font-size:9pt}';
+  html += '.quote{font-family:"Fraunces",serif;font-style:italic;font-size:13pt;color:#2D1B1B;margin-top:20px;line-height:1.6}';
+  html += '.wk-header{border-radius:10px;padding:14px 18px;color:#fff;margin:0 0 16px}';
+  html += '.wk-header h2{font-family:"Fraunces",serif;font-size:18pt;margin-bottom:4px}';
+  html += '.wk-header p{font-size:9pt;opacity:.9}';
+  html += '.day-block{border-radius:10px;overflow:hidden;margin-bottom:14px}';
+  html += '.day-hdr{padding:10px 14px;color:#fff}';
+  html += '.day-hdr .d-num{font-size:8pt;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.85}';
+  html += '.day-hdr .d-title{font-family:"Fraunces",serif;font-size:13pt;font-weight:700}';
+  html += '.day-body{padding:12px 14px}';
+  html += '.field-lbl{font-size:7.5pt;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;margin-top:8px}';
+  html += '.task-txt{font-size:10pt;color:#2D1B1B;line-height:1.6}';
+  html += '.ref-txt{font-family:"Fraunces",serif;font-style:italic;font-size:10pt;color:#5C3D3D;line-height:1.6;border-left:3px solid #ccc;padding-left:10px;margin:8px 0}';
+  html += '.tip-txt{font-size:9pt;color:#5C3D3D;line-height:1.5}';
+  html += '.note-lines{margin-top:4px}';
+  html += '.note-line{border-bottom:1px solid #DDD;height:18px;margin-bottom:2px}';
+  html += '.gold-lbl{color:#9A7800}';
+  html += '.media-section{margin-top:16px}';
+  html += '.media-hdr{border-radius:8px;padding:10px 14px;color:#fff;margin-bottom:10px}';
+  html += '.media-hdr h3{font-size:11pt;font-weight:700}';
+  html += '.media-item{display:flex;gap:10px;padding:8px 10px;border-radius:8px;margin-bottom:6px;align-items:flex-start}';
+  html += '.media-ico{font-size:16pt;flex-shrink:0;width:28px}';
+  html += '.media-info .media-label{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:1px}';
+  html += '.media-info .media-title{font-size:9.5pt;font-weight:700;color:#2D1B1B}';
+  html += '.media-info .media-desc{font-size:8.5pt;color:#5C3D3D;line-height:1.4}';
+  html += '.media-info .media-url{font-size:8pt;font-weight:600}';
+  html += '.prog-section{margin-top:16px}';
+  html += '.prog-item{display:flex;gap:12px;padding:10px 12px;border-radius:8px;margin-bottom:8px;align-items:flex-start;background:#F0FAF5;border:1px solid rgba(91,173,143,.3)}';
+  html += '.prog-ico{font-size:20pt;flex-shrink:0}';
+  html += '.prog-name{font-weight:700;font-size:10.5pt;color:#2D1B1B}';
+  html += '.prog-sub{font-size:8.5pt;color:#5BAD8F;font-weight:600;margin-bottom:3px}';
+  html += '.prog-desc{font-size:8.5pt;color:#5C3D3D;line-height:1.4}';
+  html += '.prog-url{font-size:8pt;color:#5BAD8F;font-weight:600;margin-top:3px}';
+  html += '.footer-line{text-align:center;font-size:8pt;color:#8B6060;margin-top:20px;padding-top:10px;border-top:1px solid #F2E4E4}';
+  html += '</style></head><body>';
+
+  // COVER
+  html += '<div class="cover">';
+  html += '<div style="font-size:48pt;margin-bottom:12px">💑</div>';
+  html += '<h1 class="fr">Juntos de Nuevo</h1>';
+  html += '<h2>30 días para volver a encontrarse</h2>';
+  html += '<div style="width:60px;height:3px;background:linear-gradient(90deg,#E8567A,#F5A623,#5BAD8F);border-radius:2px;margin:0 auto 20px"></div>';
+  html += '<div class="wk-grid">';
+  [[1,"Reconocimiento","1-7"],[2,"Reconexión","8-14"],[3,"Intimidad","15-21"],[4,"Compromiso","22-30"]].forEach(function(w){
+    html += '<div class="wk-box" style="background:'+WCSS[w[0]]+'"><div style="font-size:18pt">'+WEMOJI[w[0]]+'</div><div class="num">Semana '+w[0]+'</div><div class="name">'+w[1]+'</div><div class="days">Días '+w[2]+'</div></div>';
+  });
+  html += '</div>';
+  html += '<div class="author"><p>Lic. Agustín Flores C.</p><small>Marzo 2026 &nbsp;·&nbsp; Derechos Reservados</small></div>';
+  html += '<p class="quote">"No lo destruye el odio.<br/><strong style="color:#E8567A">Lo destruye la costumbre.</strong>"</p>';
+  html += '<p style="margin-top:16px;font-size:9pt;color:#8B6060">Basado en: Instituto Gottman · Gary Chapman · EFT (Sue Johnson)</p>';
+  html += '</div>';
+
+  // WEEKS
+  [1,2,3,4].forEach(function(week){
+    var wc = WCSS[week];
+    var wl = WLGHT[week];
+    var weekDays = DYS.filter(function(d){return d.w===week;});
+    var media = MDA[week]||[];
+
+    html += '<div class="page-break">';
+    html += '<div class="wk-header" style="background:'+wc+'">';
+    html += '<h2>'+WEMOJI[week]+' Semana '+week+' — '+WNAMES[week]+'</h2>';
+    html += '<p>'+WTAG[week]+'</p></div>';
+
+    weekDays.forEach(function(d){
+      html += '<div class="day-block no-break">';
+      html += '<div class="day-hdr" style="background:'+wc+'">';
+      html += '<div class="d-num">Día '+d.d+'</div>';
+      html += '<div class="d-title">'+d.i+' '+d.t+'</div></div>';
+      html += '<div class="day-body" style="background:'+wl+'">';
+      html += '<div class="field-lbl" style="color:'+wc+'">🎯 Acción del día</div>';
+      html += '<p class="task-txt">'+d.a+'</p>';
+      html += '<p class="ref-txt" style="border-left-color:'+wc+'">"'+d.r+'"</p>';
+      html += '<div class="field-lbl gold-lbl">✏️ Mis notas</div>';
+      html += '<div class="note-lines"><div class="note-line"></div><div class="note-line"></div></div>';
+      html += '<div class="field-lbl" style="color:#B09020;margin-top:6px">💡 Nota del terapeuta</div>';
+      html += '<p class="tip-txt">'+d.p+'</p>';
+      html += '</div></div>';
+    });
+
+    // Media
+    html += '<div class="media-section no-break">';
+    html += '<div class="media-hdr" style="background:'+wc+'">';
+    html += '<h3>🎬 Recursos y Multimedia — Semana '+week+'</h3></div>';
+    media.forEach(function(m){
+      html += '<div class="media-item" style="background:'+wl+';border:1px solid '+wc+'25">';
+      html += '<div class="media-ico">'+m.i+'</div>';
+      html += '<div class="media-info">';
+      html += '<div class="media-label" style="color:'+wc+'">'+m.lb+'</div>';
+      html += '<div class="media-title">'+m.t+'</div>';
+      html += '<div class="media-desc">'+m.d+'</div>';
+      html += '<div class="media-url" style="color:'+wc+'">🔗 '+m.url+'</div>';
+      html += '</div></div>';
+    });
+    html += '</div>';
+
+    // Programs on week 4
+    if(week===4){
+      html += '<div class="prog-section no-break">';
+      html += '<div class="media-hdr" style="background:#5BAD8F"><h3>🤝 Programas de Acompañamiento Matrimonial</h3></div>';
+      PROGS.forEach(function(p){
+        html += '<div class="prog-item">';
+        html += '<div class="prog-ico">'+p.e+'</div>';
+        html += '<div><div class="prog-name">'+p.n+'</div>';
+        html += '<div class="prog-sub">'+p.s+'</div>';
+        html += '<div class="prog-desc">'+p.d+'</div>';
+        html += '<div class="prog-url">🔗 '+p.url+'</div></div></div>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="footer-line">Lic. Agustín Flores C. · Juntos de Nuevo · 2026 · Derechos Reservados</div>';
+    html += '</div>';
+  });
+
+  html += '</body></html>';
+
+  // Open print window
+  var win = window.open('','_blank','width=900,height=700');
+  if(!win){
+    alert('Por favor permite ventanas emergentes para este sitio y vuelve a intentarlo.');
+    btn.innerHTML='<span style="font-size:20px">📄</span> Descargar PDF del programa';
+    btn.disabled=false;
+    return;
+  }
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(function(){
+    win.print();
+    btn.innerHTML='<span style="font-size:20px">📄</span> Descargar PDF del programa';
+    btn.disabled=false;
+  },800);
+}
+
+
 document.addEventListener('DOMContentLoaded',function(){me=loadMe();if(me){DONE=loadDone();launchApp();}else{showScr('s-register');}});
 </script>
 </body>
