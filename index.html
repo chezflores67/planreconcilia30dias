@@ -18,6 +18,17 @@ input,textarea{font-family:inherit}
 .screen{display:none;min-height:100vh;animation:fu .35s ease}
 .screen.active{display:block}
 #s-loading.active{display:flex}
+
+/* Activation screen */
+.afc-input{width:100%;padding:16px;border-radius:14px;border:2.5px solid rgba(232,86,122,.3);
+  font-size:24px;font-weight:800;text-align:center;letter-spacing:6px;color:var(--coral);
+  background:var(--coralL);font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  transition:border-color .2s;text-transform:uppercase}
+.afc-input:focus{outline:none;border-color:var(--coral);background:#fff;box-shadow:0 0 0 4px rgba(232,86,122,.12)}
+.afc-input::placeholder{color:rgba(232,86,122,.35);letter-spacing:3px;font-size:16px}
+.shake{animation:shk .5s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
 @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .pulse{animation:pl 2s ease-in-out infinite}
 @keyframes pl{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
@@ -66,6 +77,60 @@ input,textarea{font-family:inherit}
   <div style="text-align:center"><div class="pulse" style="font-size:52px;margin-bottom:14px">💑</div><p class="fr" style="font-size:20px;color:var(--coral);font-style:italic">Cargando tu plan...</p></div>
 </div>
 
+
+<!-- ACTIVATION SCREEN -->
+<div id="s-activate" class="screen" style="min-height:100vh;background:linear-gradient(160deg,var(--coralL),var(--goldL),var(--sageL));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px">
+  <div style="max-width:400px;width:100%;text-align:center">
+
+    <!-- Logo / SVG -->
+    <svg viewBox="0 0 160 100" fill="none" style="width:min(180px,55vw);margin:0 auto 20px">
+      <ellipse cx="52" cy="88" rx="28" ry="9" fill="#F5A623" opacity=".18"/>
+      <ellipse cx="108" cy="88" rx="28" ry="9" fill="#E8567A" opacity=".18"/>
+      <circle cx="47" cy="26" r="16" fill="#FDDDD7"/>
+      <rect x="33" y="42" width="28" height="38" rx="14" fill="#E8567A"/>
+      <circle cx="113" cy="26" r="16" fill="#FAE0B8"/>
+      <rect x="99" y="42" width="28" height="38" rx="14" fill="#F5A623"/>
+      <path d="M80 56C73 44 60 48 60 60C60 70 80 82 80 82C80 82 100 70 100 60C100 48 87 44 80 56Z" fill="#E8567A" opacity=".85"/>
+      <circle cx="80" cy="56" r="3.5" fill="#fff" opacity=".45"/>
+    </svg>
+
+    <h1 class="fr" style="font-size:clamp(26px,6vw,36px);color:var(--coral);margin-bottom:6px">Juntos de Nuevo</h1>
+    <p class="fr" style="font-size:15px;font-style:italic;color:var(--ink2);margin-bottom:28px">30 días para volver a encontrarse</p>
+
+    <!-- Code card -->
+    <div class="card" style="padding:28px 22px;margin-bottom:16px">
+      <div style="font-size:32px;margin-bottom:10px">🔑</div>
+      <h2 class="fr" style="font-size:20px;color:var(--ink);margin-bottom:6px">Ingresa tu código de acceso</h2>
+      <p style="font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:20px">
+        Recibirás tu código personal al adquirir el plan. Ingrésalo a continuación para activar tu acceso.
+      </p>
+
+      <input id="afc-inp" class="afc-input" type="text" maxlength="7"
+        placeholder="AFC0000"
+        oninput="this.value=this.value.toUpperCase().replace(/[^AFC0-9]/g,'').slice(0,7)"
+        onkeydown="if(event.key==='Enter')doActivate()"/>
+
+      <p id="afc-err" style="font-size:13px;color:var(--coral);font-weight:600;margin:10px 0 0;display:none;min-height:18px"></p>
+
+      <button class="btn-p" onclick="doActivate()" style="margin-top:16px">
+        ✓ Activar mi plan
+      </button>
+    </div>
+
+    <!-- Info -->
+    <div style="background:rgba(255,255,255,.6);border-radius:14px;padding:14px 18px;border:1px solid rgba(232,86,122,.15)">
+      <p style="font-size:12px;color:var(--ink2);line-height:1.7">
+        ¿Aún no tienes un código?<br/>
+        <strong style="color:var(--coral)">Adquiere el plan por $150 MXN</strong><br/>
+        <span style="font-size:11px;color:var(--ink3)">Pago por transferencia o OXXO · Entrega inmediata por WhatsApp</span>
+      </p>
+    </div>
+
+    <p class="fr" style="font-size:11px;color:var(--coral);font-style:italic;margin-top:18px">Lic. Agustín Flores C.</p>
+    <p style="font-size:10px;color:var(--ink3);text-align:center;margin-top:2px">Creador y Diseñador MR · 2026</p>
+  </div>
+</div>
+
 <div id="s-register" class="screen" style="min-height:100vh;background:var(--cream);padding:28px 20px">
   <div style="max-width:420px;margin:0 auto">
     <div style="text-align:center;margin-bottom:24px">
@@ -93,7 +158,8 @@ input,textarea{font-family:inherit}
       <p id="reg-err" style="font-size:13px;color:var(--coral);font-weight:600;margin-bottom:12px;display:none"></p>
       <button class="btn-p" onclick="doReg()">Continuar →</button>
     </div>
-    <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic;text-align:center;margin-top:16px">Lic. Agustín Flores C. · 2026</p>
+    <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic;text-align:center;margin-top:16px">Lic. Agustín Flores C.</p>
+    <p style="font-size:10px;color:var(--ink3);text-align:center;margin-top:2px">Creador y Diseñador MR · 2026</p>
   </div>
 </div>
 
@@ -183,6 +249,8 @@ input,textarea{font-family:inherit}
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn-sm" id="mc-email" style="background:var(--goldL);color:#7A5500;border:1px solid rgba(245,166,35,.4)">📧 Ver email</button>
           <button class="btn-sm" id="mc-push" style="background:var(--sageL);color:var(--sage);border:1px solid rgba(91,173,143,.4);display:none" onclick="tPush()">🔔 Push prueba</button>
+          <button class="btn-sm" id="mc-copy" onclick="copyMsg()" style="background:#F0F4FF;color:#4A6CF7;border:1px solid rgba(74,108,247,.35)">📋 Copiar mensaje</button>
+          <button class="btn-sm" id="mc-cal" onclick="addToCalendar()" style="background:#F0FAF5;color:var(--sage);border:1px solid rgba(91,173,143,.4)">📅 Añadir al Calendario</button>
           <button class="btn-sm" id="mc-day" style="background:var(--coralL);color:var(--coral);border:1px solid rgba(232,86,122,.4)" onclick="goToday()">👁️ Ver actividad</button>
         </div>
       </div>
@@ -214,7 +282,10 @@ input,textarea{font-family:inherit}
 <div style="margin-top:0px;border-radius:20px;background:linear-gradient(135deg,var(--coralL),var(--goldL),var(--sageL));padding:22px 18px;border:1.5px solid rgba(232,86,122,.18);text-align:center">
       <div style="margin-bottom:10px;font-size:18px">❤️ 🧡 💛 💚 💜</div>
       <p class="fr" style="font-size:15px;font-style:italic;color:var(--ink);line-height:1.85;margin-bottom:10px">"Cada noche que eligen buscarse,<br/>la distancia pierde terreno.<br/><strong style="color:var(--coral)">¿Quién va a moverse primero?</strong>"</p>
-      <p class="fr" style="font-size:12px;color:var(--coral);font-style:italic">Lic. Agustín Flores C. · 2026 · Derechos Reservados</p>
+      <div style="margin-top:6px">
+      <p class="fr" style="font-size:13px;color:var(--coral);font-style:italic;font-weight:600">Lic. Agustín Flores C.</p>
+      <p style="font-size:11px;color:var(--ink3);margin-top:2px">Creador y Diseñador MR · 2026 · Derechos Reservados</p>
+    </div>
     </div>
   </div>
 </div>
@@ -232,6 +303,12 @@ input,textarea{font-family:inherit}
         <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">📆 Día actual</p><p id="pr-dia" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
         <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">⏰ Recordatorio</p><p id="pr-hora" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
         <div style="background:var(--soft2);border-radius:10px;padding:10px 12px"><p style="font-size:10px;color:var(--ink3);margin-bottom:2px">🔔 Push</p><p id="pr-push" style="font-size:13px;font-weight:700;color:var(--ink)"></p></div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--coralL),var(--goldL));border-radius:10px;padding:12px 14px;margin-top:10px;border:1px solid rgba(232,86,122,.2)">
+        <p style="font-size:10px;color:var(--ink3);margin-bottom:3px">🔑 Código de acceso activo</p>
+        <p id="pr-code" style="font-size:18px;font-weight:800;color:var(--coral);letter-spacing:4px;font-family:'Plus Jakarta Sans',system-ui,sans-serif"></p>
+      </div>
+      <div style="display:none"><!-- placeholder -->
       </div>
     </div>
     <div style="background:var(--goldL);border-radius:18px;padding:18px;border:1px solid rgba(245,166,35,.4);margin-bottom:14px">
@@ -332,6 +409,124 @@ const MDA={
   4:[{i:"🌐",lb:"Encuentro Matrimonial",t:"wwme.org — Retiros para parejas",d:"Busca retiros en México y Latinoamérica.",url:"https://wwme.org",tag:"Sitio oficial"},{i:"🌐",lb:"Equipos Nuestra Señora",t:"Espiritualidad conyugal continua",d:"Movimiento internacional con grupos en toda México.",url:"https://www.equipes-nd.org/es/",tag:"Sitio oficial"},{i:"▶️",lb:"Robert Waldinger · TED",t:"La ciencia del amor duradero",d:"Estudio de 80 años (Harvard) revela qué mantiene el amor vivo.",url:"https://www.youtube.com/watch?v=8KkKuTCFvzI",tag:"TED · 13 min"},{i:"📖",lb:"Libro · Referencia",t:"Los 7 Principios del Matrimonio",d:"La guía más respaldada por investigación para un matrimonio estable.",url:"https://www.gottman.com/product/the-seven-principles-for-making-marriage-work/",tag:"Libro"}],
 };
 const PGS=[{e:"🕊️",n:"Retrouvaille",s:"Para parejas en crisis",d:"Programa de fin de semana para parejas con dificultades serias. Más de un millón de parejas ayudadas.",url:"retrouvaille.org"},{e:"🌍",n:"Encuentro Matrimonial Mundial",s:"Para renovar el amor conyugal",d:"Retiro de fin de semana para profundizar la relación. Presente en más de 80 países.",url:"wwme.org"},{e:"✨",n:"Equipos de Nuestra Señora",s:"Crecimiento continuo en pareja",d:"Grupos de matrimonios que se reúnen mensualmente para crecer en espiritualidad conyugal.",url:"equipes-nd.org"},{e:"🏡",n:"Movimiento Familiar Cristiano",s:"Red parroquial de familias",d:"Grupos pequeños en parroquias locales con encuentros y acompañamiento para matrimonios.",url:"mfcmex.org"}];
+
+// ════════════════════════════════════════════════════════════
+// COPIAR MENSAJE DEL DÍA
+// ════════════════════════════════════════════════════════════
+function copyMsg(){
+  if(!me)return;
+  const dia=getDN(me.fechaInicio);
+  const msg=MGS[Math.min(dia,30)-1];
+  const texto=pm(msg.t,me.nombre)+'\n\n'+pm(msg.push,me.nombre)+'\n\n— Juntos de Nuevo · Día '+Math.min(dia,30)+' de 30';
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(texto).then(()=>showToast('✅ ¡Mensaje copiado! Pégalo donde quieras.')).catch(()=>fallbackCopy(texto));
+  }else{fallbackCopy(texto);}
+}
+function fallbackCopy(texto){
+  const ta=document.createElement('textarea');
+  ta.value=texto;ta.style.cssText='position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showToast('✅ ¡Mensaje copiado!');}
+  catch(e){showToast('Mantén presionado el texto para copiarlo.');}
+  document.body.removeChild(ta);
+}
+function showToast(msg){
+  let t=document.getElementById('jdn-toast');
+  if(!t){
+    t=document.createElement('div');t.id='jdn-toast';
+    t.style.cssText='position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#2D1B1B;color:#fff;padding:11px 22px;border-radius:50px;font-size:13px;font-weight:600;font-family:inherit;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:opacity .4s;white-space:nowrap;max-width:90vw;text-align:center';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity='0',3000);
+}
+
+// ════════════════════════════════════════════════════════════
+// AGREGAR AL CALENDARIO
+// ════════════════════════════════════════════════════════════
+function addToCalendar(){
+  if(!me)return;
+  const dia=getDN(me.fechaInicio);
+  const msg=MGS[Math.min(dia,30)-1];
+  const hoy=new Date();
+  const pad=n=>String(n).padStart(2,'0');
+  const fecha=hoy.getFullYear()+''+pad(hoy.getMonth()+1)+''+pad(hoy.getDate());
+  const h=(me.notifHora||'08:00').replace(':','');
+  const hEnd=pad((parseInt(h.slice(0,2))+(h.slice(2)==='30'?1:0))%24)+( h.slice(2)==='30'?'00':'30');
+  const dtStart=fecha+'T'+h+'00';
+  const dtEnd=fecha+'T'+hEnd+'00';
+  const titulo=encodeURIComponent('Juntos de Nuevo - Dia '+Math.min(dia,30));
+  const detalle=encodeURIComponent(pm(msg.push,me.nombre));
+  const gcal='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+titulo+'&details='+detalle+'&dates='+dtStart+'/'+dtEnd;
+
+  // Modal with options
+  let m=document.getElementById('cal-modal');
+  if(m)m.remove();
+  m=document.createElement('div');m.id='cal-modal';
+  m.style.cssText='position:fixed;inset:0;background:rgba(45,27,27,.72);z-index:9998;display:flex;align-items:flex-end;justify-content:center;padding:0 0 20px;animation:fu .25s ease';
+  m.innerHTML=
+    '<div style="background:#fff;border-radius:20px;padding:22px 20px;max-width:420px;width:calc(100% - 28px);box-shadow:0 -4px 30px rgba(0,0,0,.15)">'+
+    '<p style="font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;text-align:center">📅 Agregar recordatorio a:</p>'+
+    '<a href="'+gcal+'" target="_blank" onclick="setTimeout(()=>document.getElementById(\'cal-modal\').remove(),300)" '+
+    'style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;background:#F0F7FF;border:1.5px solid #4A90D9;text-decoration:none;margin-bottom:8px">'+
+    '<span style="font-size:22px">🗓️</span>'+
+    '<div><div style="font-weight:700;color:#1A73E8;font-size:14px">Google Calendar</div>'+
+    '<div style="font-size:11px;color:var(--ink3)">Se abre en tu navegador</div></div></a>'+
+    '<button onclick="dlICS(\''+dtStart+'\',\''+dtEnd+'\')" '+
+    'style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;background:#F5F0FF;border:1.5px solid #9B72CF;width:100%;margin-bottom:14px;cursor:pointer;font-family:inherit">'+
+    '<span style="font-size:22px">📆</span>'+
+    '<div style="text-align:left"><div style="font-weight:700;color:#9B72CF;font-size:14px">Outlook / Apple Calendar</div>'+
+    '<div style="font-size:11px;color:var(--ink3)">Descarga archivo .ics</div></div></button>'+
+    '<button onclick="document.getElementById(\'cal-modal\').remove()" '+
+    'style="width:100%;padding:11px;border-radius:50px;background:var(--soft2);color:var(--ink2);border:none;font-weight:600;font-size:13px;font-family:inherit">Cancelar</button></div>';
+  m.onclick=function(e){if(e.target===m)m.remove();};
+  document.body.appendChild(m);
+}
+
+function dlICS(start,end){
+  const ics='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Juntos de Nuevo//ES\r\nBEGIN:VEVENT\r\nDTSTART:'+start+'\r\nDTEND:'+end+'\r\nSUMMARY:Juntos de Nuevo - Mi recordatorio diario\r\nDESCRIPTION:Plan de reconciliacion 30 dias - Juntos de Nuevo\r\nEND:VEVENT\r\nEND:VCALENDAR';
+  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='juntos-de-nuevo-recordatorio.ics';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  document.getElementById('cal-modal')?.remove();
+  setTimeout(()=>showToast('✅ Archivo .ics descargado — ábrelo para agregar al calendario'),300);
+}
+
+
+const VALID_CODES=["AFC0001","AFC0002","AFC0003","AFC0004","AFC0005","AFC0006","AFC0007","AFC0008","AFC0009","AFC0010","AFC0011","AFC0012","AFC0013","AFC0014","AFC0015","AFC0016","AFC0017","AFC0018","AFC0019","AFC0020","AFC0021","AFC0022","AFC0023","AFC0024","AFC0025","AFC0026","AFC0027","AFC0028","AFC0029","AFC0030","AFC0031","AFC0032","AFC0033","AFC0034","AFC0035","AFC0036","AFC0037","AFC0038","AFC0039","AFC0040","AFC0041","AFC0042","AFC0043","AFC0044","AFC0045","AFC0046","AFC0047","AFC0048","AFC0049","AFC0050","AFC0051","AFC0052","AFC0053","AFC0054","AFC0055","AFC0056","AFC0057","AFC0058","AFC0059","AFC0060","AFC0061","AFC0062","AFC0063","AFC0064","AFC0065","AFC0066","AFC0067","AFC0068","AFC0069","AFC0070","AFC0071","AFC0072","AFC0073","AFC0074","AFC0075","AFC0076","AFC0077","AFC0078","AFC0079","AFC0080","AFC0081","AFC0082","AFC0083","AFC0084","AFC0085","AFC0086","AFC0087","AFC0088","AFC0089","AFC0090","AFC0091","AFC0092","AFC0093","AFC0094","AFC0095","AFC0096","AFC0097","AFC0098","AFC0099","AFC0100","AFC0101","AFC0102","AFC0103","AFC0104","AFC0105","AFC0106","AFC0107","AFC0108","AFC0109","AFC0110","AFC0111","AFC0112","AFC0113","AFC0114","AFC0115","AFC0116","AFC0117","AFC0118","AFC0119","AFC0120","AFC0121","AFC0122","AFC0123","AFC0124","AFC0125","AFC0126","AFC0127","AFC0128","AFC0129","AFC0130","AFC0131","AFC0132","AFC0133","AFC0134","AFC0135","AFC0136","AFC0137","AFC0138","AFC0139","AFC0140","AFC0141","AFC0142","AFC0143","AFC0144","AFC0145","AFC0146","AFC0147","AFC0148","AFC0149","AFC0150","AFC0151","AFC0152","AFC0153","AFC0154","AFC0155","AFC0156","AFC0157","AFC0158","AFC0159","AFC0160","AFC0161","AFC0162","AFC0163","AFC0164","AFC0165","AFC0166","AFC0167","AFC0168","AFC0169","AFC0170","AFC0171","AFC0172","AFC0173","AFC0174","AFC0175","AFC0176","AFC0177","AFC0178","AFC0179","AFC0180","AFC0181","AFC0182","AFC0183","AFC0184","AFC0185","AFC0186","AFC0187","AFC0188","AFC0189","AFC0190","AFC0191","AFC0192","AFC0193","AFC0194","AFC0195","AFC0196","AFC0197","AFC0198","AFC0199","AFC0200","AFC0201","AFC0202","AFC0203","AFC0204","AFC0205","AFC0206","AFC0207","AFC0208","AFC0209","AFC0210","AFC0211","AFC0212","AFC0213","AFC0214","AFC0215","AFC0216","AFC0217","AFC0218","AFC0219","AFC0220","AFC0221","AFC0222","AFC0223","AFC0224","AFC0225","AFC0226","AFC0227","AFC0228","AFC0229","AFC0230","AFC0231","AFC0232","AFC0233","AFC0234","AFC0235","AFC0236","AFC0237","AFC0238","AFC0239","AFC0240","AFC0241","AFC0242","AFC0243","AFC0244","AFC0245","AFC0246","AFC0247","AFC0248","AFC0249","AFC0250","AFC0251","AFC0252","AFC0253","AFC0254","AFC0255","AFC0256","AFC0257","AFC0258","AFC0259","AFC0260","AFC0261","AFC0262","AFC0263","AFC0264","AFC0265","AFC0266","AFC0267","AFC0268","AFC0269","AFC0270","AFC0271","AFC0272","AFC0273","AFC0274","AFC0275","AFC0276","AFC0277","AFC0278","AFC0279","AFC0280","AFC0281","AFC0282","AFC0283","AFC0284","AFC0285","AFC0286","AFC0287","AFC0288","AFC0289","AFC0290","AFC0291","AFC0292","AFC0293","AFC0294","AFC0295","AFC0296","AFC0297","AFC0298","AFC0299","AFC0300","AFC0301","AFC0302","AFC0303","AFC0304","AFC0305","AFC0306","AFC0307","AFC0308","AFC0309","AFC0310","AFC0311","AFC0312","AFC0313","AFC0314","AFC0315","AFC0316","AFC0317","AFC0318","AFC0319","AFC0320","AFC0321","AFC0322","AFC0323","AFC0324","AFC0325","AFC0326","AFC0327","AFC0328","AFC0329","AFC0330","AFC0331","AFC0332","AFC0333","AFC0334","AFC0335","AFC0336","AFC0337","AFC0338","AFC0339","AFC0340","AFC0341","AFC0342","AFC0343","AFC0344","AFC0345","AFC0346","AFC0347","AFC0348","AFC0349","AFC0350","AFC0351","AFC0352","AFC0353","AFC0354","AFC0355","AFC0356","AFC0357","AFC0358","AFC0359","AFC0360","AFC0361","AFC0362","AFC0363","AFC0364","AFC0365","AFC0366","AFC0367","AFC0368","AFC0369","AFC0370","AFC0371","AFC0372","AFC0373","AFC0374","AFC0375","AFC0376","AFC0377","AFC0378","AFC0379","AFC0380","AFC0381","AFC0382","AFC0383","AFC0384","AFC0385","AFC0386","AFC0387","AFC0388","AFC0389","AFC0390","AFC0391","AFC0392","AFC0393","AFC0394","AFC0395","AFC0396","AFC0397","AFC0398","AFC0399","AFC0400","AFC0401","AFC0402","AFC0403","AFC0404","AFC0405","AFC0406","AFC0407","AFC0408","AFC0409","AFC0410","AFC0411","AFC0412","AFC0413","AFC0414","AFC0415","AFC0416","AFC0417","AFC0418","AFC0419","AFC0420","AFC0421","AFC0422","AFC0423","AFC0424","AFC0425","AFC0426","AFC0427","AFC0428","AFC0429","AFC0430","AFC0431","AFC0432","AFC0433","AFC0434","AFC0435","AFC0436","AFC0437","AFC0438","AFC0439","AFC0440","AFC0441","AFC0442","AFC0443","AFC0444","AFC0445","AFC0446","AFC0447","AFC0448","AFC0449","AFC0450","AFC0451","AFC0452","AFC0453","AFC0454","AFC0455","AFC0456","AFC0457","AFC0458","AFC0459","AFC0460","AFC0461","AFC0462","AFC0463","AFC0464","AFC0465","AFC0466","AFC0467","AFC0468","AFC0469","AFC0470","AFC0471","AFC0472","AFC0473","AFC0474","AFC0475","AFC0476","AFC0477","AFC0478","AFC0479","AFC0480","AFC0481","AFC0482","AFC0483","AFC0484","AFC0485","AFC0486","AFC0487","AFC0488","AFC0489","AFC0490","AFC0491","AFC0492","AFC0493","AFC0494","AFC0495","AFC0496","AFC0497","AFC0498","AFC0499","AFC0500","AFC0501","AFC0502","AFC0503","AFC0504","AFC0505","AFC0506","AFC0507","AFC0508","AFC0509","AFC0510","AFC0511","AFC0512","AFC0513","AFC0514","AFC0515","AFC0516","AFC0517","AFC0518","AFC0519","AFC0520","AFC0521","AFC0522","AFC0523","AFC0524","AFC0525","AFC0526","AFC0527","AFC0528","AFC0529","AFC0530","AFC0531","AFC0532","AFC0533","AFC0534","AFC0535","AFC0536","AFC0537","AFC0538","AFC0539","AFC0540","AFC0541","AFC0542","AFC0543","AFC0544","AFC0545","AFC0546","AFC0547","AFC0548","AFC0549","AFC0550","AFC0551","AFC0552","AFC0553","AFC0554","AFC0555","AFC0556","AFC0557","AFC0558","AFC0559","AFC0560","AFC0561","AFC0562","AFC0563","AFC0564","AFC0565","AFC0566","AFC0567","AFC0568","AFC0569","AFC0570","AFC0571","AFC0572","AFC0573","AFC0574","AFC0575","AFC0576","AFC0577","AFC0578","AFC0579","AFC0580","AFC0581","AFC0582","AFC0583","AFC0584","AFC0585","AFC0586","AFC0587","AFC0588","AFC0589","AFC0590","AFC0591","AFC0592","AFC0593","AFC0594","AFC0595","AFC0596","AFC0597","AFC0598","AFC0599","AFC0600","AFC0601","AFC0602","AFC0603","AFC0604","AFC0605","AFC0606","AFC0607","AFC0608","AFC0609","AFC0610","AFC0611","AFC0612","AFC0613","AFC0614","AFC0615","AFC0616","AFC0617","AFC0618","AFC0619","AFC0620","AFC0621","AFC0622","AFC0623","AFC0624","AFC0625","AFC0626","AFC0627","AFC0628","AFC0629","AFC0630","AFC0631","AFC0632","AFC0633","AFC0634","AFC0635","AFC0636","AFC0637","AFC0638","AFC0639","AFC0640","AFC0641","AFC0642","AFC0643","AFC0644","AFC0645","AFC0646","AFC0647","AFC0648","AFC0649","AFC0650","AFC0651","AFC0652","AFC0653","AFC0654","AFC0655","AFC0656","AFC0657","AFC0658","AFC0659","AFC0660","AFC0661","AFC0662","AFC0663","AFC0664","AFC0665","AFC0666","AFC0667","AFC0668","AFC0669","AFC0670","AFC0671","AFC0672","AFC0673","AFC0674","AFC0675","AFC0676","AFC0677","AFC0678","AFC0679","AFC0680","AFC0681","AFC0682","AFC0683","AFC0684","AFC0685","AFC0686","AFC0687","AFC0688","AFC0689","AFC0690","AFC0691","AFC0692","AFC0693","AFC0694","AFC0695","AFC0696","AFC0697","AFC0698","AFC0699","AFC0700","AFC0701","AFC0702","AFC0703","AFC0704","AFC0705","AFC0706","AFC0707","AFC0708","AFC0709","AFC0710","AFC0711","AFC0712","AFC0713","AFC0714","AFC0715","AFC0716","AFC0717","AFC0718","AFC0719","AFC0720","AFC0721","AFC0722","AFC0723","AFC0724","AFC0725","AFC0726","AFC0727","AFC0728","AFC0729","AFC0730","AFC0731","AFC0732","AFC0733","AFC0734","AFC0735","AFC0736","AFC0737","AFC0738","AFC0739","AFC0740","AFC0741","AFC0742","AFC0743","AFC0744","AFC0745","AFC0746","AFC0747","AFC0748","AFC0749","AFC0750","AFC0751","AFC0752","AFC0753","AFC0754","AFC0755","AFC0756","AFC0757","AFC0758","AFC0759","AFC0760","AFC0761","AFC0762","AFC0763","AFC0764","AFC0765","AFC0766","AFC0767","AFC0768","AFC0769","AFC0770","AFC0771","AFC0772","AFC0773","AFC0774","AFC0775","AFC0776","AFC0777","AFC0778","AFC0779","AFC0780","AFC0781","AFC0782","AFC0783","AFC0784","AFC0785","AFC0786","AFC0787","AFC0788","AFC0789","AFC0790","AFC0791","AFC0792","AFC0793","AFC0794","AFC0795","AFC0796","AFC0797","AFC0798","AFC0799","AFC0800","AFC0801","AFC0802","AFC0803","AFC0804","AFC0805","AFC0806","AFC0807","AFC0808","AFC0809","AFC0810","AFC0811","AFC0812","AFC0813","AFC0814","AFC0815","AFC0816","AFC0817","AFC0818","AFC0819","AFC0820","AFC0821","AFC0822","AFC0823","AFC0824","AFC0825","AFC0826","AFC0827","AFC0828","AFC0829","AFC0830","AFC0831","AFC0832","AFC0833","AFC0834","AFC0835","AFC0836","AFC0837","AFC0838","AFC0839","AFC0840","AFC0841","AFC0842","AFC0843","AFC0844","AFC0845","AFC0846","AFC0847","AFC0848","AFC0849","AFC0850","AFC0851","AFC0852","AFC0853","AFC0854","AFC0855","AFC0856","AFC0857","AFC0858","AFC0859","AFC0860","AFC0861","AFC0862","AFC0863","AFC0864","AFC0865","AFC0866","AFC0867","AFC0868","AFC0869","AFC0870","AFC0871","AFC0872","AFC0873","AFC0874","AFC0875","AFC0876","AFC0877","AFC0878","AFC0879","AFC0880","AFC0881","AFC0882","AFC0883","AFC0884","AFC0885","AFC0886","AFC0887","AFC0888","AFC0889","AFC0890","AFC0891","AFC0892","AFC0893","AFC0894","AFC0895","AFC0896","AFC0897","AFC0898","AFC0899","AFC0900","AFC0901","AFC0902","AFC0903","AFC0904","AFC0905","AFC0906","AFC0907","AFC0908","AFC0909","AFC0910","AFC0911","AFC0912","AFC0913","AFC0914","AFC0915","AFC0916","AFC0917","AFC0918","AFC0919","AFC0920","AFC0921","AFC0922","AFC0923","AFC0924","AFC0925","AFC0926","AFC0927","AFC0928","AFC0929","AFC0930","AFC0931","AFC0932","AFC0933","AFC0934","AFC0935","AFC0936","AFC0937","AFC0938","AFC0939","AFC0940","AFC0941","AFC0942","AFC0943","AFC0944","AFC0945","AFC0946","AFC0947","AFC0948","AFC0949","AFC0950","AFC0951","AFC0952","AFC0953","AFC0954","AFC0955","AFC0956","AFC0957","AFC0958","AFC0959","AFC0960","AFC0961","AFC0962","AFC0963","AFC0964","AFC0965","AFC0966","AFC0967","AFC0968","AFC0969","AFC0970","AFC0971","AFC0972","AFC0973","AFC0974","AFC0975","AFC0976","AFC0977","AFC0978","AFC0979","AFC0980","AFC0981","AFC0982","AFC0983","AFC0984","AFC0985","AFC0986","AFC0987","AFC0988","AFC0989","AFC0990","AFC0991","AFC0992","AFC0993","AFC0994","AFC0995","AFC0996","AFC0997","AFC0998","AFC0999"];
+const SK_CODE='jdn_code';
+function loadCode(){try{return localStorage.getItem(SK_CODE);}catch(e){return null;}}
+function saveCode(c){try{localStorage.setItem(SK_CODE,c);}catch(e){}}
+
+function doActivate(){
+  const inp=document.getElementById('afc-inp');
+  const err=document.getElementById('afc-err');
+  const code=inp.value.trim().toUpperCase();
+  if(!code){showErr('Por favor ingresa tu código de acceso.');return;}
+  if(code.length!==7||!code.startsWith('AFC')){
+    showErr('Formato incorrecto. Debe ser AFC seguido de 4 números. Ej: AFC0042');return;
+  }
+  if(!VALID_CODES.includes(code)){
+    showErr('Código no válido. Verifica que lo hayas escrito correctamente.');
+    inp.classList.add('shake');
+    setTimeout(()=>inp.classList.remove('shake'),500);
+    return;
+  }
+  saveCode(code);
+  err.style.color='var(--sage)';
+  err.textContent='✅ Código '+code+' activado. ¡Bienvenido/a!';
+  err.style.display='block';
+  inp.style.borderColor='var(--sage)';
+  inp.style.background='var(--sageL)';
+  setTimeout(()=>showScr('s-register'),1400);
+}
+function showErr(msg){
+  const err=document.getElementById('afc-err');
+  err.style.color='var(--coral)';
+  err.textContent=msg;
+  err.style.display='block';
+}
 
 // STATE
 let me=null,AW=1,AD=null,DONE=new Set(),CTAB='days',NI=null;
@@ -584,6 +779,8 @@ function goProfile(){
   document.getElementById('pr-dia').textContent='Día '+Math.min(dia,30)+' de 30';
   document.getElementById('pr-hora').textContent=me.notifHora;
   document.getElementById('pr-push').textContent=getP()==='granted'?'Activo':'Inactivo';
+  var codeEl=document.getElementById('pr-code');
+  if(codeEl) codeEl.textContent=loadCode()||'—';
   document.getElementById('pr-easunto').textContent=pm(msg.as,me.nombre);
   document.getElementById('pr-ecuerpo').textContent=pm(msg.cu,me.nombre).substring(0,240)+'...';
   showScr('s-profile');
@@ -593,7 +790,12 @@ function prEmail(){
   const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];
   window.open('mailto:'+me.email+'?subject='+encodeURIComponent(pm(msg.as,me.nombre))+'&body='+encodeURIComponent(pm(msg.cu,me.nombre)),'_blank');
 }
-function doReset(){try{localStorage.clear();}catch(e){}me=null;DONE=new Set();AD=null;AW=1;if(NI)clearInterval(NI);showScr('s-register');}
+function doReset(){
+  try{localStorage.clear();}catch(e){}
+  me=null;DONE=new Set();AD=null;AW=1;
+  if(NI)clearInterval(NI);
+  showScr('s-activate');
+}
 function startNI(){
   if(!hasN())return;if(NI)clearInterval(NI);
   NI=setInterval(()=>{try{if(getP()!=='granted'||!me)return;const now=new Date();const[hh,mm]=me.notifHora.split(':').map(Number);if(now.getHours()===hh&&now.getMinutes()===mm){const dia=getDN(me.fechaInicio);const msg=MGS[Math.min(dia,30)-1];try{new Notification('💑 '+pm(msg.t,me.nombre),{body:pm(msg.push,me.nombre),tag:'jdn'});}catch(e){}}}catch(e){}},60000);
@@ -779,7 +981,20 @@ function generarPDF(){
 }
 
 
-document.addEventListener('DOMContentLoaded',function(){me=loadMe();if(me){DONE=loadDone();launchApp();}else{showScr('s-register');}});
+document.addEventListener('DOMContentLoaded',function(){
+  me=loadMe();
+  if(me){
+    // Already registered and activated
+    DONE=loadDone();
+    launchApp();
+  } else if(loadCode()){
+    // Has valid code but not registered yet
+    showScr('s-register');
+  } else {
+    // No code — show activation screen
+    showScr('s-activate');
+  }
+});
 </script>
 </body>
 </html>
